@@ -43,6 +43,8 @@ var galleryInterface={
       //  $.extend(true, app_main.config={}, galleryInterface.now["main_config"]);
         $.extend(true, linkListBuf=[], galleryInterface.now["linkListBuf"])
         $.extend(true, myChart_main_data.links=[], galleryInterface.now["linkListBuf"]);
+        $.extend(true, bzSample={}, galleryInterface.now["bzSample"]);
+
 
         return true;
     },
@@ -63,6 +65,7 @@ var galleryInterface={
         $.extend(true, galleryInterface.now["nodeMap"]={}, nodeMap);
         $.extend(true, galleryInterface.now["main_config"]={}, app_main.config);
         $.extend(true, galleryInterface.now["linkListBuf"]=[], linkListBuf);//linkListBuf
+        $.extend(true,  galleryInterface.now["bzSample"]={},bzSample);
 
         //galleryInterface.now to gallery.galleryData
         gallery.galleryData[index]={};

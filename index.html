@@ -12,6 +12,8 @@
     <link href="./css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="./lib/layui/dist/css/layui.css">
     <link rel="stylesheet" href="./css/gallery.css">
+    <link rel="stylesheet" href="./css/mainRmenu.css">
+    <link rel="stylesheet" href="./css/mainSet.css">
 
     <script src="./lib/layui/dist/layui.js"></script>
     <script src="./lib/jquery.min.js"></script>
@@ -41,6 +43,9 @@
     <script src="./lib/underscore.math.js"></script>
 </head>
 <body>
+
+
+
 <div class="container-fluid">
     <div class="row clearfix">
         <div class=" col-md-12 col-lg-12 column">
@@ -125,6 +130,9 @@
                     </li>
                     <li>
                         <a href="#panel-12" data-toggle="tab">parallel axis</a>
+                    </li>
+                    <li>
+                        <button style="padding:10px 15px; margin-left: 30px; border-radius: 2px" onclick="mainSet(event)"><i class="fa fa-cog"></i>&nbsp;设置</button>
                     </li>
                 </ul>
                 <div class="tab-content" id="tabs1-content">
@@ -231,7 +239,9 @@
 <script src="./orderRelationMatrix.js"></script>
 <script src="./rightSingleScatter.js"></script>
 
+<script src="./mainRmenu.js"></script>
 <script src="./mainGraph.js"></script>
+<script src="./bezier.js"></script>
 <script src="./parallel.js"></script>
 <script src="./t-sne.js"></script>
 

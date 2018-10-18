@@ -45,7 +45,7 @@ tsneOption = {
                 icon: 'path://M512 960c-278.748 0-505.458-222.762-511.848-499.974 5.92 241.864 189.832 435.974 415.848 435.974 229.75 0 416-200.576 416-448 0-53.020 42.98-96 96-96s96 42.98 96 96c0 282.77-229.23 512-512 512zM512-64c278.748 0 505.458 222.762 511.848 499.974-5.92-241.864-189.832-435.974-415.848-435.974-229.75 0-416 200.576-416 448 0 53.020-42.98 96-96 96s-96-42.98-96-96c0-282.77 229.23-512 512-512z',
                 onclick: function (){
                     showToast('info',"tsne图计算中。。。");
-                    $.ajax({url:mylocalURL+"getTSNE",type: "POST",data:{"galleryIndex":0,"perplexity": app_main.config.perplexity},success:function(result){
+                    $.ajax({url:mylocalURL+"getTSNE",type: "POST",data:{"galleryIndex":0,"perplexity": 50},success:function(result){
                         //result
                         showToast('success',"tsne获取成功");
                         tsneData=result;

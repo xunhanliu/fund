@@ -17,74 +17,10 @@ var similarValue = 0.2;
 var nodeMap = {};
 var linkListBuf = [];
 //app_main.config
-var bzSample={
-    opacity:[],
-    thickness:[],
-    distance:[],
-    opacityBzPoints:[{x:0.25,y:0.25},{x:0.75,y:0.75}],
-    thicknessBzPoints:[{x:0.25,y:0.25},{x:0.75,y:0.75}],
-    distanceBzPoints:[{x:0.25,y:0.25},{x:0.75,y:0.75}],
-};
-
-//填充bzSample
-function bzGetSample(num,ps){ //ps是两个点的数组
-    var t=0;
-    var interval=1/num;
-    var mp=[];
-    while(t<=1)
-    {
-        var p0={x:0,y:0};
-        var p3={x:1,y:1};
-        var p1=ps[0];//控制点1
-        var p2=ps[1];//控制点2
-        var point = {x:0,y:0};
-        var temp = 1 - t;
-        point.x = p0.x * temp * temp * temp + 3 * p1.x * t * temp * temp + 3 * p2.x * t * t * temp + p3.x * t * t * t;
-        point.y = p0.y * temp * temp * temp + 3 * p1.y * t * temp * temp + 3 * p2.y * t * t * temp + p3.y * t * t * t;
-        mp.push( point);
-        t+=interval;
-    }
-    return mp;
-}
-bzSample.opacity=bzGetSample(100,bzSample.opacityBzPoints);
-bzSample.thickness=bzGetSample(100,bzSample.thicknessBzPoints);
-bzSample.distance=bzGetSample(100,bzSample.distanceBzPoints);
 
 
-function bzMap(whichStr,x) {  //返回相应点的映射
-    //查找字符串 bzSample[whichStr],取距离最近的点，并输出其y值，注意，数组已经进行了排序（x ,y）都是递增
-    var l=0,r=bzSample[whichStr].length-1;
-    var mid=Math.floor ((l+r)/2);
-    if(bzSample[whichStr][l].x>=x) {
-        return  bzSample[whichStr][l].y;
-    }
-    else if(bzSample[whichStr][r].x<=x) {
-        return bzSample[whichStr][r].y;
-    }
-    while(r>=l){
-        if(bzSample[whichStr][mid].x==x)  //几乎不存在
-            return  bzSample[whichStr][mid].y;
-        else if(bzSample[whichStr][mid].x<x){
-            if(bzSample[whichStr][mid+1].x>=x) {
-                //返回中值
-                return  (bzSample[whichStr][mid].y+bzSample[whichStr][mid+1].y)/2;
-            }
-            l=mid+1;
-            mid=Math.floor ((l+r)/2);
-        }
-        else if(bzSample[whichStr][mid].x>x){
-            if(bzSample[whichStr][mid-1].x<=x) {
-                //返回中值
-                return  (bzSample[whichStr][mid].y+bzSample[whichStr][mid-1].y)/2;
-            }
-            r=mid-1;
-            mid=Math.floor ((l+r)/2);
-        }
-
-    }
 
 
-}
 //circle的右键************************************************************
 var whichNodeClick;
 $("body").append('<ul class="Rmenu" id="mainRmenu" style="display: none;z-index: 1001">' +
@@ -400,8 +336,8 @@ function graph_preprocessor(graph) {
 function firstLoad() {
     $.get('myData/car.json', function (graph) {
         graph_preprocessor(graph);
-        getorderRelationMatrixSuccess(myChart_main_data);
         refreshMyChart_main(myChart_main_data);
+        getorderRelationMatrixSuccess(myChart_main_data);
         refrshParaChart(myChart_main_data);
 
     });
@@ -498,6 +434,12 @@ function refreshMyChart_main(graph) {
             nodes[i].py = lastGraphData[nodes[i].id].py;
         }
     }
+
+
+    //三大属性之 thickness 与opacity  。 验证线宽取小数有用吗，实验证明：线宽取小数的时候是有用的
+
+
+
     // 三大映射,注意放在中间层映射，因为毕竟是0-1 到0-1的映射
     // 三大映射，之distance
 
@@ -549,8 +491,7 @@ function refreshMyChart_main(graph) {
      })
      .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
      */
-    //三大属性之 thickness 与opacity  。 验证线宽取小数有用吗，实验证明：线宽取小数的时候是有用的
-    // d3.interpolate( )
+
     svg.selectAll(".edgepath").remove();
     //设置连接线
     var edges_line = svg.append("g").selectAll(".edgepath")
@@ -571,7 +512,7 @@ function refreshMyChart_main(graph) {
             }
         })
         .style("stroke", function (d) {
-            return d.color;
+            return colorMap(d.value);
         })
         .style("stroke-dasharray", function (d) {
             if (d.isCutEdge == 0)
@@ -580,7 +521,7 @@ function refreshMyChart_main(graph) {
         })
         // .style("pointer-events", "none")
         .style("stroke-width", function (d) {
-            return d.width
+            return lineWidthMap(d.overlap);
         })//线条粗细
         .attr("marker-end", "url(#resolved)")//根据箭头标记的id号标记箭头
     ;
@@ -754,7 +695,7 @@ function refreshMyChart_main(graph) {
             d3.select("#mainGraph").selectAll("text").style("fill", "#555");
 
             d3.select("#mainGraph").selectAll(".edgepath").style("stroke", function (d) {
-                return d.color;
+                return colorMap(d.value);
             })
 
 

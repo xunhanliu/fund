@@ -2,7 +2,7 @@ $("body").append('<div id="mainSet">\n' +
     '<span style="position: absolute;top:5px;right:5px; font-size: large;color: #f00; cursor:pointer " onclick="closeMainSet()">×</span>'+
     '<div class="btn-group mainSetItem" id="mapBtn">\
         <button type="button" class="btn btn-default active" onclick="mapBtnClick(event)">opacity</button>\
-        <button type="button" class="btn btn-default" onclick="mapBtnClick(event)">thickness </button>\
+        <button type="button" class="btn btn-default" onclick="mapBtnClick(event)">thickness</button>\
         <button type="button" class="btn btn-default " onclick="mapBtnClick(event)">distance</button>\
     </div>\
     <hr>\
@@ -10,8 +10,11 @@ $("body").append('<div id="mainSet">\n' +
     '    <div id="funcOption">\n' +
     '        <label for="bzPresets"><span class="text">映射类型:</span>\n' +
     '            <select name="bzPresets" id="bzPresets" class="form-control input-sm">\n' +
+    '                <optgroup label="自定义">\n' +
+    '                    <option id="defaultMap" value="0.505, 0, 0.525, 0.425">自定义映射 (拖拽下图句柄)</option>\n' +
+    '                </optgroup>\n' +
     '                <optgroup label="常用">\n' +
-    '                    <option value="0.250, 0.250, 0.750, 0.750" selected="">linear</option>\n' +
+    '                    <option value="0.250, 0.250, 0.750, 0.750">linear</option>\n' +
     '                    <option value="0.250, 0.100, 0.250, 1.000">ease (default)</option>\n' +
     '                    <option value="0.420, 0.000, 0.580, 1.000">ease-in-out</option>\n' +
     '                    <option value="0.550, 0.085, 0.680, 0.530">easeInQuad</option>\n' +
@@ -29,9 +32,6 @@ $("body").append('<div id="mainSet">\n' +
     '                    <option value="0.770, 0.000, 0.175, 1.000">easeInOutQuart</option>\n' +
     '                    <option value="0.860, 0.000, 0.070, 1.000">easeInOutQuint</option>\n' +
     '                    <option value="0.785, 0.135, 0.150, 0.860">easeInOutCirc</option>\n' +
-    '                </optgroup>\n' +
-    '                <optgroup label="自定义">\n' +
-    '                    <option id="defaultMap" value="0.500, 0.250, 0.500, 0.750">自定义映射 (拖拽左边句柄)</option>\n' +
     '                </optgroup>\n' +
     '            </select>\n' +
     '        </label>\n' +
@@ -51,6 +51,7 @@ function mapBtnClick(event){
     $("#mapBtn .btn").removeClass("active");
     $(event.target).addClass("active");
     $("#axisTime").text( $(event.target).text());
+    bzDrawFromCtl();
 
 }
 
@@ -205,7 +206,7 @@ function bzOnPress(event) {
             var currentlySelected = $('#bzPresets option:selected');
 
             currentlySelected.removeAttr('selected')
-                .parent().parent().find('option').last().attr('selected', 'selected');
+                .parent().parent().find('option').first().attr('selected', true);
 
             document.addEventListener('mouseup', bzOnRelease, false);
             document.addEventListener('touchend', bzTouchEnd, false);
@@ -340,7 +341,21 @@ function bzUpdateDrawing() {
 
 }
 
-bzUpdateDrawing();
+function bzDrawFromCtl() {
+   // var coordinates = this.value.split(','),
+       var cp1 = bzHandles[0],
+        cp2 = bzHandles[1];
+        var coordinates=bzSample[$("#mapBtn .active").text()+"BzPoints"]
+    cp1.x = coordinates[0].x * bzGraph.width;
+    cp1.y = bzGraph.y + bzGraph.height - (coordinates[0].y * bzGraph.height);
+    cp2.x = coordinates[1].x * bzGraph.width;
+    cp2.y = bzGraph.y + bzGraph.height - (coordinates[1].y * bzGraph.height);
+//以上代码更新两个控制手柄的坐标。
+    bzUpdateDrawing();
+
+}
+bzDrawFromCtl();
+
 
 function getBezierCPoint(){
     var cp1 = bzHandles[0],
@@ -362,6 +377,7 @@ function getBezierCPoint(){
 var bezierDragDebounce = _.debounce(function(){
 
     //只需填充一下bzSample即可
+    bzSample[$("#mapBtn .active").text()+"BzPoints"]=getBezierCPoint();
     bzSample[$("#mapBtn .active").text()]=bzCreateSample(100,getBezierCPoint());
     getMainPointPos();
     refreshMyChart_main(myChart_main_data);

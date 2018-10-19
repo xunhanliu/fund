@@ -40,10 +40,7 @@ var x_orderRelation = d3.scale.ordinal().rangeBands([0, width_orderRelation]),
     y_orderRelation = d3.scale.ordinal().rangeBands([0, width_orderRelation]),
     z_orderRelation = d3.scale.linear().domain([0, 4]).clamp(true),//透明度scale
     c_orderRelation = d3.scale.category10().domain(d3.range(10));//  颜色  按group映射
-var colorMap_orderRelation = d3.scale.linear()
-    .domain([-1, 0, 1])
-    .range(["red", "white", "green"]);
-var color20 = d3.scale.category20();
+
 var svg_orderRelation = d3.select("#orderRelationMatrix")
     .attr("width", width_orderRelation + margin_orderRelation.left + margin_orderRelation.right)
     .attr("height", height_orderRelation + margin_orderRelation.top + margin_orderRelation.bottom)
@@ -257,7 +254,7 @@ function getorderRelationMatrixSuccess(data){
             .attr("height", x_orderRelation.rangeBand())
             //.style("fill-opacity", function(d) { return z_orderRelation(d.z); })
             //.style("fill", function(d) { return nodes[d.x].group == nodes[d.y].group ? c_orderRelation(nodes[d.x].group) : null; })
-            .style("fill", function(d) { return colorMap_orderRelation(d.z); })
+            .style("fill", function(d) { return colorMap(d.z); })
             .on("mouseover", mouseover)
             .on("mouseout", mouseout)
             .call(dragElement_M)

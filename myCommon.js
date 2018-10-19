@@ -1,4 +1,30 @@
+var color20 = d3.scale.category20();
 
+var myColorScheme={
+    diff:{
+        color:color20,
+    },
+    active:{
+        color:function(d){  //暂时使用node.group
+            if(d==myColorScheme.active.lastActiveName)
+            {
+                return "#d60"
+            }
+            else {
+                return "#999"
+            }
+        },
+        lastActiveName:0,//使用node.group
+    },
+    cluster:{  //还未完善
+        color:color20,
+    },
+    scheme:"diff",
+};
+
+//myColorScheme[myColorScheme.scheme].color(d)
+//myColorScheme.active.lastActiveName=d.group
+//**************************************
 //填充bzSample
 function bzGetSample(num,ps){ //ps是两个点的数组
     var t=0;
@@ -66,7 +92,7 @@ function bzMap(whichStr,x) {  //返回相应点的映射
     }
 }
 //
-var color20 = d3.scale.category20();
+
 
 
 //三大映射之opacity ,修改colorMap函数

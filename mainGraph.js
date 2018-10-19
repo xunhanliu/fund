@@ -18,7 +18,7 @@ var nodeMap = {};
 var linkListBuf = [];
 //app_main.config
 
-
+var spaceshipSize=100;
 
 
 //circle的右键************************************************************
@@ -67,7 +67,7 @@ var mainRmenuClick = function (target) {
                         return "rgb(0,0,0)";
                     }
                     else {
-                        return color(whichNodeClick.group);
+                        return myColorScheme[myColorScheme.scheme].color(whichNodeClick.group);
                     }
                 })
         }
@@ -368,7 +368,6 @@ var svg = d3.select("#mainGraph")
     //  .call(zoom)
     // .append("g");
 ;
-var color = d3.scale.category20();
 
 
 function deepRefresh_main() {
@@ -446,7 +445,7 @@ function refreshMyChart_main(graph) {
 
     var dataLinkLength = d3.scale.linear()
         .domain([0, 1])
-        .range([400, 90]);
+        .range([400, 100]);
     var force = d3.layout.force()//layout将json格式转化为力学图可用的格式
         .nodes(nodes)//设定节点数组
         .links(links)//设定连线数组
@@ -567,13 +566,14 @@ function refreshMyChart_main(graph) {
             d3.select(this).classed("fixed", d.fixed = true);
         });
 
-    function dblclick(d) {
-        //d3.select(this).classed("fixed", d.fixed = false);
-
-    }
+    // function dblclick(d) {
+    //     //d3.select(this).classed("fixed", d.fixed = false);
+    //
+    // }
 
     function dragstart(d) {
        // d3.select(this).classed("fixed", d.fixed = true);
+        myColorScheme.active.lastActiveName=d.group;
     }
 
     //圆圈
@@ -592,7 +592,7 @@ function refreshMyChart_main(graph) {
             // }else{
             //     color="#F9EBF9";
             // }
-            return color(node.group);
+            return myColorScheme[myColorScheme.scheme].color(node.group);
         })
         .style('stroke', function (node) {
             // var color;//圆圈线条的颜色
@@ -606,7 +606,7 @@ function refreshMyChart_main(graph) {
                 return "rgb(0,0,0)";
             }
             else {
-                return color(node.group);
+                return myColorScheme[myColorScheme.scheme].color(node.group);
             }
         })
         .style('stroke-width', function (node) {
@@ -651,18 +651,18 @@ function refreshMyChart_main(graph) {
                 d3.select("#mainGraph").selectAll("circle").each(function (data, index) {
                     if (myChart_main_data.relation[nodeMap[d.name]][nodeMap[data.name]] == 0 && d.name != data.name) //加gray属性
                     {
-                        d3.select(this).style("fill", "rgba(9,9,9,0.1)");
+                        d3.select(this).style("fill", "rgba(200,200,200,0.1)");
                     }
                 });
                 d3.select("#mainGraph").selectAll("text").each(function (data, index) {
                     if (myChart_main_data.relation[nodeMap[d.name]][nodeMap[data.name]] == 0 && d.name != data.name) //加gray属性
                     {
-                        d3.select(this).style("fill", "rgba(9,9,9,0)");
+                        d3.select(this).style("fill", "rgba(200,200,200,0.1)");
                     }
                 });
                 d3.select("#mainGraph").selectAll(".edgepath").each(function (data, index) {
                     if (!(data.source.name == d.name || data.target.name == d.name)) {
-                        d3.select(this).style("stroke", "rgba(9,9,9,0.1)");
+                        d3.select(this).style("stroke", "rgba(200,200,200,0.1)");
                     }
                 });
 
@@ -689,7 +689,7 @@ function refreshMyChart_main(graph) {
 
             d3.select("#mainGraph").selectAll("circle")
                 .style("fill", function (node) {
-                    return color(node.group);
+                    return myColorScheme[myColorScheme.scheme].color(node.group);
                 });
 
             d3.select("#mainGraph").selectAll("text").style("fill", "#555");
@@ -706,8 +706,10 @@ function refreshMyChart_main(graph) {
             return contextmenu("mainRmenu");
         })
         .on("click", function (node) {
+            myColorScheme.active.lastActiveName=node.group;
         })
         .on("dblclick", function (node) {
+            myColorScheme.active.lastActiveName=node.group;
             nodeMessName = node['id'];
             //iframe窗
 
@@ -823,6 +825,7 @@ function refreshMyChart_main(graph) {
         if (force.alpha() <= 0.1) {
             circle.attr("transform", transform1);//圆圈
             text.attr("transform", transform2);//顶点文字
+
             edges_line.attr('d', function (d) {
                 var path = 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y;
                 return path;
@@ -1024,7 +1027,7 @@ function getColorFromName(name) {
     // {
     //    if( myChart_main_data["node"][i]["name"]==name)
     //    {
-    //        return color(myChart_main_data["node"][i]["group"]);
+    //        return color20(myChart_main_data["node"][i]["group"]);
     //    }
     // }
     // return "#888"
@@ -1032,7 +1035,7 @@ function getColorFromName(name) {
     // myChart_main_data.category
     for (var i in myChart_main_data.category) {
         if (myChart_main_data["category"][i] == name.split(",")[0]) {
-            return color(i);
+            return color20(i);
         }
     }
 }

@@ -2,7 +2,7 @@
     top:0px;
     left: 0px;
     z-index: 1001;
-    width: 290px;
+    width: 300px;
     padding: 20px;
     position: absolute;
     display: none;
@@ -16,7 +16,14 @@
     border-color: #ccc;
     margin: 0px;
 }
-
+#mainSet .imgItem{
+    display: inline-block;
+    border:#aaa 1px solid;
+    border-radius:2px ;
+}
+#mainSet .imgItem:hover{
+    border: #f00 dashed 2px;
+}
 #bzCurve {
     display: block;
     cursor: pointer;

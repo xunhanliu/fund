@@ -1,12 +1,12 @@
 $("body").append('<div id="mainSet">\n' +
-    '<span style="position: absolute;top:5px;right:5px; font-size: large;color: #f00; cursor:pointer " onclick="closeMainSet()">×</span>'+
+    '<span style="position: absolute;top:5px;right:5px; font-size: large;color: #f00; cursor:pointer " onclick="closeMainSet()">×</span>' +
     '<div class="btn-group mainSetItem" id="mapBtn">\
         <button type="button" class="btn btn-default active" onclick="mapBtnClick(event)">opacity</button>\
         <button type="button" class="btn btn-default" onclick="mapBtnClick(event)">thickness</button>\
         <button type="button" class="btn btn-default " onclick="mapBtnClick(event)">distance</button>\
     </div>\
     <hr>\
-    '+
+    ' +
     '    <div id="funcOption">\n' +
     '        <label for="bzPresets"><span class="text">映射类型:</span>\n' +
     '            <select name="bzPresets" id="bzPresets" class="form-control input-sm">\n' +
@@ -42,20 +42,37 @@ $("body").append('<div id="mainSet">\n' +
     '            <figcaption id="axisTime">opacity</figcaption>\n' +
     '            <figcaption id="axisAnimation">new Map</figcaption>\n' +
     '        </figure>\n' +
-    '    </div> <hr>\n' +
+    '    </div> <hr style="height: 2px;background-color: #333 ">\n' +
+    ' <div style="margin-top: 3px">' +
+    '       <p>颜色方案选择:</p>' +
+    '       <div class="imgItem"><img  name="diff" onclick="colorSchemeClk(event)" src="./pic/diff80_sel.png" alt="每个属性分配一个颜色" /></div>' +
+    '       <div class="imgItem"><img name="active" onclick="colorSchemeClk(event)" src="./pic/active80.png" alt="操作属性高亮" /></div>' +
+    '       <div class="imgItem"><img name="cluster" onclick="colorSchemeClk(event)" src="./pic/cluster80.png" alt="每个cluster分配一个颜色" /></div>' +
+    ' </div>' +
     '</div>');
-function closeMainSet(){
+
+function colorSchemeClk(event){
+    var picDirectory=["./pic/diff80","./pic/active80","./pic/cluster80"];
+    $(".imgItem img").each(function(index,ele){
+        $(ele).attr("src",picDirectory[index]+".png");
+    });
+    var str=$(event.target).attr("src");
+    $(event.target).attr("src", str.substring(0,str.length-4)+"_sel.png");
+    myColorScheme.scheme=$(event.target).attr("name");
+}
+function closeMainSet() {
     $("#mainSet").slideUp(200);
 }
-function mapBtnClick(event){
+
+function mapBtnClick(event) {
     $("#mapBtn .btn").removeClass("active");
     $(event.target).addClass("active");
-    $("#axisTime").text( $(event.target).text());
+    $("#axisTime").text($(event.target).text());
     bzDrawFromCtl();
 
 }
 
-function mainSet(event){
+function mainSet(event) {
     contextmenu("mainSet");
     event.cancelBubble = true;
 }
@@ -75,14 +92,14 @@ function BezierHandle(x, y) {
 BezierHandle.prototype = {
 
     // get the edges for easy grabby coordinates
-    getSides : function() {
+    getSides: function () {
         this.left = this.x - (this.width / 2);
         this.right = this.left + this.width;
         this.top = this.y - (this.height / 2);
         this.bottom = this.top + this.height;
     },
 
-    draw : function() {
+    draw: function () {
         // figure out the edges
         this.getSides();
         ctx.fillStyle = "#222";
@@ -94,8 +111,8 @@ BezierHandle.prototype = {
 
 // make 2 new handles
 var bzHandles = [
-    new BezierHandle(50,50),
-    new BezierHandle(150,180)
+    new BezierHandle(50, 50),
+    new BezierHandle(150, 180)
 ];
 
 function BzGraph() {
@@ -107,7 +124,7 @@ function BzGraph() {
 
 BzGraph.prototype = {
 
-    draw : function() {
+    draw: function () {
 
         ctx.save();
 
@@ -117,7 +134,7 @@ BzGraph.prototype = {
         // the 0.5 offset is to account for stroke width to make lines sharp
         ctx.strokeStyle = '#666';
         ctx.lineWidth = 1;
-        ctx.strokeRect(this.x + 0.5, this.y - 0.5, this.width - 1, this.height );
+        ctx.strokeRect(this.x + 0.5, this.y - 0.5, this.width - 1, this.height);
 
         ctx.restore();
     }
@@ -175,7 +192,7 @@ function bzOnPress(event) {
 
 
     //check to see if over any bzHandles
-    for (var i=0; i < bzHandles.length; i++) {
+    for (var i = 0; i < bzHandles.length; i++) {
         var current = bzHandles[i],
             curLeft = current.left,
             curRight = current.right,
@@ -183,7 +200,7 @@ function bzOnPress(event) {
             curBottom = current.bottom;
 
         //20 px padding for chubby fingers
-        if ( supportsTouch ) {
+        if (supportsTouch) {
             curLeft -= 20;
             curRight += 20;
             curTop -= 20;
@@ -236,8 +253,8 @@ function bzOnMove(event) {
     if (x < 0) {
         x = 0;
     }
-    if (y > bzGraph.y+bzGraph.height) {
-        y = bzGraph.y+bzGraph.height;
+    if (y > bzGraph.y + bzGraph.height) {
+        y = bzGraph.y + bzGraph.height;
     }
     if (y < bzGraph.y) {
         y = bzGraph.y;
@@ -282,11 +299,12 @@ bzCanvas.addEventListener('touchstart', function bzTouchPress(event) {
 }, false);
 
 
-var bzFirstLoad=true;
+var bzFirstLoad = true;
+
 //绘制bezier曲线，控制点
 function bzUpdateDrawing() {
     // clear
-    ctx.clearRect(0,0,bzCanvas.width,bzCanvas.height);
+    ctx.clearRect(0, 0, bzCanvas.width, bzCanvas.height);
 
     // draw bzGraph
     bzGraph.draw();
@@ -316,7 +334,7 @@ function bzUpdateDrawing() {
     ctx.stroke();
 
     // draw bzHandles
-    for (var i=0; i < bzHandles.length; i++) {
+    for (var i = 0; i < bzHandles.length; i++) {
         bzHandles[i].draw();
     }
 
@@ -333,19 +351,19 @@ function bzUpdateDrawing() {
         bezier = 'cubic-bezier' + points;
 
     //   easeName = $('#bzPresets option:selected').text();
-   if(!bzFirstLoad ) {
-       bezierDragDebounce();
-   }
-    bzFirstLoad=false;
+    if (!bzFirstLoad) {
+        bezierDragDebounce();
+    }
+    bzFirstLoad = false;
 
 
 }
 
 function bzDrawFromCtl() {
-   // var coordinates = this.value.split(','),
-       var cp1 = bzHandles[0],
+    // var coordinates = this.value.split(','),
+    var cp1 = bzHandles[0],
         cp2 = bzHandles[1];
-        var coordinates=bzSample[$("#mapBtn .active").text()+"BzPoints"]
+    var coordinates = bzSample[$("#mapBtn .active").text() + "BzPoints"]
     cp1.x = coordinates[0].x * bzGraph.width;
     cp1.y = bzGraph.y + bzGraph.height - (coordinates[0].y * bzGraph.height);
     cp2.x = coordinates[1].x * bzGraph.width;
@@ -354,10 +372,11 @@ function bzDrawFromCtl() {
     bzUpdateDrawing();
 
 }
+
 bzDrawFromCtl();
 
 
-function getBezierCPoint(){
+function getBezierCPoint() {
     var cp1 = bzHandles[0],
         cp2 = bzHandles[1];
 
@@ -372,50 +391,51 @@ function getBezierCPoint(){
     if (y2 < 0) y2 = 0;
     //console.log( cp1.x, cp1.y )
 //            points = '(' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2 + ')';
-    return [{x:x1,y:y1},{x:x2,y:y2}];
+    return [{x: x1, y: y1}, {x: x2, y: y2}];
 }
-var bezierDragDebounce = _.debounce(function(){
+
+var bezierDragDebounce = _.debounce(function () {
 
     //只需填充一下bzSample即可
-    bzSample[$("#mapBtn .active").text()+"BzPoints"]=getBezierCPoint();
-    bzSample[$("#mapBtn .active").text()]=bzCreateSample(100,getBezierCPoint());
+    bzSample[$("#mapBtn .active").text() + "BzPoints"] = getBezierCPoint();
+    bzSample[$("#mapBtn .active").text()] = bzCreateSample(100, getBezierCPoint());
     getMainPointPos();
+    getorderRelationMatrixSuccess(myChart_main_data);
     refreshMyChart_main(myChart_main_data);
-    }, 200);
+}, 200);
 //getMainPointPos();
 //refreshMyChart_main(myChart_main_data);
-function bzCreateSample(num,ps){ //ps是两个点的数组
-    var t=0;
-    var interval=1/num;
-    var mp=[];
-    var buf=[];
-    while(t<=1)
-    {
-        var p0={x:0,y:0};
-        var p3={x:1,y:1};
-        var p1=ps[0];//控制点1
-        var p2=ps[1];//控制点2
-        var point = {x:0,y:0};
+function bzCreateSample(num, ps) { //ps是两个点的数组
+    var t = 0;
+    var interval = 1 / num;
+    var mp = [];
+    var buf = [];
+    while (t <= 1) {
+        var p0 = {x: 0, y: 0};
+        var p3 = {x: 1, y: 1};
+        var p1 = ps[0];//控制点1
+        var p2 = ps[1];//控制点2
+        var point = {x: 0, y: 0};
         var temp = 1 - t;
         point.x = p0.x * temp * temp * temp + 3 * p1.x * t * temp * temp + 3 * p2.x * t * t * temp + p3.x * t * t * t;
         point.y = p0.y * temp * temp * temp + 3 * p1.y * t * temp * temp + 3 * p2.y * t * t * temp + p3.y * t * t * t;
 
-        mp.push( point);
-       // buf.push([point.x,point.y]);
-        t+=interval;
+        mp.push(point);
+        // buf.push([point.x,point.y]);
+        t += interval;
     }
-    return  mp;
+    return mp;
 }
 
-function testBzMap(){
-    var whichStr= "opacity";
-    var x=0;
-    var getpos=[];
-    bzSample[whichStr]=bzCreateSample(100,getBezierCPoint());
-    while(x<=1){
-        var y=bzMap(whichStr,x);
-        getpos.push([x,y]);
-        x+=0.016;
+function testBzMap() {
+    var whichStr = "opacity";
+    var x = 0;
+    var getpos = [];
+    bzSample[whichStr] = bzCreateSample(100, getBezierCPoint());
+    while (x <= 1) {
+        var y = bzMap(whichStr, x);
+        getpos.push([x, y]);
+        x += 0.016;
     }
     return JSON.stringify(getpos);
     //还需要序列化采样数据
@@ -442,7 +462,6 @@ var $bzPresets = $('#bzPresets'),
 $bzPresets.change(bzPresetChange);
 
 
-
 //    $time.change(function() {
 //        setTransitions();
 //        bzUpdateDrawing(); //写在这里没多大用，主要用于触发textArea的显示
@@ -455,29 +474,29 @@ $bzPresets.change(bzPresetChange);
 
 // arrow key support
 //option 选择，对左右箭头按键进行触发
-$(document).keydown(function(event) {
+$(document).keydown(function (event) {
 
     var currentlySelected,
         currentIdx;
 
-    if ( event.keyCode === 39  ) {//&& event.target !== time
+    if (event.keyCode === 39) {//&& event.target !== time
         //right key && not in time input
         currentlySelected = $('#bzPresets option:selected');
         currentIdx = $bzPresetOpts.index(currentlySelected);
 
-        if ( currentIdx < $bzPresetOpts.length - 1 ) {
+        if (currentIdx < $bzPresetOpts.length - 1) {
             currentlySelected.attr('selected', '');
-            $bzPresetOpts.eq( currentIdx + 1 ).attr('selected', 'selected');
+            $bzPresetOpts.eq(currentIdx + 1).attr('selected', 'selected');
             $bzPresets.trigger('change');
         }
-    } else if ( event.keyCode === 37  ) {
+    } else if (event.keyCode === 37) {
         // left key && not in time input
         currentlySelected = $('#bzPresets option:selected');
         currentIdx = $bzPresetOpts.index(currentlySelected);
 
-        if ( currentIdx > 0 ) {
+        if (currentIdx > 0) {
             currentlySelected.attr('selected', '');
-            $bzPresetOpts.eq( currentIdx - 1 ).attr('selected', 'selected');
+            $bzPresetOpts.eq(currentIdx - 1).attr('selected', 'selected');
             $bzPresets.trigger('change');
         }
     }

@@ -352,8 +352,10 @@ var gallery = {
             .size([svg_width, svg_height])//作用域的大小
             //.linkDistance(app_main.config.linkDistance)//300 连接线长度
             .linkDistance(function (d) {
-                return dataLinkLength(Math.abs(d.value));
+                return dataLinkLength(bzMap("distance",Math.abs(d.value)));
             })
+            .gravity(0.5)//默认0.1  ，越大重力越大
+            .friction( 0.2)
             .charge(-3000)//-3000   顶点的电荷数。该参数决定是排斥还是吸引，数值越小越互相排斥，正值是相互吸引
             .on("tick", tick)//指时间间隔，隔一段时间刷新一次画面
             .start();//开始转换
@@ -369,7 +371,7 @@ var gallery = {
                 'class': 'edgepath',
             })
             .style("stroke", function (d) {
-                return d.color;
+                return colorMap(d.value);
             })
             .style("stroke-dasharray", function (d) {
                 if (d.isCutEdge == 0)
@@ -410,14 +412,14 @@ var gallery = {
                 return "circle main_" + data.name.replace(/[\W]/g, '_');
             })
             .style("fill", function (node) {
-                return color(node.group);
+                return myColorScheme[myColorScheme.scheme].color(node.group);
             })
             .style('stroke', function (node) {
                 if (node.isCutPoint == true || isInArray(selectPoint, node['id'].split(',')[0]) != -1) {
                     return "rgb(0,0,0)";
                 }
                 else {
-                    return color(node.group);
+                    return myColorScheme[myColorScheme.scheme].color(node.group);
                 }
             })
             .style('stroke-width', 1)
@@ -425,7 +427,7 @@ var gallery = {
                 return circleSizeScale_M(Number(node['symbolSize']));
             })//设置圆圈半径
             .on("mouseover", function (d) {
-
+                    var graph=gallery.galleryData[index].myChart_main_data;
                     d3.select("#graph_" + index).selectAll("circle").each(function (d1, i) {
                         if (graph.relation[data.nodeMap[d.name]][data.nodeMap[d1.name]] == 0 && d.name != d1.name) //加gray属性
                         {
@@ -448,13 +450,13 @@ var gallery = {
             .on("mouseout", function (d) {
                 d3.select("#graph_" + index).selectAll("circle")
                     .style("fill", function (node) {
-                        return color(node.group);
+                        return myColorScheme[myColorScheme.scheme].color(node.group);
                     });
 
                 d3.select("#graph_" + index).selectAll("text").style("fill", "#555");
 
                 d3.select("#graph_" + index).selectAll(".edgepath").style("stroke", function (d) {
-                    return d.color;
+                    return colorMap(d.value);
                 })
             })
             .on("click", function (node) {

@@ -498,7 +498,10 @@ function refreshMyChart_main(graph) {
             nodes[i].py = lastGraphData[nodes[i].id].py;
         }
     }
-    //
+    // 三大映射,注意放在中间层映射，因为毕竟是0-1 到0-1的映射
+    // 三大映射，之distance
+
+
     var dataLinkLength = d3.scale.linear()
         .domain([0, 1])
         .range([400, 90]);
@@ -508,7 +511,7 @@ function refreshMyChart_main(graph) {
         .size([svg_width, svg_height])//作用域的大小
         //.linkDistance(app_main.config.linkDistance)//300 连接线长度
         .linkDistance(function (d) {
-            return dataLinkLength(Math.abs(d.value));
+            return dataLinkLength(bzMap("distance",Math.abs(d.value)));
         })
         .gravity(0.5)//默认0.1  ，越大重力越大
         .friction( 0.2)
@@ -546,7 +549,8 @@ function refreshMyChart_main(graph) {
      })
      .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
      */
-
+    //三大属性之 thickness 与opacity  。 验证线宽取小数有用吗，实验证明：线宽取小数的时候是有用的
+    // d3.interpolate( )
     svg.selectAll(".edgepath").remove();
     //设置连接线
     var edges_line = svg.append("g").selectAll(".edgepath")
@@ -618,7 +622,7 @@ function refreshMyChart_main(graph) {
     var drag = force.drag()
         .on("dragstart", dragstart)
         .on("dragend",function(d){
-            canselFixed();
+           // canselFixed();
             d3.select(this).classed("fixed", d.fixed = true);
         });
 

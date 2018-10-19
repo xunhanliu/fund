@@ -31,7 +31,7 @@ $("body").append('<div id="mainSet">\n' +
     '                    <option value="0.785, 0.135, 0.150, 0.860">easeInOutCirc</option>\n' +
     '                </optgroup>\n' +
     '                <optgroup label="自定义">\n' +
-    '                    <option value="0.500, 0.250, 0.500, 0.750">自定义动画 (拖拽左边句柄)</option>\n' +
+    '                    <option id="defaultMap" value="0.500, 0.250, 0.500, 0.750">自定义映射 (拖拽左边句柄)</option>\n' +
     '                </optgroup>\n' +
     '            </select>\n' +
     '        </label>\n' +
@@ -207,7 +207,6 @@ function bzOnPress(event) {
             currentlySelected.removeAttr('selected')
                 .parent().parent().find('option').last().attr('selected', 'selected');
 
-
             document.addEventListener('mouseup', bzOnRelease, false);
             document.addEventListener('touchend', bzTouchEnd, false);
 
@@ -373,6 +372,7 @@ function bzCreateSample(num,ps){ //ps是两个点的数组
     var t=0;
     var interval=1/num;
     var mp=[];
+    var buf=[];
     while(t<=1)
     {
         var p0={x:0,y:0};
@@ -385,8 +385,24 @@ function bzCreateSample(num,ps){ //ps是两个点的数组
         point.y = p0.y * temp * temp * temp + 3 * p1.y * t * temp * temp + 3 * p2.y * t * t * temp + p3.y * t * t * t;
 
         mp.push( point);
+       // buf.push([point.x,point.y]);
         t+=interval;
     }
+    return  mp;
+}
+
+function testBzMap(){
+    var whichStr= "opacity";
+    var x=0;
+    var getpos=[];
+    bzSample[whichStr]=bzCreateSample(100,getBezierCPoint());
+    while(x<=1){
+        var y=bzMap(whichStr,x);
+        getpos.push([x,y]);
+        x+=0.016;
+    }
+    return JSON.stringify(getpos);
+    //还需要序列化采样数据
 }
 
 function bzPresetChange() {

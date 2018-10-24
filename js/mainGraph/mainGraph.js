@@ -364,8 +364,8 @@ function transform2(d) {
     $.get('myData/car.json', function (graph) {
         graph_preprocessor(graph);
         main_redraw(myChart_main_data);
-        //getorderRelationMatrixSuccess(myChart_main_data);
-        //refrshParaChart(myChart_main_data);
+        getorderRelationMatrixSuccess(myChart_main_data);
+        refrshParaChart(myChart_main_data);
 
     });
 })();

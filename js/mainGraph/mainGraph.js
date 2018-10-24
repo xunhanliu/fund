@@ -21,10 +21,12 @@ var linkListBuf = [];
 
 var mainGraphPara={
     similarToClose:true,
+    similarPointDistance:3*30,  //2倍半径
     maxPointSize:30,
     maxGraphArea:2,//即长宽是原图的二倍。
     graphArea:{x:[0,0],y:[0,0]},  //根据maxGraphArea来计算
-    springback:0.1//碰到边界，让其瞬间回弹。
+    springback:0.1,//碰到边界，让其瞬间回弹。
+    classMapNum:{},
 
 }
 

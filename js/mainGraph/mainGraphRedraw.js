@@ -47,6 +47,37 @@ function main_redraw(graph) {
     // that d3v4 is the default (d3)
 
     circleSizeScale_M.domain([1, Number(graph['dataNum'])]);
+    mainGraphPara.classMapNum={}
+    for(var i in graph.head ){
+        var name=graph.head[i][0].split(",")[0];
+        var index=graph.head[i][0].split(",")[2];
+        if(name in mainGraphPara.classMapNum)
+        {
+            mainGraphPara.classMapNum[name]["num"]+=1;
+            mainGraphPara.classMapNum[name][index]=0;
+        }
+        else{
+            mainGraphPara.classMapNum[name]={"num":1,"mainPoint":graph.head[i][0],"middleNum":graph.head[i][0].split(",")[1]};// 主点不记录index
+        }
+    }
+    var angle=0;
+    for ( var n in mainGraphPara.classMapNum){
+        var value=mainGraphPara.classMapNum[n];
+        var num=value["num"]-1;  //子点个数
+        angle=0;
+        for(var m in value)
+        {
+            if(m=="num" || m=="mainPoint" ||m=="middleNum")
+            {
+                continue;
+            }
+            else{
+                value[m]=angle;
+                angle+=2*Math.PI/num;
+            }
+        }
+    }
+
 
     mainGraphPara.graphArea.x[0]=(svg_width-svg_width*mainGraphPara.maxGraphArea)/2;
     mainGraphPara.graphArea.x[1]=(svg_width-svg_width*mainGraphPara.maxGraphArea)/2+mainGraphPara.maxGraphArea*svg_width;
@@ -146,16 +177,19 @@ function main_redraw(graph) {
         .selectAll(".node")
         .data(graph.nodes)
         .enter().append("g")
-        .attr("class", "node")
+        .attr("class", function(d){
+
+            return "node "+"main_" + d.name.split(",")[0].replace(/[\W]/g, '_');
+        })
+        .attr("id", function(d){
+            return "main_" + d.name.replace(/[\W]/g, '_');
+        })
         .call(d3v4.drag()
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended));
 
     node.append("circle")
-        .attr("class", function (data) {
-            return "main_" + data.name.replace(/[\W]/g, '_');
-        })
         .style("fill", function (node) {
             return myColorScheme[myColorScheme.scheme].color(node.group);
         })
@@ -232,23 +266,77 @@ function main_redraw(graph) {
     function ticked() {
         // update node and line positions at every step of
         // the force simulation
-        node.attr("transform", function (d) {
+        node.attr("transform", function (d) {  //忽略第一波的tick
 //限定布局范围
             if (d.x<=mainGraphPara.graphArea.x[0] )
             {
                 d.x+= mainGraphPara.springback*svg_width;
+                d.vx/=4;
             }
             else if(d.x>=mainGraphPara.graphArea.x[1]){
                 d.x-= mainGraphPara.springback*svg_width;
+                d.vx/=4;
             }
             if (d.y<=mainGraphPara.graphArea.y[0] )
             {
                 d.y+= mainGraphPara.springback*svg_height;
+                d.vy/=4;
             }
             else if(d.y>=mainGraphPara.graphArea.y[1]){
                 d.y-= mainGraphPara.springback*svg_height;
+                d.vy/=4;
             }
-            return "translate(" + d.x + "," + d.y + ")";
+            // 检查相似点是否需要放一起
+            if(mainGraphPara.similarToClose){
+               // if(d.name.split(",")[2]!="0"){ //是主点就跳过
+                if(mainGraphPara.classMapNum[d.name.split(",")[0]].num==1 ||mainGraphPara.classMapNum[d.name.split(",")[0]].middleNum!=d.name.split(",")[1] ){
+                    return "translate(" + d.x + "," + d.y + ")";
+                }
+                var mainPoint=mainGraphPara.classMapNum[d.name.split(",")[0]].mainPoint;
+                if(mainPoint!=d.name){ //是主点就跳过
+                    var pos=[];//找到主点位置
+                    var vpos=[];
+                    var childNum=0;
+                    // d3.selectAll(".main_" + d.name.split(",")[0].replace(/[\W]/g, '_')).each(function(data){
+                    //     if(data.name==mainPoint)
+                    //     {
+                    //         pos=[data.x,data.y];
+                    //         vpos=[data.vx,data.vy];
+                    //         return false;
+                    //         //childNum=Number(data.name.split(",")[1])-1;
+                    //     }
+                    // }) ;
+                    var data=d3.select("#main_" + mainPoint.replace(/[\W]/g, '_')).data()[0];
+                    pos=[data.x,data.y];
+                    vpos=[data.vx,data.vy];
+                    //下面这种算法易造成振荡，原因：多个子点在同一个方向上，易造成向边界上移动
+                    // var poschild=[d.x,d.y];
+                    // if(pos.length)
+                    // {
+                    //     var s=Math.sqrt((poschild[0]-pos[0])**2+(poschild[1]-pos[1])**2);
+                    //     var s1=mainGraphPara.similarPointDistance;
+                    //     d.x=pos[0]-s1/s*(pos[0]-poschild[0]);
+                    //     d.y=pos[1]-s1/s*(pos[1]-poschild[1]);
+                    //     d.vx=vpos[0];
+                    //     d.vy=vpos[1];
+                    // }
+                    //取子点个数，根据索引分布在主点的圆周上。
+                   // var deg=2*Math.PI/childNum*(d.name.split(",")[2]-1);
+                    if(!pos.length){
+                        console.error("未找到pos数据点！！！");
+                    }
+                    var deg= mainGraphPara.classMapNum[d.name.split(",")[0]][Number(d.name.split(",")[2])];
+                    d.x=pos[0]+mainGraphPara.similarPointDistance*Math.cos(deg);
+                    d.y=pos[1]+mainGraphPara.similarPointDistance*Math.sin(deg);
+                    d.vx=vpos[0];
+                    d.vy=vpos[1];
+                }
+            }
+
+            if(!isNaN(d.x)&& !isNaN(d.x)){
+                return "translate(" + d.x + "," + d.y + ")";
+            }
+            console.log(mainGraphPara.classMapNum[d.name.split(",")[0]]+"\npoint:"+d.name);
         })
 
 

@@ -1,0 +1,48 @@
+.c_mybox {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.08);
+    width: 200px;
+    height: 200px;
+    background: white;
+    position: relative;
+    margin-left: 5px;
+    transition: width 0.5s,height 0.5s;
+    float:left;
+}
+.scaleFont{transform: scale(0.58);}
+
+#i_vacancy {
+    border: 2px dashed rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.08);
+    width: 200px;
+    height: 200px;
+    background: white;
+    position: relative;
+    transition: width 1s;
+    margin-left: 5px;
+    float:left;
+}
+
+.c_galleryChk {
+    position: absolute;
+    display: inline-block;
+    top: 0px;
+    left: 5px;
+}
+.c_topbtm{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.c_border{
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.08);
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.c_line{
+    /*border: 1px solid rgba(0, 0, 0, 0.1);*/
+    background-color: rgba(0, 0, 0, 0.1);
+}

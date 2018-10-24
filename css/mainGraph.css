@@ -1,0 +1,30 @@
+#mainGraph circle:hover{
+    stroke-width: 2 !important;
+    stroke: #000 !important;
+}
+
+#mainGraph .myActiveCircle{
+    fill: #222 !important;
+}
+
+#mainGraph .edgepath:hover{
+    stroke-dasharray: 15 10 !important;
+}
+
+#mainGraph .hoverCircle{
+    -webkit-box-shadow: 2px 5px 4px 1px black;
+    /*box-shadow: 2px 5px 4px 1px black;*/
+}
+
+#mainGraph  circle {
+    stroke: #fff ;
+    stroke-width: 1.5px;
+}
+
+#mainGraph .selected  circle{
+    stroke: black !important;
+}
+
+#mainGraph text {
+    cursor:default ;
+}

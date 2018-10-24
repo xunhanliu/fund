@@ -265,14 +265,14 @@ function getorderRelationMatrixSuccess(data){
     }
 
     function mouseover(p) {
-        d3.selectAll(".row text").classed("active", function(d, i) {
+        d3.selectAll("#orderRelationMatrix .row text").classed("active", function(d, i) {
             return i == p.y; });
-        d3.selectAll(".column text").classed("active", function(d, i) {
+        d3.selectAll("#orderRelationMatrix .column text").classed("active", function(d, i) {
             return i == p.x; });
     }
 
     function mouseout() {
-        d3.selectAll("text").classed("active", false);
+        d3.selectAll("#orderRelationMatrix text").classed("active", false);
     }
 
     d3.select("#order").on("change", function() {

@@ -20,6 +20,7 @@ var linkListBuf = [];
 
 
 var mainGraphPara={
+    similarToClose:true,
     maxPointSize:30,
     maxGraphArea:2,//即长宽是原图的二倍。
     graphArea:{x:[0,0],y:[0,0]},  //根据maxGraphArea来计算
@@ -142,6 +143,7 @@ app_main.configParameters = {
 
 var lastClusterOption = '单点聚类';
 app_main.config = {
+    similarToClose:true,
     clusterOption: '单点聚类',
     overlapThreshold: 0.01,
     ralationThreshold: 0.01,
@@ -163,7 +165,12 @@ app_main.config = {
         if (typeof(change) == "undefined") { //按钮触发
             return;
         }
-        if (typeof(change) == "number") {
+        else if(typeof(change)=="boolean") //similarToClose  改变
+        {
+            mainGraphPara.similarToClose=change;
+            main_redraw(myChart_main_data);
+        }
+        else if (typeof(change) == "number") {
             if (app_main.config.charge == change) {
                 main_redraw(myChart_main_data);
             }

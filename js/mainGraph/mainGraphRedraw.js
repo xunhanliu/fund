@@ -233,7 +233,7 @@ function main_redraw(graph) {
         // update node and line positions at every step of
         // the force simulation
         node.attr("transform", function (d) {
-
+//限定布局范围
             if (d.x<=mainGraphPara.graphArea.x[0] )
             {
                 d.x+= mainGraphPara.springback*svg_width;
@@ -448,7 +448,45 @@ function main_redraw(graph) {
         })
     ;
 
+    node.on("mouseover", function (d) {
 
+            d3.selectAll(".matrixText_" + d.name.replace(/[\W]/g, '_')).classed("active",true);
+            d3.select("#mainGraph").selectAll(".node circle").each(function (data, index) {
+                if (myChart_main_data.relation[nodeMap[d.name]][nodeMap[data.name]] == 0 && d.name != data.name&& d.name.split(",")[0]!=data.name.split(",")[0] ) //加gray属性
+                {
+                    d3.select(this).style("opacity", 0.1);
+                }
+            });
+            d3.select("#mainGraph").selectAll(".node text").each(function (data, index) {
+                if (myChart_main_data.relation[nodeMap[d.name]][nodeMap[data.name]] == 0 && d.name != data.name && d.name.split(",")[0]!=data.name.split(",")[0]) //加gray属性
+                {
+                    d3.select(this).style("opacity", 0.1);
+                }
+            });
+            d3.select("#mainGraph").selectAll(".link line").each(function (data, index) {
+                if (!(data.source.name == d.name || data.target.name == d.name)) {
+                    d3.select(this).style("opacity", 0);
+                }
+            });
+
+
+            //d3.selectAll(".matrixText_"+d.name.replace(/[\W]/g,'_')).classed("active", true);
+        }
+    )
+        .on("mouseout", function (d) {
+            d3.selectAll(".matrixText_" + d.name.replace(/[\W]/g, '_')).classed("active",false);
+
+            d3.select("#mainGraph").selectAll(".node circle")
+                .style("opacity", 1);
+            d3.select("#mainGraph").selectAll(".node text").style("opacity", 1);
+
+            d3.select("#mainGraph").selectAll(".link line").style("opacity", function (d) {
+                return opacityMap(d.value);
+            })
+
+
+            //d3.selectAll(".matrixText_"+d.name.replace(/[\W]/g,'_')).classed("active", false);
+        });
 
 
 

@@ -7,19 +7,10 @@
     stroke: #fff;
 }
 
-#orderRelationMatrix text .mytextactive {
-    fill: #000;
-}
-#orderRelationMatrix .row  .mytextactive{
+#orderRelationMatrix  .mytextactive{
     fill: #fff !important;
 }
-#orderRelationMatrix .column  .mytextactive{
-    fill: #fff !important;
-}
-#orderRelationMatrix .row  .active{
-    fill: #f00 !important;
-}
-#orderRelationMatrix .column  .active{
+#orderRelationMatrix .active{
     fill: #f00 !important;
 }
 

@@ -10,7 +10,10 @@ var NodeDetailScatterData=[];
 var NodeDetailBoxplotData;
 var myLastDataResult;
 var nodeDetailColor = d3.scale.category20();
-var nodeDetailPara={};
+var nodeDetailPara={
+    max:0,
+    min:0,
+};
 
 nodeDetailPara.configParameters = {
     xValueNum: {
@@ -128,9 +131,11 @@ function dataProcessND(result)
         data.push(result['data'][i][0]);
     }
     var extend=d3.extent(data);//_.max(data); _.min(data);
-    var xIncrease=Math.ceil((extend[1]-extend[0])/widthNum);
+    var xIncrease=((extend[1]-extend[0])/widthNum).toFixed(1);
     var myMean= d3.mean(data);//中值
     var myVariance= variance(data);//方差
+    nodeDetailPara.max=extend[1].toFixed(1);
+    nodeDetailPara.min=extend[0].toFixed(1);
     var nodeDetailRightStr='';
     nodeDetailRightStr+='<p>最大值：'+extend[1].toFixed(2) +'</p>'+
                         '<p>最小值：'+extend[0].toFixed(2) +'</p>'+
@@ -211,6 +216,8 @@ function getnodeDetailSuccess(result){
                     type: 'dashed'
                 }
             },
+            min:nodeDetailPara.min-1,
+            max:nodeDetailPara.max+1,
             name:result['name'],
         },
         yAxis: [{

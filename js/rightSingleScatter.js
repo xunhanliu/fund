@@ -62,6 +62,7 @@ function getScattersuccess(result){
                 }
             },
             name:result['name'][0],
+            min:Math.floor(data[3][0][0]-1),
         },
         yAxis: {
             type: 'value',
@@ -71,7 +72,8 @@ function getScattersuccess(result){
                     type: 'dashed'
                 }
             },
-            name:result['name'][1],
+            min:Math.floor(data[2][0][1]-1),
+            name:result['name'][1]-1,
         },
         series: [{
             name: 'scatter',

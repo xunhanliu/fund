@@ -290,6 +290,10 @@ function main_redraw(graph) {
             // 检查相似点是否需要放一起
             if(mainGraphPara.similarToClose){
                // if(d.name.split(",")[2]!="0"){ //是主点就跳过
+                if(!mainGraphPara.classMapNum[d.name.split(",")[0]])
+                {
+                    return "translate(" + d.x + "," + d.y + ")";
+                }
                 if(mainGraphPara.classMapNum[d.name.split(",")[0]].num==1 ||mainGraphPara.classMapNum[d.name.split(",")[0]].middleNum!=d.name.split(",")[1] ){
                     return "translate(" + d.x + "," + d.y + ")";
                 }

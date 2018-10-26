@@ -117,7 +117,7 @@ function main_redraw(graph) {
 
     var gDraw = gMain.append('g');
 //zoom
-    var zoom = d3v4.zoom()
+    var zoom = d3v4.zoom().scaleExtent([0.3, 3])
         .on('zoom', zoomed)
     gMain.call(zoom).on('dblclick.zoom', null);
     function zoomed() {
@@ -233,6 +233,7 @@ function main_redraw(graph) {
             })
            // .iterations(function(d){ return Math.ceil(Math.abs(d.value)*10+1)})
         )
+        .velocityDecay(0.5)  //默认0.4
          .force("center", d3v4.forceCenter(parentWidth / 2, parentHeight / 2))  //写center力会出bug
         .force("x", null)
         .force("y", null)
@@ -254,6 +255,7 @@ function main_redraw(graph) {
         .force("charge",d3v4.forceManyBody()
             .strength(-3000) //静电斥力
             .distanceMax(parentHeight/8)
+			.distanceMin(mainGraphPara.maxPointSize+5)
         )
 
     // var mainGraphPara={

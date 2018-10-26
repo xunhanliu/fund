@@ -251,9 +251,8 @@ function main_redraw(graph) {
     simulation.force("link")
         .links(graph.links);
     simulation.force('collision',d3v4.forceCollide(mainGraphPara.maxPointSize+5) )  //使能碰撞力，使点之间无重叠
-        .force('collision',d3v4.forceCollide(mainGraphPara.maxPointSize+5) )
         .force("charge",d3v4.forceManyBody()
-            .strength(-3000) //静电斥力
+            .strength(-100) //静电斥力
             .distanceMax(parentHeight/8)
 			.distanceMin(mainGraphPara.maxPointSize+5)
         )

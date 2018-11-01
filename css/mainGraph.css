@@ -7,24 +7,33 @@
     fill: #222 !important;
 }
 
-#mainGraph .edgepath:hover{
-    stroke-dasharray: 15 10 !important;
+#mainGraph .link line:hover{
+    stroke: #000 !important;
+    opacity: 1 !important;
 }
 
-#mainGraph .hoverCircle{
-    -webkit-box-shadow: 2px 5px 4px 1px black;
-    /*box-shadow: 2px 5px 4px 1px black;*/
-}
 
+#mainGraph .g-main .back{
+    fill:#bbb !important;
+}
+/*初始circle*/
 #mainGraph  circle {
     stroke: #fff ;
     stroke-width: 1.5px;
 }
 
-#mainGraph .selected  circle{
-    stroke: black !important;
+#mainGraph .gnode .node .splitLine{
+    stroke:#fff;
+    stroke-width: 1.5px;
 }
+/*覆盖cut(黑色)*/
+#mainGraph .selected  circle{
+    stroke: red !important;
+}
+
+
 
 #mainGraph text {
     cursor:default ;
 }
+

@@ -1,5 +1,6 @@
 
 // d3 是V4 版本
+//注意填写 defaultExtent函数中 extent变量
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dispatch'), require('d3-drag'), require('d3-interpolate'), require('d3-selection'), require('d3-transition')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
@@ -120,8 +121,12 @@ function defaultFilter() {
 }
 
 function defaultExtent() {
-  var svg = this.ownerSVGElement || this;
-  return [[0, 0], [svg.width.baseVal.value, svg.height.baseVal.value]];
+  // var svg = this.ownerSVGElement || this;
+  // return [[0, 0], [svg.width.baseVal.value, svg.height.baseVal.value]];
+    return [[mainGraphPara.graphArea.x[0]-mainGraphPara.maxPointSize/2,
+        mainGraphPara.graphArea.y[0]-mainGraphPara.maxPointSize/2],
+        [svg_width*mainGraphPara.maxGraphArea+mainGraphPara.maxPointSize,
+            svg_height*mainGraphPara.maxGraphArea+mainGraphPara.maxPointSize]];
 }
 
 // Like d3.local, but with the name “__brush” rather than auto-generated.
@@ -178,6 +183,10 @@ function brush$1(dim) {
               .attr("y", extent[0][1])
               .attr("width", extent[1][0] - extent[0][0])
               .attr("height", extent[1][1] - extent[0][1]);
+              // .attr("x", -338)
+              // .attr("y", -417.5)
+              // .attr("width", 1322)
+              // .attr("height", 1644)
         });
 
     group.selectAll(".selection")

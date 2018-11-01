@@ -125,13 +125,26 @@ var gallery = {
                 showToast('success', "galleryItem恢复成功！编号为：" + data.newIndex);
                 //根据data绘制graph
                 //更新主图
-                for (var i = 0; i < myChart_main_data.nodes.length; i++) {
-                    if (typeof(lastGraphData[myChart_main_data.nodes[i].id]) != 'undefined') {
-                        myChart_main_data.nodes[i].fixed = lastGraphData[myChart_main_data.nodes[i].id].fixed;
-                        myChart_main_data.nodes[i].x = lastGraphData[myChart_main_data.nodes[i].id].x;
-                        myChart_main_data.nodes[i].y = lastGraphData[myChart_main_data.nodes[i].id].y;
-                        myChart_main_data.nodes[i].px = lastGraphData[myChart_main_data.nodes[i].id].px;
-                        myChart_main_data.nodes[i].py = lastGraphData[myChart_main_data.nodes[i].id].py;
+                var maxHW=svg_height>svg_width?svg_height :svg_width;
+                if(lastGraphData["noNeedZoom"])//子图更新过了，需要，进行缩放
+                {
+                    for (var i = 0; i < myChart_main_data.nodes.length; i++) {
+                        if (typeof(lastGraphData[myChart_main_data.nodes[i].id]) != 'undefined') {
+                            myChart_main_data.nodes[i].x = lastGraphData[myChart_main_data.nodes[i].id].x*maxHW/gallery.galleryItemWidth;
+                            myChart_main_data.nodes[i].y = lastGraphData[myChart_main_data.nodes[i].id].y*maxHW/gallery.galleryItemWidth;
+                            myChart_main_data.nodes[i].fx = null;
+                            myChart_main_data.nodes[i].fy = null;
+                        }
+                    }
+                }
+                else{
+                    for (var i = 0; i < myChart_main_data.nodes.length; i++) {
+                        if (typeof(lastGraphData[myChart_main_data.nodes[i].id]) != 'undefined') {
+                            myChart_main_data.nodes[i].x = lastGraphData[myChart_main_data.nodes[i].id].x;
+                            myChart_main_data.nodes[i].y = lastGraphData[myChart_main_data.nodes[i].id].y;
+                            myChart_main_data.nodes[i].fx = null;
+                            myChart_main_data.nodes[i].fy = null;
+                        }
                     }
                 }
                 main_redraw(myChart_main_data);
@@ -140,15 +153,11 @@ var gallery = {
         });
 
     },
-    updateItemPointPos: function (index) {
+    updateItemPointPos: function (index) {  //先保存目标位置
         d3.select("#graph_" + index).selectAll("circle").each(function (data) {
             $.extend(true, gallery.galleryData[index].lastGraphData[data.id] = {}, data);
-            //缩放为原来的比例
-            gallery.galleryData[index].lastGraphData[data.id].x=data.x*800/gallery.galleryItemWidth;
-            gallery.galleryData[index].lastGraphData[data.id].y=data.y*800/gallery.galleryItemWidth;
-            gallery.galleryData[index].lastGraphData[data.id].px=data.px*800/gallery.galleryItemWidth;
-            gallery.galleryData[index].lastGraphData[data.id].py=data.py*800/gallery.galleryItemWidth;
         });
+        gallery.galleryData[index].lastGraphData["noNeedZoom"]=true;
     },
 
     unify: function () {
@@ -158,6 +167,7 @@ var gallery = {
         }
         else {
             gallery.updateItemPointPos(index);
+            gallery.galleryData[index].transform=d3.select("#graph_" + index).select(".g-zoom").attr("transform");
         }
         for (var i in gallery.galleryData) {
             if (i == index) {
@@ -169,6 +179,7 @@ var gallery = {
             }
             else {
                 $.extend(true, gallery.galleryData[i].lastGraphData = [], gallery.galleryData[index].lastGraphData);
+                gallery.galleryData[i].transform=gallery.galleryData[index].transform;
             }
             gallery.drawGraph(i, gallery.galleryData[i]);
         }
@@ -236,12 +247,6 @@ var gallery = {
 
     },
     resizeGalleryItem() {
-        // circle.attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";});//圆圈
-        // text.attr("transform", function(d){ return "translate(" + (d.x) + "," + d.y + ")";});//顶点文字
-        // edges_line.attr('d', function (d) {
-        //     var path = 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y;
-        //     return path;
-        // });
         for (var i in gallery.galleryData) {
             if (i == 0) {
                 continue;
@@ -314,157 +319,228 @@ var gallery = {
     },
     drawGraph: function (index, data) {
         $("#graph_" + index).children().remove();
-        graph = data.myChart_main_data;
-        var svg_width = gallery.galleryItemWidth,
-            svg_height = gallery.galleryItemWidth - 18;
-        var svg = d3.select("#graph_" + index)
-            .attr("width", svg_width)
-            .attr("height", svg_height);
+        var graph = data.myChart_main_data;
+        var svgWidth = gallery.galleryItemWidth,
+            svgHeight = gallery.galleryItemWidth - 18;
+        var svg = d3v4.select("#graph_" + index)
+            .attr("width", svgWidth)
+            .attr("height", svgHeight);
         // var color = d3.scale.category20();
+        var maxPointSize=15;
         var circleSizeScale_M = d3.scale.linear()
         //.domain([-1, 0, 1])
-            .range([3, 15])
+            .range([3, maxPointSize])
             .domain([1, Number(graph['dataNum'])]);
         ;
-        var links = graph.links;
-        var nodes = graph.nodes;
+
         //把上一幅图的点的位置更新到本图上
-        //点位置范围的缩小。800到svg_width
+        //点位置范围的缩小。svg_width到svgWidth
 
-
-        nodes.forEach(function (item, index) {
-            if (data.lastGraphData[item.id]) {
-                data.lastGraphData[item.id].fixed = true;
-                item.fixed = true;
-                item.x = data.lastGraphData[item.id].x * svg_width / 800;
-                item.y = data.lastGraphData[item.id].y * svg_width / 800;
-                item.px = data.lastGraphData[item.id].px * svg_width / 800;
-                item.py = data.lastGraphData[item.id].py * svg_width / 800;
-            }
-        });
+        var maxHW= svg_width>svg_height? svg_width: svg_height;
+        if(data.lastGraphData["noNeedZoom"])
+        {
+            graph.nodes.forEach(function (item, index) {
+                if (data.lastGraphData[item.id]) {
+                    item.x = data.lastGraphData[item.id].x*gallery.galleryItemWidth/gallery.galleryItemWidthLast;
+                    item.y = data.lastGraphData[item.id].y*gallery.galleryItemWidth/gallery.galleryItemWidthLast;
+                    item.fx = item.x;
+                    item.fy = item.y;
+                    data.lastGraphData[item.id].x=item.x;
+                    data.lastGraphData[item.id].y=item.y;
+                }
+            });
+        }
+        else{
+            graph.nodes.forEach(function (item, index) {
+                if (data.lastGraphData[item.id]) {
+                    item.x = data.lastGraphData[item.id].x * svgWidth / maxHW;
+                    item.y = data.lastGraphData[item.id].y * svgWidth / maxHW;
+                    item.fx = item.x;
+                    item.fy = item.y;
+                }
+            });
+        }
 
         var dataLinkLength = d3.scale.linear()
             .domain([0, 1])
             .range([100, 20]);
-        var force = d3.layout.force()//layout将json格式转化为力学图可用的格式
-            .nodes(nodes)//设定节点数组
-            .links(links)//设定连线数组
-            .size([svg_width, svg_height])//作用域的大小
-            //.linkDistance(app_main.config.linkDistance)//300 连接线长度
-            .linkDistance(function (d) {
-                return dataLinkLength(bzMap("distance",Math.abs(d.value)));
-            })
-            .gravity(0.5)//默认0.1  ，越大重力越大
-            .friction( 0.2)
-            .charge(-3000)//-3000   顶点的电荷数。该参数决定是排斥还是吸引，数值越小越互相排斥，正值是相互吸引
-            .on("tick", tick)//指时间间隔，隔一段时间刷新一次画面
-            .start();//开始转换
-        //设置连接线
-        var edges_line = svg.append("g").selectAll(".edgepath")
-            .data(force.links())
-            .enter()
-            .append("path")
-            .attr({
-                'd': function (d) {
-                    return 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y
-                },
-                'class': 'edgepath',
-            })
-            .style("stroke", function (d) {
-                return colorMapCooperateOpacity(d.value);
-            })
-            .attr("opacity",function (d) {
-                return opacityMap(d.value);
-            })
-            .style("stroke-dasharray", function (d) {
+
+        svg.selectAll('g').remove();
+        svg.selectAll('text').remove();
+        var gMain = svg.append('g')
+            .classed('g-main', true);
+
+        var rect = gMain.append('rect')
+            .attr('width', svgWidth)
+            .attr('height', svgHeight)
+            .style('fill', 'white')
+
+        var gDraw = gMain.append('g').classed('g-zoom', true)
+            .attr("transform", data.transform);
+//zoom
+        var zoom = d3v4.zoom().scaleExtent([0.3, 3])
+            .on('zoom', zoomed).on("end",zoomEnd);
+        gMain.call(zoom).on('dblclick.zoom', null);
+        function zoomEnd(){
+            gallery.galleryData[index].transform=d3.select("#graph_" + index).select(".g-zoom").attr("transform");
+        }
+        function zoomed() {
+            gDraw.attr('transform', d3v4.event.transform);
+        }
+        var drawBorder=gDraw.append('rect')
+            //rect比中心点的布局范围稍微大一些
+                .attr('width', svgWidth*mainGraphPara.maxGraphArea+maxPointSize)
+                .attr('height', svgHeight*mainGraphPara.maxGraphArea+maxPointSize)
+                .attr("x",(svgWidth-svgWidth*mainGraphPara.maxGraphArea)/2-maxPointSize/2)
+                .attr("y",(svgHeight-svgHeight*mainGraphPara.maxGraphArea)/2-maxPointSize/2)
+                .style('stroke', 'black')
+                .style('stroke-width', 1)
+                .style('fill', 'white')
+                .attr('class', 'back')
+        ;
+
+
+        var link = gDraw.append("g")
+            .attr("class", "link")
+            .selectAll("line")
+            .data(graph.links)
+            .enter().append("line")
+            .attr("stroke-width", function(d) { return lineWidthMap(d.overlap)/1.5;; })
+            .attr("stroke-dasharray", function (d) {
                 if (d.isCutEdge == 0)
                     return "5,0";
                 else return "5,5";
             })
-            // .style("pointer-events", "none")
-            .style("stroke-width", function (d) {
-                return d.width / 2
-            })//线条粗细
-        ;
-        svg.selectAll('.edgepath')
+            .style("stroke", function (d) {
+                return colorMapCooperateOpacity(d.value);
+            })
+            .attr("opacity", function (d) {
+                return opacityMap(d.value);
+            })
             .on("click", function (link) {
-                getScatterData([link['source']['id'], link['target']['id']], index);  //重写
-            });
-        edges_line.append("svg:title")
+                getScatterData([link['source']['id'], link['target']['id']], index);
+
+            })
+        ;
+
+
+
+
+        link.append("svg:title")
             .text(function (link) {
                 return "source: " + link.source.name + ' -->target: ' + link.target.name + "\nralation: " + link.value + "\noverlap: " + link.overlap;//link.source ;link.target ;link.overlap ; link.value;
                 //return "aaaa";
             });
-        var drag = force.drag()
-            .on("dragstart", dragstart);
 
-        function dblclick(d) {
-            d3.select(this).classed("fixed", d.fixed = false);
-        }
 
-        function dragstart(d) {
-            d3.select(this).classed("fixed", d.fixed = true);
-        }
-
-        //圆圈
-        svg.selectAll("circle").remove();
-        var circle = svg.append("g").selectAll("circle")
-            .data(force.nodes())//表示使用force.nodes数据
-            .enter().append("circle")
-            .attr("class", function (data) {
-                return "circle main_" + data.name.replace(/[\W]/g, '_');
+        var node = gDraw.append("g")
+            .attr("class", "gnode")
+            .selectAll(".node")
+            .data(graph.nodes)
+            .enter().append("g")
+            .attr("class", function(d){
+                return "node "+"main_" + d.name.split(",")[0].replace(/[\W]/g, '_');
             })
+            .call(d3v4.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        node.append("circle")
             .style("fill", function (node) {
                 return myColorScheme[myColorScheme.scheme].color(node.group);
             })
-            .style('stroke', function (node) {
-                if (node.isCutPoint == true || isInArray(selectPoint, node['id'].split(',')[0]) != -1) {
-                    return "rgb(0,0,0)";
-                }
-                else {
-                    return myColorScheme[myColorScheme.scheme].color(node.group);
-                }
-            })
-            .style('stroke-width', 1)
             .attr("r", function (node) {
                 return circleSizeScale_M(Number(node['symbolSize']));
             })//设置圆圈半径
-            .on("mouseover", function (d) {
-                    var graph=gallery.galleryData[index].myChart_main_data;
-                    d3.select("#graph_" + index).selectAll("circle").each(function (d1, i) {
-                        if (graph.relation[data.nodeMap[d.name]][data.nodeMap[d1.name]] == 0 && d.name != d1.name) //加gray属性
-                        {
-                            d3.select(this).style("fill", "rgba(9,9,9,0.1)");
-                        }
-                    });
-                    d3.select("#graph_" + index).selectAll("text").each(function (d1, i) {
-                        if (graph.relation[data.nodeMap[d.name]][data.nodeMap[d1.name]] == 0 && d.name != d1.name) //加gray属性
-                        {
-                            d3.select(this).style("fill", "rgba(9,9,9,0)");
-                        }
-                    });
-                    d3.select("#graph_" + index).selectAll(".edgepath").each(function (d1, i) {
-                        if (!(d1.source.name == d.name || d1.target.name == d.name)) {
-                            d3.select(this).style("opacity", 0.1);
-                        }
-                    });
+            .style('stroke', function (node) {
+                if (node.isCutPoint == true ) {  // || isInArray(selectPoint, node['id'].split(',')[0]) != -1
+                    return "#000";
                 }
+                else{
+                    return "#fff";
+                }
+            });
+        node.selectAll(".splitLine")
+            .data(function (d) {
+                return d.deg;
+            })
+            .enter().append("line")
+            .attr("class",'splitLine')
+            .attr("x1",0)
+            .attr("y1",0)
+            .attr("x2",function (d) {
+                var node=d3.select(this)[0][0].parentNode.__data__;
+                var r=circleSizeScale_M(Number(node['symbolSize']));
+                return r*Math.sin(d);
+
+            })
+            .attr("y2",function (d) {
+                var node=d3.select(this)[0][0].parentNode.__data__;
+                var r=circleSizeScale_M(Number(node['symbolSize']));
+                return -r*Math.cos(d);
+            })
+
+
+        // add titles for mouseover blurbs
+        node.append("title")
+            .text(function (node) {
+                return "name: " + node.name + '\n数据条数： ' + node.value;//name    数据条数：
+            });
+
+        node.append("text")
+            .attr("dy", ".35em")
+            .attr("text-anchor", "middle")//在圆圈中加上数据
+            .style('fill', function (node) {
+                return '#555';
+            })
+            .attr("y",-7)
+            .text(function (d) {
+                return d.name;
+            });
+
+
+        node.on("mouseover", function (d) {
+                var graph = gallery.galleryData[index].myChart_main_data;
+
+                d3.select("#graph_" + index).selectAll(".node circle").each(function (data, index) {
+                    if (graph.relation[nodeMap[d.name]][nodeMap[data.name]] == 0 && d.name != data.name && d.name.split(",")[0] != data.name.split(",")[0]) //加gray属性
+                    {
+                        d3.select(this).style("opacity", 0.1);
+                    }
+                });
+                d3.select("#graph_" + index).selectAll(".node text").each(function (data, index) {
+                    if (graph.relation[nodeMap[d.name]][nodeMap[data.name]] == 0 && d.name != data.name && d.name.split(",")[0] != data.name.split(",")[0]) //加gray属性
+                    {
+                        d3.select(this).style("opacity", 0.1);
+                    }
+                });
+                d3.select("#graph_" + index).selectAll(".link line").each(function (data, index) {
+                    if (!(data.source.name == d.name || data.target.name == d.name)) {
+                        d3.select(this).style("opacity", 0);
+                    }
+                });
+
+            }
             )
             .on("mouseout", function (d) {
-                d3.select("#graph_" + index).selectAll("circle")
-                    .style("fill", function (node) {
-                        return myColorScheme[myColorScheme.scheme].color(node.group);
-                    });
+                d3.select("#graph_" + index).selectAll(".node circle")
+                    .style("opacity", 1);
+                d3.select("#graph_" + index).selectAll(".node text").style("opacity", 1);
 
-                d3.select("#graph_" + index).selectAll("text").style("fill", "#555");
-
-                d3.select("#graph_" + index).selectAll(".edgepath").style("opacity", function (d) {
+                d3.select("#graph_" + index).selectAll(".link line").style("opacity", function (d) {
                     return opacityMap(d.value);
-                })
+                });
             })
             .on("click", function (node) {
+                myColorScheme.active.lastActiveName=node.group;
+
+            })
+            .on("dblclick", function (node) {
+                myColorScheme.active.lastActiveName=node.group;
                 nodeMessName = node['id'];
                 //iframe窗
+
                 var str = '<div class="layui-fluid">' +
                     '    <div class="layui-row layui-col-space6">' +
                     '        <div class="layui-col-md9">' +
@@ -474,8 +550,8 @@ var gallery = {
                     '            <div id="node_detail_right" style="height: 300px"></div>' +
                     '        </div>' +
                     '    </div>' +
-                    '</div>' +
-                    '<script src="./nodeDetail.js"></script>';
+                    '</div>'
+                ;
                 layui.use('form', function () {
                     var layer = layui.layer;
                     layer.open({
@@ -487,55 +563,66 @@ var gallery = {
                         content: str, //iframe的url，no代表不显示滚动条
                     });
                 });
+                setTimeout(
+                    function(){
+                        if(typeof(nodeDetailJS)=="undefined"){   //判断文件是否已经加载。
+                            $('body').append('<script src="./js/nodeDetail.js"></script>')};
+                        setTimeout(getNodeDetailData(nodeMessName, index),100);
+                    },
+                    500);
 
-                setTimeout(getNodeDetailData(nodeMessName, index), 100);
-
-            })
-            .on("dblclick", dblclick)
-            .call(drag);//将当前选中的元素传到drag函数中，使顶点可以被拖动
-
-        //圆圈的提示文字
-        circle.append("svg:title")
-            .text(function (node) {
-                // var link=links[node.index];
-                // if(node.name==link.source.name && link.rela=="主营产品"){
-                //     return "双击可查看详情"
-                // }
-                return "name: " + node.name + '\n数据条数： ' + node.value;//name    数据条数：
-            });
-        svg.selectAll("text").remove();
-        var text = svg.append("g").selectAll("text")
-            .data(force.nodes())
-            //返回缺失元素的占位对象（placeholder），指向绑定的数据中比选定元素集多出的一部分元素。
-            .enter()
-            .append("text")
-            .attr("dy", ".20em")
-            .attr("text-anchor", "middle")//在圆圈中加上数据
-            .style('fill', function (node) {
-                return '#555';
-            })
-            .attr("transform", "scale(0.8)")
-            .style("display", "inline-block")
-            .attr('x', 0)
-            .attr('y', -10)
-            .text(function (d) {
-                return d.name;
             });
 
-        function tick() {
-            circle.attr("transform", function (d) {
-                return "translate(" + d.x + "," + d.y + ")";
-            });//圆圈
-            text.attr("transform", function (d) {
-                return "translate(" + (d.x) + "," + d.y + ")";
-            });//顶点文字
-            edges_line.attr('d', function (d) {
-                var path = 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y;
-                return path;
-            });
+        var simulation = d3v4.forceSimulation()
+            .force("link", d3v4.forceLink()
+                    .id(function(d) { return d.id; })
+                    .distance(function(d) {
+                        return dataLinkLength(bzMap("distance",Math.abs(d.value)));
+
+                    })
+                // .iterations(function(d){ return Math.ceil(Math.abs(d.value)*10+1)})
+            )
+            .velocityDecay(0.5)  //默认0.4
+            .force("center", null)  //写center力会出bug
+            .force("x", null)
+            .force("y", null)
+        ;
+        simulation
+            .nodes(graph.nodes)
+            .on("tick", ticked);
+
+        simulation.force("link")
+            .links(graph.links);
+        simulation.force('collision',d3v4.forceCollide(maxPointSize+5) )  //使能碰撞力，使点之间无重叠
+            .force("charge",d3v4.forceManyBody()
+                .strength(-100) //静电斥力
+                .distanceMax(svgHeight/8)
+                .distanceMin(maxPointSize+5)
+            );
+        function ticked() {
+            node.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")";});
+            link.attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
         }
 
+        function dragstarted(d) {
+        }
 
+        function dragged(d) {
+            d.fx = d3v4.event.x;
+            d.fy = d3v4.event.y;
+        }
+        function dragended(d) {
+            d.fx = d.x;
+            d.fy = d.y;
+            var lastGraphData=gallery.galleryData[index].lastGraphData;
+            d3.select("#graph_" + index+" .gnode").selectAll(".node").each(function (data) {
+                $.extend(true, lastGraphData[data.id] = {}, data);
+            });
+            lastGraphData["noNeedZoom"]=true;
+        }
     },
 
 

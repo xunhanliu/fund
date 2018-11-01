@@ -22,7 +22,7 @@
     border-radius:2px ;
 }
 #mainSet .imgItem:hover{
-    border: #f00 dashed 2px;
+    border: #800 dashed 2px;
 }
 #bzCurve {
     display: block;

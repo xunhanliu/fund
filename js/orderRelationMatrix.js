@@ -359,22 +359,22 @@ function legendInit(){
     legend
         .append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#0f0")
+        .attr("stop-color", "#080")
         .attr("stop-opacity", 1);
     legend
         .append("stop")
         .attr("offset", "50%")
-        .attr("stop-color", "#0f0")
+        .attr("stop-color", "#080")
         .attr("stop-opacity", 0);
     legend
         .append("stop")
         .attr("offset", "50.1%")
-        .attr("stop-color", "#f00")
+        .attr("stop-color", "#c00")
         .attr("stop-opacity", 0);
     legend
         .append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "#f00")
+        .attr("stop-color", "#c00")
         .attr("stop-opacity", 1);
 
     key.append("rect")
@@ -452,5 +452,6 @@ if (app_orderRelation.config) {
     controller.onFinishChange(orderRelation_onFinishChange.orderSelChg);
     controller = gui_orderRelation.add(app_orderRelation.config, "whichMatrix", [ "overlap","relation" ]);
     controller.onFinishChange(orderRelation_onFinishChange.matrixChg);
+    gui_orderRelation.close();
 }
 

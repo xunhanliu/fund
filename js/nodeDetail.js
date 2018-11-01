@@ -2,7 +2,7 @@
  * Created by Administrator on 2018/9/17 0011.
  */
 //**********************************************************************************************************
-
+var nodeDetailJS=true;  //用于判断文件是否已经被加载
 var nodeDetailScatter = echarts.init(document.getElementById("node_detail_left"),'mySubject');
 var nodeDetailSymbolSize=5;
 var widthNum=60;

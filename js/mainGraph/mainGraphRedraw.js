@@ -41,12 +41,14 @@ function main_deepRedraw() {
 
 //使用d3  V4版本   ，内部d3变量使用d3v4替换
 var simulation;
+
 function main_redraw(graph) {
     // if both d3v3 and d3v4 are loaded, we'll assume
     // that d3v4 is called d3v4, otherwise we'll assume
     // that d3v4 is the default (d3)
-
+    getMainPointPos();  //保存上一幅图的布局
     circleSizeScale_M.domain([1, Number(graph['dataNum'])]);
+    //下面两个for循环是为similarToClose的tick做准备
     mainGraphPara.classMapNum={}
     for(var i in graph.head ){
         var name=graph.head[i][0].split(",")[0];
@@ -78,7 +80,7 @@ function main_redraw(graph) {
         }
     }
 
-
+//node中心点的布局范围
     mainGraphPara.graphArea.x[0]=(svg_width-svg_width*mainGraphPara.maxGraphArea)/2;
     mainGraphPara.graphArea.x[1]=(svg_width-svg_width*mainGraphPara.maxGraphArea)/2+mainGraphPara.maxGraphArea*svg_width;
     mainGraphPara.graphArea.y[0]=(svg_height-svg_height*mainGraphPara.maxGraphArea)/2;
@@ -86,11 +88,10 @@ function main_redraw(graph) {
    // 把上一幅图的点的位置更新到本图上
     for (var i = 0; i < graph.nodes.length - 1; i++) {
         if (typeof(lastGraphData[graph.nodes[i].id]) != 'undefined') {
-            graph.nodes[i].fixed = lastGraphData[graph.nodes[i].id].fixed;
             graph.nodes[i].x = lastGraphData[graph.nodes[i].id].x;
             graph.nodes[i].y = lastGraphData[graph.nodes[i].id].y;
-            graph.nodes[i].px = lastGraphData[graph.nodes[i].id].px;
-            graph.nodes[i].py = lastGraphData[graph.nodes[i].id].py;
+            graph.nodes[i].fx = lastGraphData[graph.nodes[i].id].fx;
+            graph.nodes[i].fy = lastGraphData[graph.nodes[i].id].fy;
         }
     }
 
@@ -114,12 +115,19 @@ function main_redraw(graph) {
         .attr('width', parentWidth)
         .attr('height', parentHeight)
         .style('fill', 'white')
+       // .attr('class', 'back') //背景
 
-    var gDraw = gMain.append('g');
+    var gDraw = gMain.append('g')
+        .classed('g-zoom', true);
 //zoom
-    var zoom = d3v4.zoom().scaleExtent([0.3, 3])
-        .on('zoom', zoomed)
-    gMain.call(zoom).on('dblclick.zoom', null);
+     var zoom = d3v4.zoom().scaleExtent([0.3, 3])
+        .on('zoom', zoomed).on("end",zoomEnd);
+    gMain.call(zoom).on('dblclick.zoom', null)
+        .on('click.zoom', null)
+        ;
+     function zoomEnd(d){
+         transform=d3v4.select("#mainGraph .g-zoom").attr("transform");
+     }
     function zoomed() {
         gDraw.attr('transform', d3v4.event.transform);
     }
@@ -129,6 +137,7 @@ function main_redraw(graph) {
     // the brush needs to go before the nodes so that it doesn't
     // get called when the mouse is over a node
     var drawBorder=gDraw.append('rect')
+        //rect比中心点的布局范围稍微大一些
         .attr('width', svg_width*mainGraphPara.maxGraphArea+mainGraphPara.maxPointSize)
         .attr('height', svg_height*mainGraphPara.maxGraphArea+mainGraphPara.maxPointSize)
         .attr("x",mainGraphPara.graphArea.x[0]-mainGraphPara.maxPointSize/2)
@@ -136,6 +145,14 @@ function main_redraw(graph) {
         .style('stroke', 'black')
         .style('stroke-width', 1)
         .style('fill', 'white')
+        .attr('class', 'back')
+        .on('click', () => {
+            node.each(function(d) {
+                d.selected = false;
+                d.previouslySelected = false;
+            });
+            node.classed("selected", false);
+        })
     ;
     var gBrushHolder = gDraw.append('g');
 
@@ -198,13 +215,31 @@ function main_redraw(graph) {
         })//设置圆圈半径
         .style('stroke', function (node) {
             if (node.isCutPoint == true ) {  // || isInArray(selectPoint, node['id'].split(',')[0]) != -1
-                return "#f00";
+                return "#000";
             }
             else{
                 return "#fff";
             }
         });
+    node.selectAll(".splitLine")
+        .data(function (d) {
+            return d.deg;
+        })
+        .enter().append("line")
+        .attr("class",'splitLine')
+        .attr("x1",0)
+        .attr("y1",0)
+        .attr("x2",function (d) {
+            var node=d3.select(this)[0][0].parentNode.__data__;
+            var r=circleSizeScale_M(Number(node['symbolSize']));
+            return r*Math.sin(d);
 
+        })
+        .attr("y2",function (d) {
+            var node=d3.select(this)[0][0].parentNode.__data__;
+            var r=circleSizeScale_M(Number(node['symbolSize']));
+            return -r*Math.cos(d);
+        })
 
 
     // add titles for mouseover blurbs
@@ -374,13 +409,7 @@ function main_redraw(graph) {
         });
     }
 
-    rect.on('click', () => {
-        node.each(function(d) {
-            d.selected = false;
-            d.previouslySelected = false;
-        });
-        node.classed("selected", false);
-    });
+
 
     function brushed() {
         if (!d3v4.event.sourceEvent) return;
@@ -393,6 +422,8 @@ function main_redraw(graph) {
                 (extent[0][0] <= d.x && d.x < extent[1][0]
                     && extent[0][1] <= d.y && d.y < extent[1][1]);
         });
+
+
     }
 
     function brushended() {
@@ -409,7 +440,23 @@ function main_redraw(graph) {
         }
 
         brushing = false;
+        reSelectPoint();
+
     }
+    function reSelectPoint(){
+        if($(".gnode .selected").length)
+        {
+            selectPoint=[];
+            d3v4.selectAll(".gnode .selected").each(function(d) {
+                var name= d.name.split(',')[0];
+                if(isInArray(selectPoint,name)==-1)
+                {
+                    selectPoint.push(name);
+                }
+            })
+        }
+    }
+
 
     d3v4.select('body').on('keydown', keydown);
     d3v4.select('body').on('keyup', keyup);
@@ -427,6 +474,7 @@ function main_redraw(graph) {
             brushMode = true;
 
             if (!gBrush) {
+
                 gBrush = gBrushHolder.append('g');
                 gBrush.call(brush);
             }
@@ -480,13 +528,22 @@ function main_redraw(graph) {
 
     function dragended(d) {
         if (!d3v4.event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
+        // d.fx = null;
+        // d.fy = null;
         node.filter(function(d) { return d.selected; })
             .each(function(d) { //d.fixed &= ~6;
                 d.fx = null;
                 d.fy = null;
-            })
+            });
+        if(mainGraphPara.dragFixed)
+        {
+            d.fx =d.x;
+            d.fy = d.y;
+        }
+        else{
+             d.fx = null;
+             d.fy = null;
+        }
     }
 
     var texts = ['Use the scroll wheel to zoom',
@@ -507,6 +564,8 @@ function main_redraw(graph) {
     })
         .on("click", function (node) {
             myColorScheme.active.lastActiveName=node.group;
+
+            reSelectPoint();
         })
         .on("dblclick", function (node) {
             myColorScheme.active.lastActiveName=node.group;
@@ -522,8 +581,8 @@ function main_redraw(graph) {
                 '            <div id="node_detail_right" style="height: 300px"></div>' +
                 '        </div>' +
                 '    </div>' +
-                '</div>' +
-                '<script src="./js/nodeDetail.js"></script>';
+                '</div>'
+                ;
             layui.use('form', function () {
                 var layer = layui.layer;
                 layer.open({
@@ -536,7 +595,13 @@ function main_redraw(graph) {
                 });
             });
 
-            setTimeout(getNodeDetailData(nodeMessName, 0), 100);
+            setTimeout(
+                function(){
+                    if(typeof(nodeDetailJS)=="undefined"){   //判断文件是否已经加载。
+                    $('body').append('<script src="./js/nodeDetail.js"></script>')};
+                    setTimeout(getNodeDetailData(nodeMessName, 0),100);
+                },
+                500);
 
         })
     ;

@@ -182,6 +182,7 @@ function freshParallelGUI(keyList)
     controller=f.add(Folder[1]["content"], "brushPredicate",["AND","OR"]);
     controller.onFinishChange(paralle_onFinishChange.changeBrush);
     f.open();
+    gui_parallel.close();
 }
 
 var paralle_onChange={

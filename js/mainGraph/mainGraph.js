@@ -16,11 +16,13 @@ var selectPoint = [];//用于多个点，共同聚类
 var similarValue = 0.2;
 var nodeMap = {};
 var linkListBuf = [];
+var transform="";
 //app_main.config
 
 
 var mainGraphPara={
     similarToClose:true,
+    dragFixed:false,
     similarPointDistance:3*30,  //2倍半径
     maxPointSize:30,
     maxGraphArea:2,//即长宽是原图的二倍。
@@ -128,11 +130,7 @@ app_main.configParameters = {
         max: 1,
         step: 0.01,
     },
-    charge: {
-        min: -6000,
-        max: -100,
-        step: 10,
-    },
+
     // verticalAlign: {
     //     options: {
     //         top: 'top',
@@ -146,15 +144,14 @@ app_main.configParameters = {
 var lastClusterOption = '单点聚类';
 app_main.config = {
     similarToClose:true,
+    dragFixed:false,
     clusterOption: '单点聚类',
     overlapThreshold: 0.01,
     ralationThreshold: 0.01,
     kickPointByNum: 0.01,
-    charge: -6000,
     ResetKick: resetKick,
     UnDoKick: undoKick,
-    confirmSel: confirmSel,
-    deselect: deselect,
+    submitMulCluster: submitMulCluster,
     getSimilarPoint: getSimilarPoint,
     getAllConnect: getAllConnect,
     canselFixed: canselFixed,
@@ -169,23 +166,15 @@ app_main.config = {
         }
         else if(typeof(change)=="boolean") //similarToClose  改变
         {
-            mainGraphPara.similarToClose=change;
-            main_redraw(myChart_main_data);
+            mainGraphPara.similarToClose=app_main.config.similarToClose;
+            mainGraphPara.dragFixed=app_main.config.dragFixed;
+           // main_redraw(myChart_main_data);
+            simulation.restart();
         }
         else if (typeof(change) == "number") {
-            if (app_main.config.charge == change) {
-                main_redraw(myChart_main_data);
-            }
-            else if (app_main.config.perplexity == change) {
-
-            }
-            else {
                 relationThreshold = app_main.config.ralationThreshold;
                 overlapThreshold = app_main.config.overlapThreshold;
                 main_deepRedraw();
-            }
-            //main_redraw(myChart_main_data);
-
         }
 
     },
@@ -269,6 +258,7 @@ if (app_main.config) {
             app_main.config.onFinishChange && controller.onFinishChange(app_main.config.onFinishChange);
         }
     }
+    gui_main.close();
 }
 
 //右上角controlTab  OVER************************************************************
@@ -291,9 +281,7 @@ function graph_preprocessor(graph) {
         };
     }
     nodeMap = {};
-    graph.nodes.forEach(function (node, index) {
-        // node.itemStyle = null;//可以控制symbol颜色
-
+    graph.nodes.forEach(function (node, index) {  //node.data=[1,2,3] 是每类的数据数目
         node.value = node.symbolSize;
         node.symbolSize = node.symbolSize;//可以控制symbol大小
         node.group = node.category;// 分类从0开始取
@@ -302,24 +290,34 @@ function graph_preprocessor(graph) {
         node.type = 'node';
         node.color = node.color;//这个值割点才能取到
         nodeMap[node.name] = index;
+        node.data=[1,2,3,4];
+        node.deg=[];
+        var sum=d3.sum(node.data);
+        if( node.data.length!=1)
+        {
+            node.deg.push(0);
+            for (var i in node.data) {
+                node.deg.push(node.data[i]/sum*2*Math.PI);
+            }
+            for (var i=1;i<node.deg.length;i++) {
+                node.deg[i]=node.deg[i]+node.deg[i-1];
+            }
+        }
     });
     //需要查看nodes的序号
     graph.links.forEach(function (link) {
         // node.itemStyle = null;//可以控制symbol颜色
-        link.id = link.id;
-        link.name = link.name;
-        // link.source = nodeMap[link.source];
-        // link.target = nodeMap[link.target];
-        link.overlap = link.overlap;
-        link.value = link.value;
-        link.width = link.width;
-        link.lineStyle = link.lineStyle;
-        link.color = link.color;
+        // link.id = link.id;
+        // link.name = link.name;
+        // // link.source = nodeMap[link.source];
+        // // link.target = nodeMap[link.target];
+        // link.overlap = link.overlap;
+        // link.value = link.value;
+        // link.width = link.width;
+        // link.lineStyle = link.lineStyle;
+        // link.color = link.color;
         link.type = 'edge';
-        // if(Math.abs(link.overlap)<=overlapThreshold || Math.abs(link.value)<=relationThreshold){
-        //     link.opacity=0;
-        // }
-        // else  link.opacity=1;
+
 
     });
 
@@ -353,7 +351,7 @@ var circleSizeScale_M = d3.scale.linear()
 
 
 function getMainPointPos() {
-    d3.select("#mainGraph").selectAll("circle").each(function (data) {
+    d3.select("#mainGraph .gnode").selectAll(".node").each(function (data) {
         $.extend(true, lastGraphData[data.id] = {}, data);
     });
 }
@@ -412,9 +410,12 @@ function nodeClick_cluster(node) {
 }
 
 function canselFixed() {  //主图全部取消固定
-    d3.select("#mainGraph").selectAll("circle").each(function (data) {
+    d3.select("#mainGraph .gnode").selectAll(".node").each(function (data) {
         data.fixed = false;
+        data.fx=null;
+        data.fy=null;
     });
+    simulation.restart();
 }
 
 function resetKick() {
@@ -431,26 +432,25 @@ function undoKick() {
 
 }
 
-function confirmSel() {
-    if (app_main.config.clusterOption != "多点聚类") {
-        showToast('warning', "请在‘clusterOption’中选中‘多点聚类’！");
-        return;
-    }
+function submitMulCluster() {
     if (selectPoint.length < 2) {
         showToast('warning', "请选中两个以上的点！");
         return;
     }
-    selectName = [];
+    //向后端发送 聚类消息
+
+
+    if (app_main.config.clusterOption != "多点聚类") {
+        showToast('warning', "请在‘clusterOption’中选中‘多点聚类’！然后查看聚类结果！");
+        return;
+    }
+
+    //selectName = [];
     main_deepRedraw(); //默认 按照selPoint进行分类
 
 
 }
 
-function deselect() {
-    selectPoint = [];
-    main_redraw(myChart_main_data);
-
-}
 
 function getSimilarPoint() {
     var data = myChart_main_data['relation'];

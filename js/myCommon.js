@@ -114,10 +114,10 @@ var opacityMap =function(d){
 }
 var colorMapCooperateOpacity =function(d){
     if(d>=0){
-        return "#0f0";
+        return "#080";
     }
     else{
-        return "#f00";
+        return "#c00";
     }
 }
 

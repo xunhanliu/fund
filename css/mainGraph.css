@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #main_legend li{
     border:1px #fff solid ;
     border-radius: 3px;
@@ -7,21 +7,19 @@
     /*text-overflow: ellipsis;*/
 }
 
-=======
->>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
+
 #mainGraph circle:hover{
     stroke-width: 2 !important;
     stroke: #000 !important;
 }
 
-<<<<<<< HEAD
+
 #i_gallery circle:hover{
     stroke-width: 1 !important;
     stroke: #000 !important;
 }
 
-=======
->>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
+
 #mainGraph .myActiveCircle{
     fill: #222 !important;
 }
@@ -30,18 +28,14 @@
     stroke: #000 !important;
     opacity: 1 !important;
 }
-<<<<<<< HEAD
+
 #i_gallery .link line:hover{
     stroke: #000 !important;
     opacity: 1 !important;
 }
 
 #mainGraph .g-main .back,#i_gallery .g-main .back{
-=======
 
-
-#mainGraph .g-main .back{
->>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
     fill:#bbb !important;
 }
 /*初始circle*/
@@ -54,13 +48,12 @@
     stroke:#fff;
     stroke-width: 1.5px;
 }
-<<<<<<< HEAD
+
 #i_gallery .gnode .node .splitLine{
     stroke:#fff;
     stroke-width: 1px;
 }
-=======
->>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
+
 /*覆盖cut(黑色)*/
 #mainGraph .selected  circle{
     stroke: red !important;
@@ -68,7 +61,7 @@
 
 
 
-<<<<<<< HEAD
+
 #mainGraph text,#i_gallery text {
     cursor:default ;
 }
@@ -76,10 +69,3 @@
 .graph-legend{
     cursor: pointer;
 }
-
-=======
-#mainGraph text {
-    cursor:default ;
-}
-
->>>>>>> 3e04ebd1f741eef741d89ececed57035181be992

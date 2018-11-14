@@ -68,11 +68,9 @@ var contextmenu=function(id){
     // };
     mainRmenu.style.left = l + 'px';
     mainRmenu.style.top = t + 'px';
-<<<<<<< HEAD
+
     event.stopPropagation();
     event.preventDefault();
-=======
->>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
     return false;
 
 }

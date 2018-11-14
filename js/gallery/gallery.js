@@ -1,6 +1,3 @@
-// groupID: [ "mainGraphGroup"]
-
-
 function insertAfter(newElement, targetElement) {
     var parent = targetElement.parentNode;
     // 如果最后的节点是目标元素，则直接添加
@@ -67,37 +64,22 @@ var galleryDrag = {
         }
     }
 };
-var scrollbarSize=20;
+
 var gallery = {
-    mainData: {},
-    layout:{
-        galleryItemWidth: {
-            value:$(".b-right").height()-scrollbarSize,
-            min:$(".b-right").height()-scrollbarSize,
-            max:600,
-            step:20,
-            last:$(".b-right").height()-scrollbarSize,
-
-        }, //是方形的
-        cNum:0,
-
-    },
-    // galleryItemWidth: 200,
-    // galleryItemWidthLast: 200,
-    // galleryItemNum: 0,
+    galleryData: {},
     allDelete: function () {
         showToast('info', "请不要继续操作");
         $.ajax({
             url: mylocalURL + "delAllGalleryItem", type: "POST",
             data: {}, success: function (data) {
-                gallery.mainData = [];
+                gallery.galleryData = [];
                 showToast('success', "galleryItem删除成功");
             }
         });
         if (document.getElementsByClassName("c_mybox")) {
             $(".c_mybox").remove();
         }
-        gallery.layout.galleryItemNum = 0;
+        gallery.galleryItemNum = 0;
         gallery.changeGalleryLength();
 
     },
@@ -112,12 +94,12 @@ var gallery = {
             url: mylocalURL + "newGalleryItem", type: "POST",
             data: {}, success: function (data) {
                 showToast('success', "galleryItem加入成功！编号为：" + data.newIndex);
-                gallery.layout.galleryItemNum += 1;
+                gallery.galleryItemNum += 1;
                 gallery.changeGalleryLength();
                 galleryInterface.showToGallery(data.newIndex);
-                //相关数据保存在mainData["newIndex"]里
+                //相关数据保存在galleryData["newIndex"]里
                 //根据data绘制graph
-                var graph = gallery.mainData[data.newIndex];
+                var graph = gallery.galleryData[data.newIndex];
                 $.extend(true, graph.myChart_main_data.links = [], graph.linkListBuf);
                 gallery.newGraph(data.newIndex, graph);
             }
@@ -137,7 +119,6 @@ var gallery = {
             data: {
                 "galleryIndex": index,
             }, success: function (data) {
-                var galleryItemWidth=gallery.layout.galleryItemWidth;
                 if (!galleryInterface.galleryToShow(index)) {
                     return;
                 }
@@ -149,8 +130,8 @@ var gallery = {
                 {
                     for (var i = 0; i < myChart_main_data.nodes.length; i++) {
                         if (typeof(lastGraphData[myChart_main_data.nodes[i].id]) != 'undefined') {
-                            myChart_main_data.nodes[i].x = lastGraphData[myChart_main_data.nodes[i].id].x*maxHW/galleryItemWidth.value;
-                            myChart_main_data.nodes[i].y = lastGraphData[myChart_main_data.nodes[i].id].y*maxHW/galleryItemWidth.value;
+                            myChart_main_data.nodes[i].x = lastGraphData[myChart_main_data.nodes[i].id].x*maxHW/gallery.galleryItemWidth;
+                            myChart_main_data.nodes[i].y = lastGraphData[myChart_main_data.nodes[i].id].y*maxHW/gallery.galleryItemWidth;
                             myChart_main_data.nodes[i].fx = null;
                             myChart_main_data.nodes[i].fy = null;
                         }
@@ -174,9 +155,9 @@ var gallery = {
     },
     updateItemPointPos: function (index) {  //先保存目标位置
         d3.select("#graph_" + index).selectAll("circle").each(function (data) {
-            $.extend(true, gallery.mainData[index].lastGraphData[data.id] = {}, data);
+            $.extend(true, gallery.galleryData[index].lastGraphData[data.id] = {}, data);
         });
-        gallery.mainData[index].lastGraphData["noNeedZoom"]=true;
+        gallery.galleryData[index].lastGraphData["noNeedZoom"]=true;
     },
 
     unify: function () {
@@ -186,21 +167,21 @@ var gallery = {
         }
         else {
             gallery.updateItemPointPos(index);
-            gallery.mainData[index].transform=d3.select("#graph_" + index).select(".g-zoom").attr("transform");
+            gallery.galleryData[index].transform=d3.select("#graph_" + index).select(".g-zoom").attr("transform");
         }
-        for (var i in gallery.mainData) {
+        for (var i in gallery.galleryData) {
             if (i == index) {
                 continue;
             }
             if (!index) {  //按主图布局
                 getMainPointPos();
-                $.extend(true, gallery.mainData[i].lastGraphData = [], lastGraphData);
+                $.extend(true, gallery.galleryData[i].lastGraphData = [], lastGraphData);
             }
             else {
-                $.extend(true, gallery.mainData[i].lastGraphData = [], gallery.mainData[index].lastGraphData);
-                gallery.mainData[i].transform=gallery.mainData[index].transform;
+                $.extend(true, gallery.galleryData[i].lastGraphData = [], gallery.galleryData[index].lastGraphData);
+                gallery.galleryData[i].transform=gallery.galleryData[index].transform;
             }
-            gallery.drawGraph(i, gallery.mainData[i]);
+            gallery.drawGraph(i, gallery.galleryData[i]);
         }
 
     },
@@ -211,7 +192,7 @@ var gallery = {
             data: {
                 "galleryIndex": $("#" + $(ev.target.parentNode).attr("id")).data("index"),
             }, success: function (data) {
-                delete gallery.mainData[$("#" + $(ev.target.parentNode).attr("id")).data("index")];
+                delete gallery.galleryData[$("#" + $(ev.target.parentNode).attr("id")).data("index")];
                 showToast('success', "galleryItem删除成功");
             }
         });
@@ -219,8 +200,8 @@ var gallery = {
         $("#" + $(ev.target.parentNode).attr("id")).width(0);
         window.setTimeout(function () {
             $("#" + $(ev.target.parentNode).attr("id")).remove();
-            gallery.layout.galleryItemNum -= 1;
-            gallery.layout.galleryItemNum < 0 ? 0 : gallery.layout.galleryItemNum;
+            gallery.galleryItemNum -= 1;
+            gallery.galleryItemNum < 0 ? 0 : gallery.galleryItemNum;
             gallery.changeGalleryLength();
         }, 550)
 
@@ -228,60 +209,55 @@ var gallery = {
 
 
     zoomOut: function () {//height  ++20  到800px
-        var galleryItemWidth=gallery.layout.galleryItemWidth;
-        if ((galleryItemWidth.value + galleryItemWidth.step) > galleryItemWidth.max) {
+        if ((gallery.galleryItemWidth + 20) > 600) {
             return;
         }
-        galleryItemWidth.last = galleryItemWidth.value;
-        galleryItemWidth.value += galleryItemWidth.step;
-        $(".bottom-gallery").height(galleryItemWidth.value+scrollbarSize);
+        gallery.galleryItemWidthLast = gallery.galleryItemWidth;
+        gallery.galleryItemWidth += 20;
         gallery.changeGalleryLength();
 
     },
     zoomIn: function () { //--20 到200px
-        var galleryItemWidth=gallery.layout.galleryItemWidth;
-        if ((galleryItemWidth.value - galleryItemWidth.step) < galleryItemWidth.min) {
+        if ((gallery.galleryItemWidth - 20) < 200) {
             return;
         }
-        galleryItemWidth.last = galleryItemWidth.value;
-        galleryItemWidth.value -= galleryItemWidth.step;
-        $(".bottom-gallery").height(galleryItemWidth.value+scrollbarSize);
+        gallery.galleryItemWidthLast = gallery.galleryItemWidth;
+        gallery.galleryItemWidth -= 20;
         gallery.changeGalleryLength();
     },
 
 //计算gallery长度
+    galleryItemWidth: 200,
+    galleryItemWidthLast: 200,
+    galleryItemNum: 0,
     changeGalleryLength: function () {
-        var galleryItemWidth=gallery.layout.galleryItemWidth;
-        if (galleryItemWidth.value * (gallery.layout.galleryItemNum + 1.2) < document.body.clientWidth)
+        if (gallery.galleryItemWidth * (gallery.galleryItemNum + 1.2) < document.body.clientWidth)
             $("#i_gallery").width(document.body.clientWidth);
         else
-            $("#i_gallery").width((galleryItemWidth.value ) * (gallery.layout.galleryItemNum + 1.2));
-        $("#i_gallery20").height(galleryItemWidth.value + scrollbarSize);
-        $("#i_gallery").height(galleryItemWidth.value + 2);
+            $("#i_gallery").width((gallery.galleryItemWidth ) * (gallery.galleryItemNum + 1.2));
+        $("#i_gallery20").height(gallery.galleryItemWidth + 20);
+        $("#i_gallery").height(gallery.galleryItemWidth + 2);
 
-        $(".c_mybox").height(galleryItemWidth.value);
-        $(".c_mybox").width(galleryItemWidth.value);
-        $("#i_vacancy").height(galleryItemWidth.value);
-        $("#i_vacancy").width(galleryItemWidth.value);
+        $(".c_mybox").height(gallery.galleryItemWidth);
+        $(".c_mybox").width(gallery.galleryItemWidth);
+        $("#i_vacancy").height(gallery.galleryItemWidth);
+        $("#i_vacancy").width(gallery.galleryItemWidth);
         gallery.resizeGalleryItem();
 
 
     },
-    resizeGalleryItem:function() {
-        for (var i in gallery.mainData) {
+    resizeGalleryItem() {
+        for (var i in gallery.galleryData) {
             if (i == 0) {
                 continue;
             }
-            gallery.drawGraph(i, gallery.mainData[i]);
+            gallery.drawGraph(i, gallery.galleryData[i]);
 
         }
     },
     init: function () {
         $("#i_gallery").width(1000);
-       var galleryItemWidth= gallery.layout.galleryItemWidth;
-        galleryItemWidth.last = galleryItemWidth.value;
-        $("#i_gallery").height(galleryItemWidth.value);
-        $("#i_gallery20").height(galleryItemWidth.value+scrollbarSize);
+        gallery.galleryItemWidthLast = gallery.galleryItemWidth;
         // for (var i = 0; i < 10; i++) {
         //     $("#i_gallery").append('<div  id="div' + i + '" ondrop="galleryDrag.drop(event)" ondragover="galleryDrag.allowDrop(event)" ondragenter="galleryDrag.dragenter(event)" ' +
         //         ' draggable="true"  ondragend="galleryDrag.dragend(event)" ondragstart="galleryDrag.drag(event)"  class="c_mybox" style="display:inline-block;" ' +
@@ -302,8 +278,8 @@ var gallery = {
         //relationThreshold=0;
         // var overlapThreshold=0;
         var str = "";
-        str = "relationThreshold: " + gallery.mainData[index].relationThreshold +
-            "</br>overlapThreshold:  " + gallery.mainData[index].overlapThreshold
+        str = "relationThreshold: " + gallery.galleryData[index].relationThreshold +
+            "</br>overlapThreshold:  " + gallery.galleryData[index].overlapThreshold
         ;
         layui.use('form', function () {
             var layer = layui.layer;
@@ -320,56 +296,11 @@ var gallery = {
 //    $(":checkbox[name=mul]:checked").each(function () {
 //        answer += $(this).val() + ",";   //input 一般是相同的名字
 //    });
-    simpleGraphIndex:0,
-    newSimpleGraph:function(type,data){
-        $("#i_gallery").append('<div  ondrop="galleryDrag.drop(event)" ondragover="galleryDrag.allowDrop(event)" ondragenter="galleryDrag.dragenter(event)" ' +
-            ' draggable="true"  ondragend="galleryDrag.dragend(event)" ondragstart="galleryDrag.drag(event)"  class="c_mybox main-shot simple-graph-item" style="display:inline-block;' +
-            'height:' + gallery.layout.galleryItemWidth.value +
-            'px;width: ' + +gallery.layout.galleryItemWidth.value +
-            'px"' +
-            'data-index=' + index +
-            '><span style="text-align: center;display:block;" onclick="gallery.showGalleryItemMess(event)">' + type + '</span>' +
-            '<button type="button"   class="close" onclick="gallery.delete(event)" style="z-index: 100;position: absolute;\n' +
-            '  right: 5px;\n' +
-            '  top: 0px;">×</button>' +
-            '<div id="simpleGraph_' + simpleGraphIndex + '" style="' +
-            'height:' + gallery.layout.galleryItemWidth.value-18 +
-            'px;width: 100%' +
-            '"></div>' +
-            '</div>');
-       gallery.simpleGraphIndex+=1;
-        window.setTimeout(function () {
-            var para={$selector:$('#simpleGraph_' + simpleGraphIndex), data:data};
-            switch (type){
-                case "edgeScatter":
-                    redraw_edgeScatter(para);break;
-                case "nodeDetail":
-                    redraw_nodeDetail(para);break;
-                case "paraBoxplot":
-                    redraw_paraBoxplot(para);break;
-                 case "t-sne":
-                     redraw_tsne(para);break;
-            }
-        }, 100);
-    },
-    resizeSimpleGraph:function(){
-        var height=gallery.layout.galleryItemWidth.value;
-            for(var i =0;i<gallery.simpleGraphIndex;i++)
-            {
-                if(!$("#simpleGraph_"+i).length)
-                {
-                    $("#simpleGraph_"+i).parent().height(height);
-                    $("#simpleGraph_"+i).height(height-18);
-                    resize_echarts({$selector:$('#simpleGraph_' + i)});
-                }
-            }
-    },
-
     newGraph: function (index, data) {
         $("#i_gallery").append('<div  id="div_' + index + '" ondrop="galleryDrag.drop(event)" ondragover="galleryDrag.allowDrop(event)" ondragenter="galleryDrag.dragenter(event)" ' +
-            ' draggable="true"  ondragend="galleryDrag.dragend(event)" ondragstart="galleryDrag.drag(event)"  class="c_mybox main-shot" style="display:inline-block;' +
-            'height:' + gallery.layout.galleryItemWidth.value +
-            'px;width: ' + +gallery.layout.galleryItemWidth.value +
+            ' draggable="true"  ondragend="galleryDrag.dragend(event)" ondragstart="galleryDrag.drag(event)"  class="c_mybox" style="display:inline-block;' +
+            'height:' + gallery.galleryItemWidth +
+            'px;width: ' + +gallery.galleryItemWidth +
             'px"' +
             'data-index=' + index +
             '><span style="text-align: center;display:block;" onclick="gallery.showGalleryItemMess(event)">' + index + '</span>' +
@@ -383,12 +314,14 @@ var gallery = {
         window.setTimeout(function () {
             gallery.drawGraph(index, data);
         }, 100);
+
+
     },
     drawGraph: function (index, data) {
         $("#graph_" + index).children().remove();
         var graph = data.myChart_main_data;
-        var svgWidth = gallery.layout.galleryItemWidth.value,
-            svgHeight = gallery.layout.galleryItemWidth.value - 18;
+        var svgWidth = gallery.galleryItemWidth,
+            svgHeight = gallery.galleryItemWidth - 18;
         var svg = d3v4.select("#graph_" + index)
             .attr("width", svgWidth)
             .attr("height", svgHeight);
@@ -408,8 +341,8 @@ var gallery = {
         {
             graph.nodes.forEach(function (item, index) {
                 if (data.lastGraphData[item.id]) {
-                    item.x = data.lastGraphData[item.id].x*gallery.layout.galleryItemWidth.value/gallery.layout.galleryItemWidth.last;
-                    item.y = data.lastGraphData[item.id].y*gallery.layout.galleryItemWidth.value/gallery.layout.galleryItemWidth.last;
+                    item.x = data.lastGraphData[item.id].x*gallery.galleryItemWidth/gallery.galleryItemWidthLast;
+                    item.y = data.lastGraphData[item.id].y*gallery.galleryItemWidth/gallery.galleryItemWidthLast;
                     item.fx = item.x;
                     item.fy = item.y;
                     data.lastGraphData[item.id].x=item.x;
@@ -449,7 +382,7 @@ var gallery = {
             .on('zoom', zoomed).on("end",zoomEnd);
         gMain.call(zoom).on('dblclick.zoom', null);
         function zoomEnd(){
-            gallery.mainData[index].transform=d3.select("#graph_" + index).select(".g-zoom").attr("transform");
+            gallery.galleryData[index].transform=d3.select("#graph_" + index).select(".g-zoom").attr("transform");
         }
         function zoomed() {
             gDraw.attr('transform', d3v4.event.transform);
@@ -568,7 +501,7 @@ var gallery = {
 
 
         node.on("mouseover", function (d) {
-                var graph = gallery.mainData[index].myChart_main_data;
+                var graph = gallery.galleryData[index].myChart_main_data;
 
                 d3.select("#graph_" + index).selectAll(".node circle").each(function (data, index) {
                     if (graph.relation[nodeMap[d.name]][nodeMap[data.name]] == 0 && d.name != data.name && d.name.split(",")[0] != data.name.split(",")[0]) //加gray属性
@@ -684,7 +617,7 @@ var gallery = {
         function dragended(d) {
             d.fx = d.x;
             d.fy = d.y;
-            var lastGraphData=gallery.mainData[index].lastGraphData;
+            var lastGraphData=gallery.galleryData[index].lastGraphData;
             d3.select("#graph_" + index+" .gnode").selectAll(".node").each(function (data) {
                 $.extend(true, lastGraphData[data.id] = {}, data);
             });

@@ -70,6 +70,10 @@ var galleryInterface={
         $.extend(true,  galleryInterface.now["myColorScheme"]={},myColorScheme);
        // $.extend(true,  galleryInterface.now["transform"]="",transform);
         galleryInterface.now["transform"]="";//不往里面存放
+<<<<<<< HEAD:js/gallery/galleryInterface.js
+=======
+
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992:js/gallery/galleryInterface.js
 
 
         //galleryInterface.now to mainGraph_g.data

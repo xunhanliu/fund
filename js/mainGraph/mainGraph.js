@@ -1,7 +1,11 @@
 /**
  * Created by Administrator on 2018/4/11 0011.
  */
+<<<<<<< HEAD
 //getTabs1ActiveID();
+=======
+getTabs1ActiveID();
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
 var clusterSelect = 0; //聚类方式的索引  ~
 //var myChart_main = echarts.init(document.getElementById(divID_main));
 var selectName = [];  //聚类的维度选择  ~
@@ -141,6 +145,7 @@ app_main.configParameters = {
 
 };
 
+<<<<<<< HEAD
 function layoutCheckClick(ev){
     mainGraphPara[ev.target.value]=ev.target.checked;
     simulation.restart();
@@ -149,6 +154,15 @@ function layoutCheckClick(ev){
 var lastClusterOption = '单点聚类';
 app_main.config = {
     clusterOption: '单点聚类',
+=======
+var lastClusterOption = '单点聚类';
+app_main.config = {
+    similarToClose:true,
+    dragFixed:false,
+    clusterOption: '单点聚类',
+    overlapThreshold: 0.01,
+    ralationThreshold: 0.01,
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
     kickPointByNum: 0.01,
     ResetKick: resetKick,
     UnDoKick: undoKick,
@@ -167,8 +181,20 @@ app_main.config = {
         }
         else if(typeof(change)=="boolean") //similarToClose  改变
         {
+<<<<<<< HEAD
         }
         else if (typeof(change) == "number") {
+=======
+            mainGraphPara.similarToClose=app_main.config.similarToClose;
+            mainGraphPara.dragFixed=app_main.config.dragFixed;
+           // main_redraw(myChart_main_data);
+            simulation.restart();
+        }
+        else if (typeof(change) == "number") {
+                relationThreshold = app_main.config.ralationThreshold;
+                overlapThreshold = app_main.config.overlapThreshold;
+                main_deepRedraw();
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
         }
 
     },
@@ -329,8 +355,13 @@ function graph_preprocessor(graph) {
 
 // width = +svg.attr("width"),
 // height = +svg.attr("height");
+<<<<<<< HEAD
 var svg_width = $("#mainGraph_controls").width(),
     svg_height = $("#mainGraph_controls").height();
+=======
+var svg_width = $(tabs1ActiveID).width(),
+    svg_height = $(tabs1ActiveID).height();
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
 var svg = d3.select("#mainGraph")
         .attr("width", svg_width)
         .attr("height", svg_height)
@@ -362,7 +393,11 @@ function transform2(d) {
 
 //第一次加载
 (function(){
+<<<<<<< HEAD
     $.get('./data/car.json', function (graph) {
+=======
+    $.get('myData/car.json', function (graph) {
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
         graph_preprocessor(graph);
         main_redraw(myChart_main_data);
         getorderRelationMatrixSuccess(myChart_main_data);

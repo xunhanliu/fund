@@ -10,7 +10,11 @@
 //     );
 // }
 function mainGraph_size_update() {
+<<<<<<< HEAD
     //getTabs1ActiveID();
+=======
+    getTabs1ActiveID();
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
     main_redraw(myChart_main_data);
 }
 
@@ -20,6 +24,7 @@ function main_deepRedraw() {
     $.ajax({
         url: mylocalURL + "refreshGraph", type: "POST",
         data: {
+<<<<<<< HEAD
             mainGraphPara:JSON.stringify({'overlapThreshold': overlapThreshold,
             'nameList': (selectName),
             'selList': (selectPoint),
@@ -28,6 +33,15 @@ function main_deepRedraw() {
             'kickPoint': (kickPointList),
             'kickPointByNum': app_main.config.kickPointByNum,
             }),
+=======
+            'nameList': JSON.stringify(selectName),
+            'selList': JSON.stringify(selectPoint),
+            'overlapThreshold': overlapThreshold,
+            'relationThreshold': relationThreshold,
+            'kickEdge': JSON.stringify(kickEdgeList),
+            'kickPoint': JSON.stringify(kickPointList),
+            'kickPointByNum': app_main.config.kickPointByNum,
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
             "galleryIndex": 0
         }, success: function (graph) {
             showToast('success', "数据计算成功！");
@@ -41,6 +55,7 @@ function main_deepRedraw() {
 }
 
 //使用d3  V4版本   ，内部d3变量使用d3v4替换
+<<<<<<< HEAD
 
 //"main_" + d.name.replace(/[\W]/g, '_');
 var simulation;
@@ -85,13 +100,20 @@ function legendOut(id){
     FireEvent(document.getElementById(id), 'mouseout')
     //d3.selectAll("#"+id).dispatch('mouseout');
 }
+=======
+var simulation;
+
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
 function main_redraw(graph) {
     // if both d3v3 and d3v4 are loaded, we'll assume
     // that d3v4 is called d3v4, otherwise we'll assume
     // that d3v4 is the default (d3)
+<<<<<<< HEAD
 
     legend_redraw(graph.nodes);
 
+=======
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
     getMainPointPos();  //保存上一幅图的布局
     circleSizeScale_M.domain([1, Number(graph['dataNum'])]);
     //下面两个for循环是为similarToClose的tick做准备
@@ -222,8 +244,13 @@ function main_redraw(graph) {
             return opacityMap(d.value);
         })
         .on("click", function (link) {
+<<<<<<< HEAD
             //getScatterData([link['source']['id'], link['target']['id']], 0);
             otherGraph_g.new("edgeScatter",{nameList:[link['source']['id'], link['target']['id']], galleryIndex:0});
+=======
+            getScatterData([link['source']['id'], link['target']['id']], 0);
+
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
         })
         .on("contextmenu", function (link) {
             whichLineClick = link;
@@ -592,6 +619,7 @@ function main_redraw(graph) {
         }
     }
 
+<<<<<<< HEAD
     // var texts = ['Use the scroll wheel to zoom',
     //     'Hold the shift key to select nodes'];
     //
@@ -603,6 +631,19 @@ function main_redraw(graph) {
     //     .attr('x', 0)
     //     .attr('y', function(d,i) { return 30 + i * 18; })
     //     .text(function(d) { return d; });
+=======
+    var texts = ['Use the scroll wheel to zoom',
+        'Hold the shift key to select nodes'];
+
+    svg.selectAll('.mainOperationInfo')
+        .data(texts)
+        .enter()
+        .append('text')
+        .attr("class",".mainOperationInfo")
+        .attr('x', 0)
+        .attr('y', function(d,i) { return 30 + i * 18; })
+        .text(function(d) { return d; });
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
 
     node.on("contextmenu", function (node) {
         whichNodeClick = node;
@@ -616,6 +657,7 @@ function main_redraw(graph) {
         .on("dblclick", function (node) {
             myColorScheme.active.lastActiveName=node.group;
             nodeMessName = node['id'];
+<<<<<<< HEAD
             var $ele=otherGraph_g.new('nodeDetail',{name:node['id'],galleryIndex:0});
             $ele.append('<button type="button" style="position: absolute;' +
                 '    right: 20px;' +
@@ -623,6 +665,41 @@ function main_redraw(graph) {
                 '    background-color: #dedecc;' +
                 '    font-size: 12px;' +
                 '    top: 5px;" onclick="nodeDetailCluster(event)" class="btn btn-default ">custom cluster</button>');
+=======
+            //iframe窗
+
+            var str = '<div class="layui-fluid">' +
+                '    <div class="layui-row layui-col-space6">' +
+                '        <div class="layui-col-md9">' +
+                '            <div id="node_detail_left" style="height: 300px"></div>' +
+                '        </div>' +
+                '        <div class="layui-col-md3">' +
+                '            <div id="node_detail_right" style="height: 300px"></div>' +
+                '        </div>' +
+                '    </div>' +
+                '</div>'
+                ;
+            layui.use('form', function () {
+                var layer = layui.layer;
+                layer.open({
+                    type: 1,
+                    title: nodeMessName + "的分布",
+                    maxmin: true, //开启最大化最小化按钮
+                    shadeClose: true,
+                    area: ['800px', '342px'],
+                    content: str, //iframe的url，no代表不显示滚动条
+                });
+            });
+
+            setTimeout(
+                function(){
+                    if(typeof(nodeDetailJS)=="undefined"){   //判断文件是否已经加载。
+                    $('body').append('<script src="./js/nodeDetail.js"></script>')};
+                    setTimeout(getNodeDetailData(nodeMessName, 0),100);
+                },
+                500);
+
+>>>>>>> 3e04ebd1f741eef741d89ececed57035181be992
         })
     ;
 

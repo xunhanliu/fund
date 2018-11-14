@@ -1,9 +1,7 @@
-getTabs1ActiveID();
-var parallel_width= Math.floor( $(tabs1ActiveID).width());
-var parallel_height=Math.floor( $(tabs1ActiveID).height()*0.8);
+//getTabs1ActiveID();
+var parallel_width= Math.floor( $("#parallel").width());
+var parallel_height=Math.floor( $("#parallel").height());
 
-var parallel_table_width= Math.floor( $(tabs1ActiveID).width());
-var parallel_table_height= Math.floor( $(tabs1ActiveID).height()*0.2);
 var blue_to_brown = d3.scale.linear()
     .domain([9, 50])
     .range(["steelblue", "brown"])
@@ -32,37 +30,12 @@ function externalRefreshParallel(){
             .reorderable()
             .brushMode("1D-axes");  // enable brushing
 
-        //create data table, row hover highlighting
-        var parallelTable = d3.divgrid()
-        ;
-        d3.select("#parallel_table")
-            .attr("width",parallel_table_width)
-            .datum(data.slice(0,10))
-            .call(parallelTable)
-            .selectAll(".row")
-            .on({
-                "mouseover": function(d) { parcoords.highlight([d]) },
-                "mouseout": parcoords.unhighlight
-            });
-
-// update data table on brush event
-        parcoords.on("brush", function(d) {
-            d3.select("#parallel_table")
-                .datum(d.slice(0,10))
-                .call(parallelTable)
-                .selectAll(".row")
-                .on({
-                    "mouseover": function(d) { parcoords.highlight([d]) },
-                    "mouseout": parcoords.unhighlight
-                });
-        });
-
         var column_keys = d3.keys(data[0]);//注意把隐藏的轴删掉
         freshParallelGUI(column_keys);
     }});
 }
 // load csv file and create the chart
-d3.csv('myData/cars.csv', function(data) {
+d3.csv('./data/cars.csv', function(data) {
     parcoords
         .data(data)
         .hideAxis(["name"])
@@ -70,30 +43,6 @@ d3.csv('myData/cars.csv', function(data) {
         .reorderable()
         .brushMode("1D-axes");  // enable brushing
 
-    //create data table, row hover highlighting
-    var parallelTable = d3.divgrid()
-    ;
-    d3.select("#parallel_table")
-        .attr("width",parallel_table_width)
-        .datum(data.slice(0,10))
-        .call(parallelTable)
-        .selectAll(".row")
-        .on({
-            "mouseover": function(d) { parcoords.highlight([d]) },
-            "mouseout": parcoords.unhighlight
-        });
-
-// update data table on brush event
-    parcoords.on("brush", function(d) {
-        d3.select("#parallel_table")
-            .datum(d.slice(0,10))
-            .call(parallelTable)
-            .selectAll(".row")
-            .on({
-                "mouseover": function(d) { parcoords.highlight([d]) },
-                "mouseout": parcoords.unhighlight
-            });
-    });
 
     var column_keys = d3.keys(data[0]);//注意把隐藏的轴删掉
 
@@ -112,8 +61,8 @@ function delListSpacialValue(slist,value){
     return slist;
 }
 function parallel_size_update() {
-    getTabs1ActiveID();
-    parcoords.width(Math.floor( $(tabs1ActiveID).width()));
+    //getTabs1ActiveID();
+    parcoords.width(Math.floor( $("#parallel").width()));
     parcoords.resize();
     parcoords.render()
         .brushMode("1D-axes");
@@ -159,7 +108,6 @@ function freshParallelGUI(keyList)
     $(gui_parallel.domElement).css({
         position: 'absolute',
         right: 5,
-        top: 0,
         color:"red",
         zIndex: 1000
     });
@@ -182,6 +130,7 @@ function freshParallelGUI(keyList)
     controller=f.add(Folder[1]["content"], "brushPredicate",["AND","OR"]);
     controller.onFinishChange(paralle_onFinishChange.changeBrush);
     f.open();
+    gui_parallel.close();
 }
 
 var paralle_onChange={

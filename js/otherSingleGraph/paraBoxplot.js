@@ -1,14 +1,11 @@
-var paraChart = echarts.init(document.getElementById("paraGraph"));
-var paraData = echarts.dataTool.prepareBoxplotData([
-    [850, 740, 900, 1070, 930, 850, 950, 980, 980, 880, 1000, 980, 930, 650, 760, 810, 1000, 1000, 960, 960],
-    [960, 940, 960, 940, 880, 800, 850, 880, 900, 840, 830, 790, 810, 880, 880, 830, 800, 790, 760, 800],
-
-]);
-var paraOption={};
-function ParaChart_size_update(){
-    paraChart.resize({width:$("#paraGraph").width()});
-}
-function refrshParaChart(data){
+function redraw_paraBoxplot(para) {
+    //para={ $selector,data}
+    var data=para.data;
+    var paraChart = echarts.getInstanceByDom(para.$selector[0]);
+    if(!paraChart)  //不存在
+    {
+        paraChart=echarts.init(para.$selector[0],'mySubject',{width:para.$selector.width(),height:para.$selector.height()});
+    }
     var databuf1=[];
     var databuf2=[];
     for (var i=0;i<data['overlap'].length;i++ ) {
@@ -21,8 +18,8 @@ function refrshParaChart(data){
             databuf2.push(data['relation'][i][j]);
         }
     }
-    paraData = echarts.dataTool.prepareBoxplotData([databuf1,databuf2]);
-    paraOption = {
+    var paraData = echarts.dataTool.prepareBoxplotData([databuf1,databuf2]);
+    var paraOption = {
         title: [
             {
                 text: 'param',
@@ -84,8 +81,14 @@ function refrshParaChart(data){
         ]
     };;
     paraChart.setOption(paraOption, true);
+
+
+
 }
 
-if (paraOption && typeof paraOption === "object") {
-    paraChart.setOption(paraOption, true);
+
+function ParaChart_size_update(){
+}
+function refrshParaChart(data){
+
 }

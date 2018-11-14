@@ -1,49 +1,13 @@
-/**
- * Created by Administrator on 2018/4/25.
- */
-// <!DOCTYPE html>
-// <html class="ocks-org do-not-copy">
-//     <meta charset="utf-8">
-//     <title>Les Misérables Co-occurrence</title>
-// <style>
-//
-// @import url(./style.css);
-//
-// .background {
-//     fill: #eee;
-// }
-//
-//
-//
-// </style>
-// <script src="//d3js.org/d3.v2.min.js" charset="utf-8"></script>
-//
-//     <h1><i>Les Misérables</i> Co-occurrence</h1>
-//
-// <aside style="margin-top:80px;">
-//     <p>Order: <select id="order">
-//     <option value="name">by Name</option>
-// <option value="count">by Frequency</option>
-// <option value="group">by Cluster</option>
-// </select>
-// </aside>
-
-// var svg_width=$('#mainGraph_controls').width(),
-//     svg_height=$('#mainGraph_controls').height();
-getTabs2ActiveID();
 var showMatrix={};
-var margin_orderRelation = {top: 80, right: 5, bottom: 5, left: 80};
-var  width_orderRelation=height_orderRelation = Math.min( Math.floor( $(tabs2ActiveID).width()*0.9)- margin_orderRelation.left - margin_orderRelation.right,
-     Math.floor($(tabs2ActiveID).height())-margin_orderRelation.top - margin_orderRelation.bottom);
+var margin_orderRelation = {top: 80, right: 60, bottom: 5, left: 80};
+var  width_orderRelation=height_orderRelation = Math.min( Math.floor( $("#orderRalation").width())- margin_orderRelation.left - margin_orderRelation.right,
+     Math.floor($("#orderRalation").height())-margin_orderRelation.top - margin_orderRelation.bottom);
 
 var x_orderRelation = d3.scale.ordinal().rangeBands([0, width_orderRelation]),
     y_orderRelation = d3.scale.ordinal().rangeBands([0, width_orderRelation]),
     z_orderRelation = d3.scale.linear().domain([0, 4]).clamp(true),//透明度scale
     c_orderRelation = d3.scale.category10().domain(d3.range(10));//  颜色  按group映射
-var colorMap_orderRelation = d3.scale.linear()
-    .domain([-1, 0, 1])
-    .range(["red", "white", "green"]);
-var color20 = d3.scale.category20();
+
 var svg_orderRelation = d3.select("#orderRelationMatrix")
     .attr("width", width_orderRelation + margin_orderRelation.left + margin_orderRelation.right)
     .attr("height", height_orderRelation + margin_orderRelation.top + margin_orderRelation.bottom)
@@ -123,9 +87,9 @@ function reOrder(orderList,order_num,order_dx){
 	
 }
 function orderRelatMatrix_size_update(){
-    getTabs1ActiveID();
-    width_orderRelation=height_orderRelation = Math.min( Math.floor( $(tabs2ActiveID).width()*0.9)- margin_orderRelation.left - margin_orderRelation.right,
-        Math.floor($(tabs2ActiveID).height())-margin_orderRelation.top - margin_orderRelation.bottom);
+    //getTabs1ActiveID();
+    width_orderRelation=height_orderRelation = Math.min( Math.floor( $("#orderRalation").width()*0.9)- margin_orderRelation.left - margin_orderRelation.right,
+        Math.floor($("#orderRalation").height())-margin_orderRelation.top - margin_orderRelation.bottom);
 
     x_orderRelation.rangeBands([0, width_orderRelation]);
     y_orderRelation.rangeBands([0, width_orderRelation]);
@@ -257,7 +221,10 @@ function getorderRelationMatrixSuccess(data){
             .attr("height", x_orderRelation.rangeBand())
             //.style("fill-opacity", function(d) { return z_orderRelation(d.z); })
             //.style("fill", function(d) { return nodes[d.x].group == nodes[d.y].group ? c_orderRelation(nodes[d.x].group) : null; })
-            .style("fill", function(d) { return colorMap_orderRelation(d.z); })
+            .style("fill", function(d) { return colorMapCooperateOpacity(d.z); })
+                .attr("opacity",function(d){
+                    return opacityMap(d.z);
+                })
             .on("mouseover", mouseover)
             .on("mouseout", mouseout)
             .call(dragElement_M)
@@ -265,14 +232,14 @@ function getorderRelationMatrixSuccess(data){
     }
 
     function mouseover(p) {
-        d3.selectAll(".row text").classed("active", function(d, i) {
+        d3.selectAll("#orderRelationMatrix .row text").classed("active", function(d, i) {
             return i == p.y; });
-        d3.selectAll(".column text").classed("active", function(d, i) {
+        d3.selectAll("#orderRelationMatrix .column text").classed("active", function(d, i) {
             return i == p.x; });
     }
 
     function mouseout() {
-        d3.selectAll("text").classed("active", false);
+        d3.selectAll("#orderRelationMatrix text").classed("active", false);
     }
 
     d3.select("#order").on("change", function() {
@@ -339,13 +306,14 @@ function orderImmediately(orderX,orderY)
 // });//load
 
 function legendInit(){
-    var widthLegend=Math.floor( $(tabs2ActiveID).width()*0.1);
-    var height=400;
-    var margin= {top: 80, right: 0, bottom: 10, left: 10};
-    var key = d3.select("#oderRalationLegend")
-        .attr("width", widthLegend)
-        .attr("height", height + margin.top + margin.bottom);
 
+    var margin= {top: 80, right: 0, bottom: 5, left: 20};
+    var widthLegend=Math.min(Math.floor( $("#orderRalation").width()*0.1),40);
+    var height=height_orderRelation;
+
+    var key =d3.select("#orderRelationMatrix").append("g")
+        .attr("width", width_orderRelation + margin_orderRelation.left + margin_orderRelation.right)
+        .attr("transform", "translate("+(width_orderRelation + margin_orderRelation.left +10 ) +"," + margin_orderRelation.top + ")");
     var legend = key
         .append("defs")
         .append("svg:linearGradient")
@@ -359,25 +327,29 @@ function legendInit(){
     legend
         .append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "green")
+        .attr("stop-color", "#080")
         .attr("stop-opacity", 1);
     legend
         .append("stop")
         .attr("offset", "50%")
-        .attr("stop-color", "white")
-        .attr("stop-opacity", 1);
-
+        .attr("stop-color", "#080")
+        .attr("stop-opacity", 0);
+    legend
+        .append("stop")
+        .attr("offset", "50.1%")
+        .attr("stop-color", "#c00")
+        .attr("stop-opacity", 0);
     legend
         .append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "red")
+        .attr("stop-color", "#c00")
         .attr("stop-opacity", 1);
 
     key.append("rect")
         .attr("width", widthLegend/2)
         .attr("height", height)
         .style("fill", "url(#gradient)")
-        .attr("transform", "translate(0," + margin.top + ")");
+        // .attr("transform", "translate(0," + margin.top + ")");
 
     var y = d3.scale.linear()
         .range([height, 0])
@@ -389,7 +361,7 @@ function legendInit(){
 
     key.append("g")
         .attr("class", "y axis")
-        .attr("transform", "translate("+widthLegend/2+"," + margin.top + ")")
+        .attr("transform", "translate("+widthLegend/2+"," + 0+ ")")
         .call(yAxis)
 }
 legendInit();
@@ -400,7 +372,7 @@ legendInit();
 
 
 
-// var runDebounce = _.debounce(function(){refreshMyChart_main(myChart_main_data);}, 600, {
+// var runDebounce = _.debounce(function(){main_redraw(myChart_main_data);}, 600, {
 //     trailing: true
 // });
 function shuffle(a) {
@@ -448,5 +420,6 @@ if (app_orderRelation.config) {
     controller.onFinishChange(orderRelation_onFinishChange.orderSelChg);
     controller = gui_orderRelation.add(app_orderRelation.config, "whichMatrix", [ "overlap","relation" ]);
     controller.onFinishChange(orderRelation_onFinishChange.matrixChg);
+    gui_orderRelation.close();
 }
 

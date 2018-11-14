@@ -7,6 +7,14 @@
 }
 .parcoords text.label {
   cursor: default;
+  display: inline;
+  padding: 0;
+  font-size: 75%;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
 }
 .parcoords rect.background:hover {
   fill: rgba(120,120,120,0.2);

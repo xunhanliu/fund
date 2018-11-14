@@ -22,8 +22,8 @@ var galleryInterface={
     now:{},
     galleryToShow:function(index){
         //先填充now变量
-        if(gallery.galleryData[index]) {
-            $.extend(true, galleryInterface.now={}, gallery.galleryData[index]);
+        if(mainGraph_g.data[index]) {
+            $.extend(true, galleryInterface.now={}, mainGraph_g.data[index]);
         }else{
             return false;
         }
@@ -43,6 +43,9 @@ var galleryInterface={
       //  $.extend(true, app_main.config={}, galleryInterface.now["main_config"]);
         $.extend(true, linkListBuf=[], galleryInterface.now["linkListBuf"])
         $.extend(true, myChart_main_data.links=[], galleryInterface.now["linkListBuf"]);
+        $.extend(true, bzSample={}, galleryInterface.now["bzSample"]);
+        $.extend(true, myColorScheme={}, galleryInterface.now["myColorScheme"]);
+        $.extend(true, transform="", galleryInterface.now["transform"]);
 
         return true;
     },
@@ -63,9 +66,14 @@ var galleryInterface={
         $.extend(true, galleryInterface.now["nodeMap"]={}, nodeMap);
         $.extend(true, galleryInterface.now["main_config"]={}, app_main.config);
         $.extend(true, galleryInterface.now["linkListBuf"]=[], linkListBuf);//linkListBuf
+        $.extend(true,  galleryInterface.now["bzSample"]={},bzSample);
+        $.extend(true,  galleryInterface.now["myColorScheme"]={},myColorScheme);
+       // $.extend(true,  galleryInterface.now["transform"]="",transform);
+        galleryInterface.now["transform"]="";//不往里面存放
 
-        //galleryInterface.now to gallery.galleryData
-        gallery.galleryData[index]={};
-        $.extend(true,gallery.galleryData[index],galleryInterface.now);
+
+        //galleryInterface.now to mainGraph_g.data
+        mainGraph_g.data[index]={};
+        $.extend(true,mainGraph_g.data[index],galleryInterface.now);
     }
 };

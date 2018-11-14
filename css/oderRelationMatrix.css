@@ -1,25 +1,16 @@
 /* Copyright 2013 Michael Bostock. All rights reserved. Do not copy. */
 
-@import url(//fonts.googleapis.com/css?family=PT+Serif|PT+Serif:b|PT+Serif:i|PT+Sans|PT+Sans:b);
+/*@import url(//fonts.googleapis.com/css?family=PT+Serif|PT+Serif:b|PT+Serif:i|PT+Sans|PT+Sans:b);*/
 
 
 #orderRelationMatrix line {
     stroke: #fff;
 }
 
-#orderRelationMatrix text .mytextactive {
-    fill: #000;
-}
-#orderRelationMatrix .row  .mytextactive{
+#orderRelationMatrix  .mytextactive{
     fill: #fff !important;
 }
-#orderRelationMatrix .column  .mytextactive{
-    fill: #fff !important;
-}
-#orderRelationMatrix .row  .active{
-    fill: #f00 !important;
-}
-#orderRelationMatrix .column  .active{
+#orderRelationMatrix .active{
     fill: #f00 !important;
 }
 

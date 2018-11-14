@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="./css/lib/font-awesome.css" rel="stylesheet"/>
+    <link href="./css/gallery0.css" rel="stylesheet"/>
+    <script src="./lib/jquery.js"></script>
+</head>
+<body>
+<div id="galleryOuter" class="gallery">
+    <div class="gallery" style="overflow-x: scroll;overflow-y: scroll;">
+        <div id="galleryInner" style="height:100px; ">
+            <!--注意，不同的group的data-group一定不能一样，否则，相同group内部的item能拖动到对方肚子里-->
+            <!--<div id="g-mainGraph" class="gallery_group" data-group="mainGraph">-->
+                <!--<div class="gallery_group_title">标题</div>-->
+                <!--<div class="gallery_item">5</div>-->
+            <!--</div>-->
+            <!--<div class="gallery_group" data-group="group3">-->
+                <!--<div class="gallery_group_title">title</div>-->
+                <!--<div class="gallery_item">7</div>-->
+                <!--<div class="gallery_item">8</div>-->
+                <!--<div class="gallery_item">9</div>-->
+                <!--<div class="gallery_item">10</div>-->
+                <!--<div class="gallery_item">11</div>-->
+                <!--<div class="gallery_item">12</div>-->
+                <!--<div class="gallery_item">13</div>-->
+            <!--</div>-->
+            <!--<div class="gallery_item">7</div>-->
+            <!--<div class="gallery_item">8</div>-->
+            <!--<div class="gallery_item">9</div>-->
+            <!--<div class="gallery_item">10</div>-->
+            <!--<div class="gallery_item">11</div>-->
+            <!--<div class="gallery_item">12</div>-->
+            <!--<div class="gallery_item">13</div>-->
+            <!--<div class="gallery_item gallery_item_empty"></div>-->
+
+        </div>
+        <!--<div id="galleryIn" style="height:100px;width:10000px;background-color: #0b76ac"></div>-->
+        <span id="zoomCtl" class=" fa fa-chevron-up"></span>
+
+    </div>
+</div>
+</body>
+<script>
+
+    var scrobarSize = 8; //宽和高
+    var gallery = {
+        height: 100,
+        maxHeight: 600,
+        minHeight: 100,
+        itemNum: 0,
+        groupNum: 0,  //这两个是通过插入，或删除新的item来更新的
+        item: {
+            height: 100,    //通过gallery 算出来的
+            margin: {top: 3, right: 3, bottom: 3, left: 3},
+            padding: 1,
+            borderWidth: 1,
+        },
+        group: {  //宽高有子元素撑开
+            margin: {left: 2, right: 2,}, //为了美观，上下都应该为0
+            padding_left: 50,
+        },
+
+    };
+    function gallery_resize() {  //缩放的时候，会进行回调
+
+
+    }
+    function test(a,b=2,c=3 )
+    {
+        console.log(c);
+    }
+
+</script>
+<script src="./js/gallery/gallery0.js"></script>
+
+</html>

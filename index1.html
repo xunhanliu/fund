@@ -16,11 +16,10 @@
     <link href="./lib/layui/dist/css/layui.css" rel="stylesheet" type="text/css">
     <link href="./css/layui_myskin.css" rel="stylesheet" type="text/css">
     <link href="./css/gallery.css" rel="stylesheet" type="text/css">
-    <link href="./css/gallery0.css" rel="stylesheet" type="text/css">
     <link href="./css/mainRmenu.css" rel="stylesheet" type="text/css">
     <link href="./css/mainSet.css" rel="stylesheet" type="text/css">
     <link href="./css/mainGraph.css" rel="stylesheet" type="text/css">
-    <link href="./css/nodeDetail.css" rel="stylesheet" type="text/css">
+
 
 
     <script src="./lib/jquery.js"></script>
@@ -72,25 +71,46 @@
                 </span>
             <button class="btn btn-default left_interval" onclick="mainSet(event)"><i class="fa fa-cog"></i>&nbspset</button>
             <div class="btn-group left_interval">
-                <button type="button" onclick="mainGraph_g.screenShot()" class="btn btn-default tip main-shot" alt="screenShot"><i class="fa fa-camera"></i></button>
-                <button type="button" onclick="getTSNE()" class="btn btn-default tip main-shot" alt="t-sne"><i class="fa fa-magic"></i>&nbsp;t-sne</button>
+                <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 左
+                </button>
+                <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-center"></em> 中
+                </button>
+                <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-right"></em> 右
+                </button>
+                <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-justify"></em> 全
+                </button>
             </div>
-            <label class="range-inline range-sm left_interval" id="ralationTh">
-                ralationTh: <input type= 'range' name="" value=0><span class="range-value"></span>
-            </label>
-            <label class="range-inline range-sm left_interval" id="overlapTh">
-                overlapTh: <input type= 'range' name="" value=0><span class="range-value"></span>
-            </label>
+            <div class="btn-group left_interval">
+                <button class="btn btn-default">Action</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#">操作</a>
+                    </li>
+                    <li class="disabled">
+                        <a href="#">另一操作</a>
+                    </li>
+                    <li class="divider">
+                    </li>
+                    <li>
+                        <a href="#">其它</a>
+                    </li>
+                </ul>
+            </div>
             <label class="checkbox-inline left_interval">
-                 <input type="checkbox" id="inlineCheckbox1" value="similarToClose" checked=true onchange="layoutCheckClick(event)">similarToClose:
+                 <input type="checkbox" id="inlineCheckbox3" value="option3">checkbox:
             </label>
-            <label class="checkbox-inline left_interval">
-                <input type="checkbox" id="inlineCheckbox2" value="dragFixed" onchange="layoutCheckClick(event)">dragFixed:
+            <label class="radio-inline left_interval">
+               <input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" checked>radio1:
             </label>
-
-            <!--<label class="color-inline left_interval">-->
-            <!--color:<input type='color' value="#ff0000" oninput="input(event)">-->
-            <!--</label>-->
+            <label class="radio-inline">
+                <input type="radio" name="optionsRadiosinline" id="optionsRadios4"  value="option2">radio2:
+            </label>
+            <label class="color-inline left_interval">
+                color:<input type='color' value="#ff0000" oninput="input(event)">
+            </label>
+            <label class="range-inline range-sm left_interval" id="test">
+                range: <input type= 'range' value=0><span class="range-value"></span>
+            </label>
         </div>
     </div>
     <div class="row clearfix middle">
@@ -120,39 +140,31 @@
 
             </div>
     </div>
-</div>
-<div id="galleryOuter" class="gallery bottom-gallery">
-    <div class="gallery" style="overflow-x: scroll;overflow-y: scroll;">
-        <div id="galleryInner" style="height:100px; ">
-            <!--注意，不同的group的data-group一定不能一样，否则，相同group内部的item能拖动到对方肚子里-->
-            <!--<div id="g-mainGraph" class="gallery_group" data-group="mainGraph">-->
-            <!--<div class="gallery_group_title">标题</div>-->
-            <!--<div class="gallery_item">5</div>-->
-            <!--</div>-->
-            <!--<div class="gallery_group" data-group="group3">-->
-            <!--<div class="gallery_group_title">title</div>-->
-            <!--<div class="gallery_item">7</div>-->
-            <!--<div class="gallery_item">8</div>-->
-            <!--<div class="gallery_item">9</div>-->
-            <!--<div class="gallery_item">10</div>-->
-            <!--<div class="gallery_item">11</div>-->
-            <!--<div class="gallery_item">12</div>-->
-            <!--<div class="gallery_item">13</div>-->
-            <!--</div>-->
-            <!--<div class="gallery_item">7</div>-->
-            <!--<div class="gallery_item">8</div>-->
-            <!--<div class="gallery_item">9</div>-->
-            <!--<div class="gallery_item">10</div>-->
-            <!--<div class="gallery_item">11</div>-->
-            <!--<div class="gallery_item">12</div>-->
-            <!--<div class="gallery_item">13</div>-->
-            <!--<div class="gallery_item gallery_item_empty"></div>-->
+    <div class="row clearfix  bottom bottom-gallery">
+        <div class="col-md-1  col-xs-1 column full_height b-left">
+            <div class="btn-group-vertical full_width mygalleryCtl">
+                <span class="main-shot">mian graph history record</span>
+                <span class="simple-graph">Simple graph interaction record</span>
+                <button type="button" class="btn btn-default tip" onclick="gallery.zoomIn()" alt="zoomIn" ><i class="fa fa-compress"></i></button>
+                <button type="button" class="btn btn-default tip" onclick="gallery.zoomOut()" alt="zoomOut" ><i class="fa fa-expand"></i></button>
+                <button type="button" onclick="gallery.screenShot()" class="btn btn-default tip main-shot" alt="screenShot"><i class="fa fa-camera"></i></button>
+                <button type="button" onclick="gallery.recover()" class="btn btn-default tip main-shot" alt="recover"><i class="fa fa-upload"></i></button>
+                <button type="button" onclick="gallery.unify()" class="btn btn-default tip main-shot" alt="unify" ><i class="fa fa-th"></i></button>
+                <button type="button" onclick="gallery.allDelete()" class="btn btn-default tip main-shot" alt="delete all"><i class="fa fa-trash-o"></i></button>
+                <button type="button" onclick="gallery.allDelete()" class="btn btn-default tip simple-graph" alt="delete all"><i class="fa fa-trash-o"></i></button>
+                <button type="button" class="btn btn-default tip" onclick="galleryInfo()" alt="instruction" ><i class="fa fa-info"></i></button>
+                <button type="button" class="btn btn-default tip" onclick="galleryExchange()" alt="gallery show exchange" ><i class="fa fa-exchange"></i></button>
+            </div>
         </div>
-        <!--<div id="galleryIn" style="height:100px;width:10000px;background-color: #0b76ac"></div>-->
-        <span id="zoomCtl" class=" fa fa-chevron-up"></span>
-
+        <div class="col-md-11  col-xs-11 column full_height b-right">
+            <div id="i_gallery20" style="overflow-x: auto;height: 220px;width: 100%; ">
+                <div id="i_gallery" style="width: 10000px;
+            height: 200px;"></div>
+            </div>
+        </div>
     </div>
 </div>
+
 
 </body>
 <script >
@@ -163,19 +175,7 @@
         /*内容可自行定义*/
        // console.log($(target).attr("value"));
     }
-
-    var ralationThChg=_.debounce(function (target) {
-        // console.log($(target).attr("value"));
-        relationThreshold = target.value;
-        main_deepRedraw();
-    }, 200);
-    var overlapThChg=_.debounce(function (target) {
-        // console.log($(target).attr("value"));
-         overlapThreshold = target.value;
-        main_deepRedraw();
-    }, 200);
-    $('#ralationTh input[type=range]').RangeSlider({ min: 0,   max: 1,  step: 0.01,  callback: ralationThChg});
-    $('#overlapTh input[type=range]').RangeSlider({ min: 0,   max: 1,  step: 0.01,  callback: overlapThChg});
+    $('#test input[type=range]').RangeSlider({ min: 0,   max: 1,  step: 0.01,  callback: change});
 </script>
 
 
@@ -207,61 +207,26 @@
 //        ParaChart_size_update();
 //        tsne_size_update();
     }
-
-    var scrobarSize = 8; //宽和高
-    var gallery = {
-        height: ($("body").height()-layoutPara.top)*layoutPara.bottom -scrobarSize-10,
-        maxHeight: 600,
-        minHeight: ($("body").height()-layoutPara.top)*layoutPara.bottom -scrobarSize-10,
-        itemNum: 0,
-        groupNum: 0,  //这两个是通过插入，或删除新的item来更新的
-        item: {
-            height: 100,    //通过gallery 算出来的
-            margin: {top: 3, right: 3, bottom: 3, left: 3},
-            padding: 0,
-            borderWidth: 1,
-        },
-        group: {  //宽高有子元素撑开
-            margin: {left: 2, right: 2,}, //为了美观，上下都应该为0
-            padding_left: 50,
-        },
-
-    };
-    $("#galleryOuter").css("top",($("body").height()-layoutPara.top)*layoutPara.middle+layoutPara.top +8+"px");
-
-    var  gallery_resize= _.debounce(function () {  //缩放的时候，会进行回调
-        mainGraph_g.resize();
-        otherGraph_g.resize();
-        nodeDetail_g_resize(); //主要是nodeDetail的svg的缩放
-        }, 200);
-
-
-
-
-
 </script>
 <script src="./js/layoutCtl.js/"></script>
 <script src="./js/instructions.js"></script>
 <script src="./js/myCommon.js"></script>
 
-<script src="./js/otherSingleGraph/edgeScatter.js"></script>
-<script src="./js/otherSingleGraph/nodeDetail.js"></script>
-<script src="./js/otherSingleGraph/orderRelationMatrix.js"></script>
 <script src="./js/otherSingleGraph/paraBoxplot.js"></script>
-<script src="./js/otherSingleGraph/parallel.js"></script>
-<script src="./js/otherSingleGraph/t-sne.js"></script>
+<script src="./js/otherSingleGraph/orderRelationMatrix.js"></script>
+<script src="./js/otherSingleGraph/rightSingleScatter.js"></script>
 
 <script src="./js/mainGraph/mainRmenu.js"></script>
 <script src="./js/mainGraph/mainGraphRedraw.js"></script>
 <script src="./js/mainGraph/mainGraph.js"></script>
 <script src="./js/mainGraph/mainSet.js"></script>
 
-
+<script src="./js/otherSingleGraph/parallel.js"></script>
+<script src="./js/otherSingleGraph/t-sne.js"></script>
 
 <script src="./js/gallery/galleryInterface.js"></script>
-<script src="./js/gallery/gallery0.js"></script>
-<script src="./js/gallery/galleryUse.js"></script>
+<script src="./js/gallery/gallery.js"></script>
 <script src="./js/plug/alt_tip.js"></script>
-<script src="./js/plug/myEcharts.js"></script>
+
 
 </html>

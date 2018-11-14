@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="24bfa5b8-4c29-49f8-841a-775381089ac0" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/bootstrap-theme.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/bootstrap-theme.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/bootstrap-theme.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/bootstrap-theme.min.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/bootstrap.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/bootstrap.min.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/font-awesome.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/font-awesome.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/myToast.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/styles.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/css/toastr.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fonts/FontAwesome.otf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fonts/fontawesome-webfont.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fonts/fontawesome-webfont.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fonts/fontawesome-webfont.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fonts/fontawesome-webfont.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fonts/fontawesome-webfont.woff2" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fonts/glyphicons-halflings-regular.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fonts/glyphicons-halflings-regular.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fonts/glyphicons-halflings-regular.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fonts/glyphicons-halflings-regular.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fonts/glyphicons-halflings-regular.woff2" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/js/mainGraph/example.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/js/mainGraph/mainGraph.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/js/nodeDetail.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/js/nodeDetail.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/js/orderRelationMatrix.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/js/paraBoxplot.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/js/parallel.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/js/rightSingleScatter.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/js/scatterExample.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/js/t-sne.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/myData/car.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/myData/cars.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/myData/wine.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/myData/wine0.json" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/d3.parcoords.css" afterPath="$PROJECT_DIR$/css/d3.parcoords.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/gallery.css" afterPath="$PROJECT_DIR$/css/gallery.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/index.css" afterPath="$PROJECT_DIR$/css/index.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/mainGraph.css" afterPath="$PROJECT_DIR$/css/mainGraph.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/gallery/gallery.js" afterPath="$PROJECT_DIR$/js/gallery/gallery.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/mainGraph/mainGraph.js" afterPath="$PROJECT_DIR$/js/mainGraph/mainGraph.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/mainGraph/mainGraphRedraw.js" afterPath="$PROJECT_DIR$/js/mainGraph/mainGraphRedraw.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/d3.parcoords.js" afterPath="$PROJECT_DIR$/lib/d3.parcoords.js" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="index1.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index1.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3211">
+              <caret line="170" column="10" lean-forward="false" selection-start-line="170" selection-start-column="10" selection-end-line="170" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="gallery.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/gallery/gallery.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="969">
+              <caret line="261" column="54" lean-forward="true" selection-start-line="261" selection-start-column="54" selection-end-line="261" selection-end-column="54" />
+              <folding>
+                <marker date="1541517791346" expanded="true" signature="880:927" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="939:956" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="12740:12912" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="12980:13013" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="13173:13267" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="13367:13374" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="13367:13444" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="13466:13496" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="14896:15068" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="15136:15169" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="15267:15279" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="15461:15555" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="24769:24782" ph="..." />
+                <marker date="1541517791346" expanded="true" signature="24961:24974" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="myEcharts.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/plug/myEcharts.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="19">
+              <caret line="1" column="25" lean-forward="false" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="t-sne.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/t-sne.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="361">
+              <caret line="19" column="25" lean-forward="false" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="paraBoxplot.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/paraBoxplot.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="152">
+              <caret line="8" column="20" lean-forward="false" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="nodeDetail.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/nodeDetail.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3857">
+              <caret line="203" column="0" lean-forward="false" selection-start-line="203" selection-start-column="0" selection-end-line="203" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="myCommon.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/myCommon.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="11" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="edgeScatter.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/edgeScatter.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="19">
+              <caret line="1" column="29" lean-forward="false" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="alt_tip.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/plug/alt_tip.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="266">
+              <caret line="14" column="3" lean-forward="true" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="layui_myskin.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/css/layui_myskin.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="475">
+              <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>middle</find>
+      <find>f3f3f3</find>
+      <find>$selector</find>
+      <find>id</find>
+      <find>NodeDetailScatterData</find>
+      <find>nodeDetailPara</find>
+      <find>axsersData</find>
+      <find>nodeDetailColor</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>data</replace>
+      <replace>f0f0f0</replace>
+      <replace>nodeDetailPara</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/css/index.css" />
+        <option value="$PROJECT_DIR$/index1.html" />
+        <option value="$PROJECT_DIR$/css/gallery.css" />
+        <option value="$PROJECT_DIR$/js/layoutCtl.js" />
+        <option value="$PROJECT_DIR$/css/layui_myskin.css" />
+        <option value="$PROJECT_DIR$/js/plug/alt_tip.js" />
+        <option value="$PROJECT_DIR$/js/plug/myEcharts.js" />
+        <option value="$PROJECT_DIR$/js/gallery/gallery.js" />
+        <option value="$PROJECT_DIR$/js/otherSingleGraph/t-sne.js" />
+        <option value="$PROJECT_DIR$/js/otherSingleGraph/nodeDetail.js" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="414" />
+    <option name="y" value="120" />
+    <option name="width" value="1934" />
+    <option name="height" value="782" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="fund" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fund" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="24bfa5b8-4c29-49f8-841a-775381089ac0" name="Default" comment="" />
+      <created>1541503246607</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1541503246607</updated>
+      <workItem from="1541503248371" duration="11848000" />
+      <workItem from="1541575148828" duration="462000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="12310000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="414" y="120" width="1934" height="782" extended-state="0" />
+    <layout>
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25026068" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/index1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3211">
+          <caret line="170" column="10" lean-forward="false" selection-start-line="170" selection-start-column="10" selection-end-line="170" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/plug/myEcharts.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="25" lean-forward="false" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/t-sne.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="19" column="25" lean-forward="true" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/paraBoxplot.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="20" lean-forward="true" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/nodeDetail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3857">
+          <caret line="203" column="0" lean-forward="true" selection-start-line="203" selection-start-column="0" selection-end-line="203" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/myCommon.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="11" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/edgeScatter.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="29" lean-forward="false" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/plug/alt_tip.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="14" column="3" lean-forward="true" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/layui_myskin.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/gallery/gallery.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4237">
+          <caret line="223" column="6" lean-forward="true" selection-start-line="223" selection-start-column="6" selection-end-line="223" selection-end-column="6" />
+          <folding>
+            <marker date="1541517791346" expanded="true" signature="880:927" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="939:956" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="12740:12912" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="12980:13013" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="13173:13267" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="13367:13374" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="13367:13444" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="13466:13496" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="14896:15068" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="15136:15169" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="15267:15279" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="15461:15555" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="24769:24782" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="24961:24974" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="22" column="47" lean-forward="true" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="59" column="1" lean-forward="true" selection-start-line="59" selection-start-column="1" selection-end-line="59" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/gallery.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="854">
+          <caret line="65" column="19" lean-forward="false" selection-start-line="65" selection-start-column="19" selection-end-line="65" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/layoutCtl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="17" column="30" lean-forward="false" selection-start-line="17" selection-start-column="30" selection-end-line="17" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/instructions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1541488456900" expanded="true" signature="95:99" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="128:132" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="132:136" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="201:205" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="205:209" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="266:270" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="298:302" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="302:306" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="388:392" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="392:396" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="820:824" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="852:856" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="856:860" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="907:911" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="911:915" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="1338:1342" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="1392:1396" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="1484:1488" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="1518:1522" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="1522:1526" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="1603:1607" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="1607:1611" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="1681:1685" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="1713:1717" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="1717:1721" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="1810:1814" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="1814:1818" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="2224:2228" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="2289:2293" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="2323:2327" ph="..." />
+            <marker date="1541488456900" expanded="true" signature="2327:2331" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/layui_myskin.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/plug/alt_tip.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="14" column="3" lean-forward="true" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/webstorm.jar!/resources/html5-schema/html5/core-scripting.rnc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="218" column="18" lean-forward="false" selection-start-line="218" selection-start-column="18" selection-end-line="218" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/rightSingleScatter.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/edgeScatter.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="29" lean-forward="false" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3211">
+          <caret line="170" column="10" lean-forward="false" selection-start-line="170" selection-start-column="10" selection-end-line="170" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/plug/myEcharts.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="25" lean-forward="false" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/t-sne.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="19" column="25" lean-forward="false" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/myCommon.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="11" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/paraBoxplot.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="20" lean-forward="false" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/otherSingleGraph/nodeDetail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3857">
+          <caret line="203" column="0" lean-forward="false" selection-start-line="203" selection-start-column="0" selection-end-line="203" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/gallery/gallery.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="261" column="54" lean-forward="true" selection-start-line="261" selection-start-column="54" selection-end-line="261" selection-end-column="54" />
+          <folding>
+            <marker date="1541517791346" expanded="true" signature="880:927" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="939:956" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="12740:12912" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="12980:13013" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="13173:13267" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="13367:13374" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="13367:13444" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="13466:13496" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="14896:15068" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="15136:15169" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="15267:15279" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="15461:15555" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="24769:24782" ph="..." />
+            <marker date="1541517791346" expanded="true" signature="24961:24974" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

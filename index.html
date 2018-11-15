@@ -70,7 +70,7 @@
     <div class="row clearfix top">
         <div class="col-md-12 column">
                 <span class="text-left tip" style="margin: 0px 20px 0px 10px; cursor:default" alt="这是一个高维数据分析系统">
-                    <span style="border-radius: 20%;background-color: #d2f7bf">HDgraph</span>
+                    <span style="border-radius: 20%;">HDgraph</span>
                     <img src="./favicon.png" style="width: 26px;height: 26px"/>
                 </span>
             <button class="btn btn-default left_interval" onclick="mainSet(event)"><i class="fa fa-cog"></i>&nbspset</button>
@@ -110,46 +110,58 @@
                 </div>
             </div>
             <div class="col-md-5 col-xs-5 column full_height m-right">
-                <div class="full_width m-rt">
-                    <div id="orderRalation" class="blowUp">
-                        <svg id="orderRelationMatrix"></svg>
+                <div class="blowUp" style="padding-left: 20px">
+                    <div id="myMiddleTabCon" class="tab-content blowUp" >
+                        <div class="tab-pane fade in active blowUp" id="myMiddleTabCon1">
+
+                        </div>
+                        <div class="tab-pane fade in  blowUp" id="myMiddleTabCon2">
+                            <div id="orderRalation" class="blowUp">
+                                <svg id="orderRelationMatrix"></svg>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade blowUp" id="myMiddleTabCon3">
+                            <div class="blowUp" id="parallelId">
+                                <div id="parallel" class="parcoords blowUp" class="blowUp"></div>
+                            <!--<div id="parallel_table"></div>  注意一下高度-->
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="full_width m-rb">
-                    <div class="blowUp" id="parallelId">
-                        <div id="parallel" class="parcoords blowUp" class="blowUp"></div>
-                        <!--<div id="parallel_table"></div>  注意一下高度-->
-                    </div>
-                </div>
+                <ul id="myMiddleTab" class="btn-group">
+                    <li class="btn btn-default  active"><a href="#myMiddleTabCon1" data-toggle="tab">
+                        message</a>
+                    </li>
+                    <li class="btn btn-default"><a href="#myMiddleTabCon2" data-toggle="tab">
+                        correlation matrix</a>
+                    </li>
+                    <li class=" btn btn-default"><a href="#myMiddleTabCon3" data-toggle="tab">parallel axis</a></li>
+                </ul>
+                <!--<div class="full_width m-rt">-->
+                    <!--<div id="orderRalation" class="blowUp">-->
+                        <!--<svg id="orderRelationMatrix"></svg>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="full_width m-rb">-->
+                    <!--<div class="blowUp" id="parallelId">-->
+                        <!--<div id="parallel" class="parcoords blowUp" class="blowUp"></div>-->
+                        <!--&lt;!&ndash;<div id="parallel_table"></div>  注意一下高度&ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
 
             </div>
     </div>
 </div>
 <div id="galleryOuter" class="gallery bottom-gallery">
-    <div class="gallery" style="overflow-x: scroll;overflow-y: scroll;">
+    <button type="button" id="gallery-left" onclick="g_scrollLeft(event)" class="btn btn-default " ><i class="fa fa-caret-left"></i></button>
+    <button type="button"  id="gallery-right" onclick="g_scrollRight(event)" class="btn btn-default " ><i class="fa fa-caret-right"></i></button>
+    <div class="gallery" style="overflow-x: scroll;overflow-y: hidden;">
         <div id="galleryInner" style="height:100px; ">
             <!--注意，不同的group的data-group一定不能一样，否则，相同group内部的item能拖动到对方肚子里-->
             <!--<div id="g-mainGraph" class="gallery_group" data-group="mainGraph">-->
             <!--<div class="gallery_group_title">标题</div>-->
             <!--<div class="gallery_item">5</div>-->
             <!--</div>-->
-            <!--<div class="gallery_group" data-group="group3">-->
-            <!--<div class="gallery_group_title">title</div>-->
-            <!--<div class="gallery_item">7</div>-->
-            <!--<div class="gallery_item">8</div>-->
-            <!--<div class="gallery_item">9</div>-->
-            <!--<div class="gallery_item">10</div>-->
-            <!--<div class="gallery_item">11</div>-->
-            <!--<div class="gallery_item">12</div>-->
-            <!--<div class="gallery_item">13</div>-->
-            <!--</div>-->
-            <!--<div class="gallery_item">7</div>-->
-            <!--<div class="gallery_item">8</div>-->
-            <!--<div class="gallery_item">9</div>-->
-            <!--<div class="gallery_item">10</div>-->
-            <!--<div class="gallery_item">11</div>-->
-            <!--<div class="gallery_item">12</div>-->
-            <!--<div class="gallery_item">13</div>-->
             <!--<div class="gallery_item gallery_item_empty"></div>-->
         </div>
         <!--<div id="galleryIn" style="height:100px;width:10000px;background-color: #0b76ac"></div>-->
@@ -215,9 +227,9 @@
 
     var scrobarSize = 8; //宽和高
     var gallery = {
-        height: ($("body").height()-layoutPara.top)*layoutPara.bottom -scrobarSize-10,
+        height: ($("body").height()-layoutPara.top)*layoutPara.bottom -scrobarSize,
         maxHeight: 600,
-        minHeight: ($("body").height()-layoutPara.top)*layoutPara.bottom -scrobarSize-10,
+        minHeight: ($("body").height()-layoutPara.top)*layoutPara.bottom -scrobarSize,
         itemNum: 0,
         groupNum: 0,  //这两个是通过插入，或删除新的item来更新的
         item: {
@@ -233,7 +245,7 @@
 
 
     };
-    $("#galleryOuter").css("top",($("body").height()-layoutPara.top)*layoutPara.middle+layoutPara.top +8+"px");
+    $("#galleryOuter").css("top",($("body").height()-layoutPara.top)*layoutPara.middle+layoutPara.top +"px");
 
     var  gallery_resize= _.debounce(function () {  //缩放的时候，会进行回调
         mainGraph_g.resize();

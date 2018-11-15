@@ -350,7 +350,7 @@ function redraw_nodeDetail(para){
 
                 NodeDetailScatterData.push({value:[xValue, yValue] ,
                     trueValue:dataScatter[i][0],
-                    itemStyle:{color:'#000',},
+                    itemStyle:{color:'#222',},
                     class:dataScatter[i][1],
                     dataName:dataScatter[i][2]
                 })
@@ -359,7 +359,7 @@ function redraw_nodeDetail(para){
                 NodeDetailScatterData.push({
                     value: [xValue, yValue],
                     trueValue: dataScatter[i][0],
-                    itemStyle: {color: color20(dataScatter[i][1]),},
+                    //itemStyle: {color: color20(dataScatter[i][1]),},  从全局调色盘获取颜色
                     class: dataScatter[i][1],
                     dataName:dataScatter[i][2]
                 });
@@ -392,7 +392,7 @@ function redraw_nodeDetail(para){
     }
 
 }
-var nodeDetail_g_resize;
+var nodeDetail_g_resize=function(){};
 
 var variance = function(numbers) {
     var mean = 0;

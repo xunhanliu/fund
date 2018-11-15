@@ -13,6 +13,9 @@
 #orderRelationMatrix .active{
     fill: #f00 !important;
 }
+#orderRelationMatrix text{
+    cursor: default;
+}
 
 /*#orderRelationMatrix .ocks-org body {*/
     /*background: #fcfcfa;*/

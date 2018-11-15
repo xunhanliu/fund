@@ -3,9 +3,21 @@
     border:1px #fff solid ;
     border-radius: 3px;
     white-space: nowrap;
+    cursor: pointer;
     /*overflow: hidden;*/
     /*text-overflow: ellipsis;*/
+    border-bottom: 1px solid #00000063;
+    margin: 1px 0;
+    padding: 0 4px;
 }
+
+#main_legend li span{
+    margin-right: 2px;
+    display: inline-block;
+    height: 11px;
+    width: 11px;
+}
+
 
 
 #mainGraph circle:hover{
@@ -36,7 +48,7 @@
 
 #mainGraph .g-main .back,#i_gallery .g-main .back{
 
-    fill:#bbb !important;
+   /*// fill:#bbb !important;*/
 }
 /*初始circle*/
 #mainGraph  circle {
@@ -66,6 +78,4 @@
     cursor:default ;
 }
 
-.graph-legend{
-    cursor: pointer;
-}
+

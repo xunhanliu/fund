@@ -1,7 +1,9 @@
 var showMatrix={};
-var margin_orderRelation = {top: 80, right: 60, bottom: 5, left: 80};
-var  width_orderRelation=height_orderRelation = Math.min( Math.floor( $("#orderRalation").width())- margin_orderRelation.left - margin_orderRelation.right,
-     Math.floor($("#orderRalation").height())-margin_orderRelation.top - margin_orderRelation.bottom);
+var rowTitleRotation=0;
+var colTitleRotation=45;
+var margin_orderRelation = {top: 60, right: 60, bottom: 5, left: 80};
+var  width_orderRelation=height_orderRelation = Math.min( Math.floor( $("#myMiddleTabCon").find(".active").width())- margin_orderRelation.left - margin_orderRelation.right,
+     Math.floor($("#myMiddleTabCon").find(".active").height())-margin_orderRelation.top - margin_orderRelation.bottom);
 
 var x_orderRelation = d3.scale.ordinal().rangeBands([0, width_orderRelation]),
     y_orderRelation = d3.scale.ordinal().rangeBands([0, width_orderRelation]),
@@ -176,6 +178,8 @@ function getorderRelationMatrixSuccess(data){
             return "matrixText_"+nodes[i].name.replace(/[\W]/g,'_');
         })
         .style("fill", function(d,i) { return color20( nodes[i].group ); })
+        .attr("transform", "rotate(" + rowTitleRotation + ")")
+        .on("wheel", rotateRowLabels);
     ;
 
     var column = svg_orderRelation.selectAll(".column")
@@ -197,6 +201,8 @@ function getorderRelationMatrixSuccess(data){
             return "matrixText_"+nodes[i].name.replace(/[\W]/g,'_');
         })
         .style("fill", function(d,i) { return color20( nodes[i].group ); })
+        .attr("transform", "rotate(" + colTitleRotation + ")")
+        .on("wheel", rotateColLabels);
     ;
 //提示文字
 
@@ -327,22 +333,22 @@ function legendInit(){
     legend
         .append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#080")
+        .attr("stop-color", colorMapCooperateOpacity(1))
         .attr("stop-opacity", 1);
     legend
         .append("stop")
         .attr("offset", "50%")
-        .attr("stop-color", "#080")
+        .attr("stop-color", colorMapCooperateOpacity(1))
         .attr("stop-opacity", 0);
     legend
         .append("stop")
         .attr("offset", "50.1%")
-        .attr("stop-color", "#c00")
+        .attr("stop-color", colorMapCooperateOpacity(-1))
         .attr("stop-opacity", 0);
     legend
         .append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "#c00")
+        .attr("stop-color", colorMapCooperateOpacity(-1))
         .attr("stop-opacity", 1);
 
     key.append("rect")
@@ -368,7 +374,25 @@ legendInit();
 
 
 
-
+//.on("wheel", rotateLabels);
+function rotateRowLabels(){
+    var delta = d3.event.deltaY;
+    delta = delta < 0 ? -5 : delta;
+    delta = delta > 0 ? 5 : delta;
+    rowTitleRotation += delta;
+    d3.select("#orderRalation").selectAll(".row").select("text")
+        .attr("transform", "rotate(" + rowTitleRotation + ")");
+    d3.event.preventDefault();
+}
+function rotateColLabels(){
+    var delta = d3.event.deltaY;
+    delta = delta < 0 ? -5 : delta;
+    delta = delta > 0 ? 5 : delta;
+    colTitleRotation += delta;
+    d3.select("#orderRalation").selectAll(".column").select("text")
+        .attr("transform", "rotate(" + colTitleRotation + ")");
+    d3.event.preventDefault();
+}
 
 
 

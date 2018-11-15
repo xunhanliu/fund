@@ -17,7 +17,7 @@
 .gallery_group {
     float: left;
     padding-left: 50px;
-    background-color: #110761;
+    background-color: #4c4586;
     display: inline-block;
     border-radius: 5px;
     position: relative;
@@ -26,15 +26,29 @@
 #galleryOuter {
     position: absolute;
     top: 400px;
-
+    padding: 0 19px;
 }
 
 .gallery {
     height: 100px;
+    /*margin: 0 40px;*/
     width: 100%;
-    background-color: #9c9c9c;
+    background-color: #e8e8e8;
 }
-
+#galleryOuter #gallery-left{
+    position: absolute;
+    left: 0;
+    height:100%;
+    background-color:#d2d2d2;
+    border-radius: 0;
+}
+#galleryOuter #gallery-right{
+    position: absolute;
+    right: 0;
+    height:100%;
+    background-color:#d2d2d2;
+    border-radius: 0;
+}
 * {
     margin: 0px;
 }

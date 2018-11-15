@@ -1,4 +1,46 @@
-var color20 = d3.scale.category20();
+// var color20 = d3.scale.category20();
+var cc=[  //36
+    "#b6b6b4",
+    "#dbdddc",
+    "#0ed4e8",
+    "#1ca4ff",
+    "#318bae",
+    "#ece1a9",
+    "#eebf5a",
+    "#b48976",
+    "#e2a2a0",
+    "#fcd4d4",
+    "#698392",
+    "#8e8586",
+    "#6b914c",
+    "#559183",
+    "#5b7e91",
+    "#57a2a3",
+    "#6284a0",
+    "#8492c3",
+    "#5e72a8",
+    "#495aa2",
+    "#5144ab",
+    "#6841ac",
+    "#6c3aa6",
+    '#82499a',
+    "#8d52aa",
+    "#aa4da7",
+    "#aa4983",
+    "#aa4965",
+    "#aa4752",
+    "#aa6547",
+    "#aa8a5a",
+    "#aaa350",
+    "#97aa5f",
+    "#72aa5e",
+    "#64aa97",
+    "#9eccc4",
+
+];
+var color20=function(d){
+    return cc[d%36];
+}
 
 var myColorScheme={
     diff:{
@@ -101,7 +143,7 @@ function bzMap(whichStr,x) {  //返回相应点的映射
 var colorMap =function(d){
     var myMap=d3.scale.linear()
         .domain([-1, 0, 1])
-        .range(["red", "white", "green"]);
+        .range(["red", "white", "blue"]);
     if(d>=0){
         return myMap(bzMap("opacity",d));
     }else{
@@ -114,10 +156,10 @@ var opacityMap =function(d){
 }
 var colorMapCooperateOpacity =function(d){
     if(d>=0){
-        return "#080";
+        return '#001852';  //正
     }
     else{
-        return "#c00";
+        return '#e01f54';
     }
 }
 

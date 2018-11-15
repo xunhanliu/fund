@@ -1,5 +1,12 @@
 // var groupID= [ "mainGraphGroup",'edgeScatter','nodeDetail','paraBoxplot','t-sne']
 
+function g_scrollLeft(ev){
+    ev.target.parentElement.lastElementChild.scrollLeft-=mainGraph_g.lastHeight;
+}
+function g_scrollRight(ev){
+    ev.target.parentElement.lastElementChild.scrollLeft+=mainGraph_g.lastHeight;
+}
+
 var otherGraph_g={
     index:0,
     groupID:['edgeScatter','nodeDetail','paraBoxplot','t-sne'],

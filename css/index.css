@@ -15,6 +15,9 @@ html,body{
 .btn{
     padding: 3px 6px;
 }
+.top .btn{
+    background-color: #9189ff;
+}
 .radio-inline, .checkbox-inline, .color-inline,.range-inline{
     position: relative;
     display: inline-block;
@@ -45,7 +48,7 @@ html,body{
 
 
 .top{
-    background-color: #f8f8f4;
+    background-color: #655de073;
     border-radius: 10px 10px 0 0;
     border: solid 1px #e4e4e4;
     padding: 8px;
@@ -58,13 +61,14 @@ html,body{
     background-color: #fff;
     position: relative;
     z-index: 2;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid #7d7d7d
 }
 
 .middle .m-left{
     /*background-color: #0a6cd6;*/
     border: solid 1px #f0f0f0;
     overflow: auto;
+    padding: 0;
 }
 .middle .m-center{
     /*background-color: #0a2b1d;*/
@@ -85,7 +89,7 @@ html,body{
   }
 
 .bottom-gallery{
-    border: solid 1px #b1a5a5;
+    border-top: 1px solid #7d7d7d;
     background-color: #fff;
     position: absolute;
     width: 100%;
@@ -214,4 +218,29 @@ body {
 #parallel_table .col-0 { width: 180px; }
 #parallel_table .row:hover{
     background: #0a6cd6;
+}
+
+
+.dg.main .close-button{
+    background-color: #989898 !important;
+    color:#fff !important;
+}
+.dg.main .close-button:hover{
+    background-color: #3e3e3e !important;
+}
+#myMiddleTab{
+    height: 100%;
+    width: 26px;
+    top:0;
+    left:0;
+    position: absolute;
+    writing-mode: vertical-lr;
+    background: linear-gradient(to right, #d2d2d2,#fff);
+
+}
+#myMiddleTab li{
+    transform:rotate(180deg);
+    margin: 0;
+    padding: 15px 1px;
+    border-radius: 0;
 }

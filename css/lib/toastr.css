@@ -97,6 +97,7 @@ button.toast-close-button {
   position: fixed;
   z-index: 999999;
   pointer-events: none;
+  top:10px;
   /*overrides*/
 }
 #toast-container * {
@@ -167,15 +168,23 @@ button.toast-close-button {
 }
 .toast-success {
   background-color: #51A351;
+  padding-top:5px!important;
+  padding-bottom: 5px!important;
 }
 .toast-error {
   background-color: #BD362F;
+  padding-top:5px!important;
+  padding-bottom: 5px!important;
 }
 .toast-info {
   background-color: #2F96B4;
+  padding-top:5px!important;
+  padding-bottom: 5px!important;
 }
 .toast-warning {
   background-color: #F89406;
+  padding-top:5px!important;
+  padding-bottom: 5px!important;
 }
 .toast-progress {
   position: absolute;

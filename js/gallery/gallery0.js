@@ -58,6 +58,8 @@ gallery['new']=function(groupId,title="",otherCtlHtml,attr=""){
     for (i in attr){
         $(newEle).attr(i,attr[i]);
     }
+    //scroll
+    $groupId[0].parentElement.parentElement.scrollLeft=$groupId[0].offsetLeft-25;
     return newEle;
 }
 gallery["delete"]=function(ele){  //group 或者item

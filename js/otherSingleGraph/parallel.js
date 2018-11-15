@@ -1,21 +1,23 @@
 //getTabs1ActiveID();
-var parallel_width= Math.floor( $("#parallel").width());
-var parallel_height=Math.floor( $("#parallel").height());
+// var parallel_width= Math.floor( $("#parallel").width());
+// var parallel_height=Math.floor( $("#parallel").height());
 
-var blue_to_brown = d3.scale.linear()
-    .domain([9, 50])
-    .range(["steelblue", "brown"])
-    .interpolate(d3.interpolateLab);
-
-var parallel_color = function(d) { return blue_to_brown(d['economy (mpg)']); };
-var example_color = function(d) { return blue_to_brown(d['A']); };
+var parallel_width= Math.floor($("#myMiddleTabCon").find(".active").width());
+var parallel_height= Math.floor($("#myMiddleTabCon").find(".active").height());
+// var blue_to_brown = d3.scale.linear()
+//     .domain([9, 50])
+//     .range(["steelblue", "brown"])
+//     .interpolate(d3.interpolateLab);
+// //d3v4.interpolatePlasma(0)
+// var parallel_color = function(d) { return blue_to_brown(d['economy (mpg)']); };
+// var example_color = function(d) { return blue_to_brown(d['A']); };
 var parcoords = d3.parcoords()("#parallel")
-    .color(parallel_color)
+    //.color(parallel_color)
     .alpha(0.4)
     .mode("queue")
     .height(parallel_height)
     .width(parallel_width)
-    .margin({ top: 40, left: 5, bottom: 12, right: 5 })
+    .margin({ top: 40, left: 10, bottom: 40, right: 5 })
 ;
 function externalRefreshParallel(){
     showToast('info',"数据获取中。。。");
@@ -23,15 +25,23 @@ function externalRefreshParallel(){
         showToast('success',"获取成功");
         parcoords
             .data(data)
-            .hideAxis(["name"])
-            .color(example_color)
+            .dimensions(d3.keys(data[0]))
+           // .hideAxis(["name"])
+            //.color(example_color)
+            .composite("darken")
             .alpha(0.4)
-            .render()
             .reorderable()
+            .render()
+            .updateAxes()
             .brushMode("1D-axes");  // enable brushing
-
         var column_keys = d3.keys(data[0]);//注意把隐藏的轴删掉
         freshParallelGUI(column_keys);
+
+        change_color(column_keys[0]);
+        parcoords.svg.selectAll(".dimension")
+            .on("click", change_color)
+            .selectAll(".label")
+            .style("font-size", "14px");
     }});
 }
 // load csv file and create the chart
@@ -39,16 +49,75 @@ d3.csv('./data/cars.csv', function(data) {
     parcoords
         .data(data)
         .hideAxis(["name"])
+        .composite("darken")
         .render()
         .reorderable()
+        .createAxes()
         .brushMode("1D-axes");  // enable brushing
 
 
     var column_keys = d3.keys(data[0]);//注意把隐藏的轴删掉
+    column_keys=delListSpacialValue(column_keys,"name");
+    freshParallelGUI(column_keys);
 
-    freshParallelGUI(delListSpacialValue(column_keys,"name"));
+    change_color(column_keys[0]);
+    parcoords.svg.selectAll(".dimension")
+        .on("click", change_color)
+        .selectAll(".label")
+        .style("font-size", "14px");
 
 });
+
+//color
+// var zcolorscale = d3.scale.linear()
+//     .domain([-2,-0.5,0.5,2])
+//     .range(["brown", "#999", "#999", "steelblue"])
+//     .interpolate(d3.interpolateLab);
+
+
+//  var colorInterpolateNum= d3.scale.linear()
+//     .domain([-2,2])
+//     .range([0,cc.length-1]);
+//
+// var zcolorscale=function(d){
+//     //return d3v4.interpolatePlasma(colorInterpolateNum(d));
+//
+//    //  var a=colorInterpolateNum(d)%16
+//    //  if(a<0){
+//    //      return cc[Math.floor(-a)];
+//    //  }
+//    //  return cc[Math.floor(a)];
+// }
+
+ var zcolorscale = d3.scale.linear()
+        .domain([-2,0, 2])
+        .range([colorMapCooperateOpacity(-1),'white',colorMapCooperateOpacity(1)])
+        .interpolate(d3.interpolateLab);
+
+function change_color(dimension) {
+    parcoords.svg.selectAll(".dimension")
+        .style("font-weight", "normal")
+        .filter(function(d) { return d == dimension; })
+        .style("font-weight", "bold")
+
+    parcoords.color(zcolor(parcoords.data(),dimension)).render()
+}
+
+// return color function based on plot and dimension
+function zcolor(col, dimension) {
+    var z = zscore(_(col).pluck(dimension).map(parseFloat).filter(function(value) { return !Number.isNaN(value) }))
+    return function(d) { return zcolorscale(z(d[dimension])) }
+};
+
+// color by zscore
+function zscore(col) {
+    var n = col.length,
+        mean = _(col).mean(),
+        sigma = _(col).stdDeviation();
+    return function(d) {
+        return (d-mean)/sigma;
+    };
+};
 
 function delListSpacialValue(slist,value){
     for (var i in slist){
@@ -133,10 +202,6 @@ function freshParallelGUI(keyList)
     gui_parallel.close();
 }
 
-var paralle_onChange={
-
-
-}
 var paralle_onFinishChange={
     changeSmooth: function (value) {
         parcoords.smoothness(value).render();

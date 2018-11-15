@@ -49,7 +49,9 @@ function legend_redraw(nodes){
     str="";
     nodes.forEach(function (d,i) {
         var id="main_" + d.name.replace(/[\W]/g, '_');
-        str+='<li  class="graph-legend" onmouseover="legendOver(\''+ id+'\')"  onmouseout="legendOut(\''+id+'\')" style="background-color:'+ myColorScheme[myColorScheme.scheme].color(d.group)+'">'+d.name+'</li>'
+        str+='<li  class="graph-legend" onmouseover="legendOver(\''+ id+'\')"  onmouseout="legendOut(\''+id+'\')" '+
+            '><span  style="background-color:'+ myColorScheme[myColorScheme.scheme].color(d.group)+'"></span>'+
+            d.name+'</li>'
     });
     // for(var i=0;i<50;i++)
     // {
@@ -162,11 +164,13 @@ function main_redraw(graph) {
     var rect = gMain.append('rect')
         .attr('width', parentWidth)
         .attr('height', parentHeight)
-        .style('fill', 'white')
+        .style('fill', '#fff')
        // .attr('class', 'back') //背景
 
     var gDraw = gMain.append('g')
-        .classed('g-zoom', true);
+        .classed('g-zoom', true)
+        .attr("transform","translate(81.02335954868718,52.56343257833703) scale(0.5743491774985174)")
+    ;
 //zoom
      var zoom = d3v4.zoom().scaleExtent([0.3, 3])
         .on('zoom', zoomed).on("end",zoomEnd);

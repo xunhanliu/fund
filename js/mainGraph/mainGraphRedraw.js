@@ -87,7 +87,27 @@ function legendOut(id){
     FireEvent(document.getElementById(id), 'mouseout')
     //d3.selectAll("#"+id).dispatch('mouseout');
 }
-
+var lastSel=function(){
+        //重现上一次的选择
+        d3v4.select("#mainGraph .gnode").selectAll(".node").each(function(d) {
+            if( isInArray(lastSelPoint,d.name.split(',')[0])!=-1)
+            {
+                if(d.name.split(',')[2]==0)
+                {
+                    d.selected = true;
+                    d.previouslySelected = true;
+                    d3v4.select(this).classed("selected", true);
+                }
+            }
+        });
+        //把上一次的选择，与现有的选择叠加
+    for(var i in lastSelPoint){
+        if( isInArray(selectPoint,lastSelPoint[i])==-1)  //selectPoint中没有
+        {
+            selectPoint.push(lastSelPoint[i])
+        }
+    }
+};
 function main_redraw(graph) {
     // if both d3v3 and d3v4 are loaded, we'll assume
     // that d3v4 is called d3v4, otherwise we'll assume
@@ -199,13 +219,20 @@ function main_redraw(graph) {
         .style('fill', 'white')
         .attr('class', 'back')
         .on('click', () => {
+            reSelectPoint();  //重新记录上一次的选择
             node.each(function(d) {
                 d.selected = false;
                 d.previouslySelected = false;
             });
             node.classed("selected", false);
+            if(selectPoint.length>=2)
+            {
+                lastSelPoint=selectPoint;
+            }
+            selectPoint=[];
+           // reSelectPoint();
         })
-    ;
+
     var gBrushHolder = gDraw.append('g');
 
     var gBrush = null;
@@ -508,6 +535,9 @@ function main_redraw(graph) {
                 }
             })
         }
+        else{
+            selectPoint=[];
+        }
     }
 
 
@@ -615,6 +645,31 @@ function main_redraw(graph) {
 
     node.on("contextmenu", function (node) {
         whichNodeClick = node;
+        var $pointRmenu=$("#mainRmenu");
+        $pointRmenu.children().remove();
+        if(selectPoint.length>=2)
+        {
+            $pointRmenu.append(
+                    '    <li><span onclick="mainRmenuClick(this)">cluster</span></li>' +
+                    '    <hr size="1px" noshade=true>' +
+                    '    <li><span onclick="mainRmenuClick(this)">kick point</span></li>' +
+                    '    <hr size="1px" noshade=true>' +
+                    '    <li><span onclick="mainRmenuClick(this)">cluster(sel)</span></li>'+
+                    '    <hr size="1px" noshade=true>' +
+                    '    <li><span onclick="getTSNE()">t-sne(sel)</span></li>'+
+                    '    <hr size="1px" noshade=true>' +
+                    '    <li><span onclick="externalRefreshParallel()">parallel(sel)</span></li>'
+                );
+        }
+        else {
+            $pointRmenu.append(
+                '    <li><span onclick="mainRmenuClick(this)">cluster</span></li>' +
+                '    <hr size="1px" noshade=true>' +
+                '    <li><span onclick="mainRmenuClick(this)">kick point</span></li>'
+            );
+        }
+
+
         return contextmenu("mainRmenu");
     })
         .on("click", function (node) {

@@ -2,7 +2,18 @@
 
 function getTSNE(){
     showToast('info',"tsne 获取中。。");
-    $.ajax({url:mylocalURL+"getTSNE",type: "POST",data:{"galleryIndex":0,"perplexity": 50},success:function(result){
+    $.ajax({url:mylocalURL+"getTSNE",type: "POST",data:{"galleryIndex":0,tsnePara: JSON.stringify({"perplexity": 50,nameList:selectPoint})},success:function(result){
+        //result
+        showToast('success',"tsne获取成功");
+        tsneData=result;
+        //tsenRefreshData(result);
+        otherGraph_g.new('t-sne',tsneData)
+    }});
+}
+
+function getAllTSNE(){
+    showToast('info',"tsne 获取中。。");
+    $.ajax({url:mylocalURL+"getTSNE",type: "POST",data:{"galleryIndex":0,tsnePara: JSON.stringify({"perplexity": 50,nameList:[]})},success:function(result){
         //result
         showToast('success',"tsne获取成功");
         tsneData=result;

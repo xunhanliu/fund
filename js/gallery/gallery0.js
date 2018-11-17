@@ -23,7 +23,7 @@ gallery['new']=function(groupId,title="",otherCtlHtml,attr=""){
     }
     //更新gallery的宽度
     updateGalleryInnerWidth();
-    while($(".gallery_item").length!=gallery.itemNum){};
+    while($(".gallery .gallery_item").length!=gallery.itemNum){};
     //对新元素进行css attr 设置
 
 
@@ -185,10 +185,10 @@ var galleryDrag = {
     var itemMargin = gallery.item.margin;
     $(".gallery").height(gallery.height + scrobarSize);
     updateGalleryInnerWidth();
-    $(".gallery_item").css("margin", itemMargin.top + "px " + itemMargin.right + "px " + itemMargin.bottom + "px " + itemMargin.left + "px ")
+    $(".gallery .gallery_item").css("margin", itemMargin.top + "px " + itemMargin.right + "px " + itemMargin.bottom + "px " + itemMargin.left + "px ")
         .css("padding", item.padding + "px").css("border-width", item.borderWidth)
         .height(item.height).width(item.height);
-    $(".gallery_group").css("margin", "0  " + group.margin.right + "px " + "0 " + group.margin.left + "px ")
+    $(".gallery .gallery_group").css("margin", "0  " + group.margin.right + "px " + "0 " + group.margin.left + "px ")
         .css("padding-left", group.margin.padding_left + "px");
 })();
 //以上是初始化部分
@@ -229,14 +229,14 @@ document.getElementById("zoomCtl").onmousemove = function (e) {
             gallery.height = newGalleryHeight;
             var item = gallery.item;
             item.height = gallery.height - item.margin.top - item.margin.bottom - item.padding * 2 - item.borderWidth * 2 - scrobarSize;
-            $(".gallery_item").height(item.height).width(item.height);
+            $(".gallery .gallery_item").height(item.height).width(item.height);
             updateGalleryInnerWidth();
             gallery_resize();
         }
     }
 };
 
-$(".gallery_item")
+$(".gallery .gallery_item")
     .attr("draggable", "true")
     .attr("ondragstart", "galleryDrag.itemDragstart(event)")
     .attr("ondragend", "galleryDrag.itemDragend(event)")
@@ -247,7 +247,7 @@ $(".gallery_item")
     .attr("ondragleave", "galleryDrag.itemDragleave(event)")
     .attr("ondrop", "galleryDrag.itemDrop(event)")
 ;
-$(".gallery_group")
+$(".gallery .gallery_group")
     .attr("draggable", "true")
     .attr("ondragstart", "galleryDrag.itemDragstart(event)")
     .attr("ondragend", "galleryDrag.itemDragend(event)")

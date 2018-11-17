@@ -2,6 +2,11 @@ function redraw_edgeScatter(para){
     //para={  $selector, data=[]}
     var data=para.data;
     showToast('info',"边数据获取中。。。");
+    var myScatter = echarts.getInstanceByDom(para.$selector[0]);
+    if(!myScatter)  //不存在
+    {
+        myScatter=echarts.init(para.$selector[0],'mySubject',{width:para.$selector.width(),height:para.$selector.height()});
+    }
     $.ajax({url:mylocalURL+"showScatter",type: "POST",data:{ 'nameList':JSON.stringify(data.nameList),"galleryIndex":data.galleryIndex},success:function(result){
         showToast('success',"边数据获取成功");
         getScattersuccess(para,result);
@@ -81,15 +86,15 @@ function redraw_edgeScatter(para){
                     dataView:{show:false},
                     dataZoom:{show:false},
                     magicType:{show:false},
-                    mydelete: {
-                        show: true,
-                        title:'delete',
-                        //icon: 'image://http://echarts.baidu.com/images/favicon.png',
-                        icon: 'path://M512 960c-282.77 0-512-229.23-512-512s229.23-512 512-512 512 229.23 512 512-229.23 512-512 512zM512 32c-229.75 0-416 186.25-416 416s186.25 416 416 416 416-186.25 416-416-186.25-416-416-416zM672 704l-160-160-160 160-96-96 160-160-160-160 96-96 160 160 160-160 96 96-160 160 160 160z',
-                        onclick: function (){
-                            gallery.delete(para.$selector[0]);
-                        }
-                    }
+                    // mydelete: {
+                    //     show: true,
+                    //     title:'delete',
+                    //     //icon: 'image://http://echarts.baidu.com/images/favicon.png',
+                    //     icon: 'path://M512 960c-282.77 0-512-229.23-512-512s229.23-512 512-512 512 229.23 512 512-229.23 512-512 512zM512 32c-229.75 0-416 186.25-416 416s186.25 416 416 416 416-186.25 416-416-186.25-416-416-416zM672 704l-160-160-160 160-96-96 160-160-160-160 96-96 160 160 160-160 96 96-160 160 160 160z',
+                    //     onclick: function (){
+                    //         gallery.delete(para.$selector[0]);
+                    //     }
+                    // }
                 }
 
             },

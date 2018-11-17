@@ -1,4 +1,5 @@
 .gallery_item {
+    z-index: 100;
     background-color: #fff !important;
     width: 100px;
     height: 70px;

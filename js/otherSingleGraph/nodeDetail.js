@@ -97,7 +97,7 @@ function redraw_nodeDetail(para){
             },
             grid:{
                 left:25,
-                top:55,
+                top:30,
                 right:25,
                 bottom:30,
             },
@@ -121,7 +121,7 @@ function redraw_nodeDetail(para){
                         type: 'dashed'
                     }
                 },
-                name:"frequence",
+                name:"",
             },
                 {
                     show:false,
@@ -359,7 +359,7 @@ function redraw_nodeDetail(para){
                 NodeDetailScatterData.push({
                     value: [xValue, yValue],
                     trueValue: dataScatter[i][0],
-                    //itemStyle: {color: color20(dataScatter[i][1]),},  从全局调色盘获取颜色
+                    itemStyle: {color: color20(dataScatter[i][1]),},  //从全局调色盘获取颜色
                     class: dataScatter[i][1],
                     dataName:dataScatter[i][2]
                 });
@@ -368,9 +368,10 @@ function redraw_nodeDetail(para){
         }
         return [NodeDetailScatterData,NodeDetailBoxplotData]
     }
-    nodeDetail_g_resize=function nodeDetail_g_resize(){
+    nodeDetail_g_resize=function(ele){
         //重新绘制
-        var $sel=$("#nodeDetail .gallery_item")
+        if(!ele){
+        var $sel=$("#nodeDetail .gallery_item");
         //更新nodeDetailPara.layout即可
         if($sel.length){
             var nodeDetailScatter = echarts.getInstanceByDom($sel[0]);
@@ -386,10 +387,22 @@ function redraw_nodeDetail(para){
                 var $update=$($sel[i]);
                 drawSplitCtl({$selector:$update});
             }
-
+        }
+        }else{
+            var nodeDetailScatter = echarts.getInstanceByDom(ele);
+            if(!nodeDetailScatter){return;} //是空的
+            var option=nodeDetailScatter.getOption();
+            nodeDetailPara.layout.top=option.grid[0].top;
+            nodeDetailPara.layout.bottom=option.grid[0].bottom;
+            nodeDetailPara.layout.left=option.grid[0].left;
+            nodeDetailPara.layout.right=option.grid[0].right;
+            nodeDetailPara.layout.width= $(ele).width();
+            nodeDetailPara.layout.height= $(ele).height();
+            drawSplitCtl({$selector:$(ele)});
         }
 
-    }
+    };
+
 
 }
 var nodeDetail_g_resize=function(){};

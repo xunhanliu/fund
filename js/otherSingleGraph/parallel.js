@@ -19,9 +19,9 @@ var parcoords = d3.parcoords()("#parallel")
     .width(parallel_width)
     .margin({ top: 40, left: 10, bottom: 40, right: 5 })
 ;
-function externalRefreshParallel(){
+function externalRefreshParallel(flag){
     showToast('info',"数据获取中。。。");
-    $.ajax({url:mylocalURL+"parallelData",type: "POST",data:{ "galleryIndex":0},success:function(data){
+    $.ajax({url:mylocalURL+"parallelData",type: "POST",data:{ "galleryIndex":0,parallelPara:JSON.stringify({"perplexity": 50,nameList:(flag=="all"?[]:selectPoint)})},success:function(data){
         showToast('success',"获取成功");
         parcoords
             .data(data)
@@ -224,7 +224,7 @@ var paralle_onFinishChange={
         }
     },
     getParaData:function(){
-        externalRefreshParallel();
+        externalRefreshParallel('all');
     }
 }
 

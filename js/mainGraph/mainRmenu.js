@@ -99,15 +99,15 @@ window.onload = function () {
 }
 
 
-//点右键
-$("body").append('<ul class="Rmenu" id="mainRmenu" style="display: none;z-index: 1001">' +
-    '    <li><span onclick="mainRmenuClick(this)">聚类操作</span></li>' +
-    '    <hr size="1px" noshade=true>' +
-    '    <li><span onclick="mainRmenuClick(this)">剔除点</span></li>' +
-    '    <hr size="1px" noshade=true>' +
-    '    <li><span onclick="mainRmenuClick(this)">选择(聚类2)</span></li>' +
-    '</ul>');
-//边右键
-$("body").append('<ul class="Rmenu" id="mainLineRmenu" style="display: none;z-index: 1001">' +
-    '    <li><span onclick="mainLineRmenuClick(this)">剔除边</span></li>' +
-    '</ul>');
+// //点右键
+// $("body").append('<ul class="Rmenu" id="mainRmenu" style="display: none;z-index: 1001">' +
+//     '    <li><span onclick="mainRmenuClick(this)">聚类操作</span></li>' +
+//     '    <hr size="1px" noshade=true>' +
+//     '    <li><span onclick="mainRmenuClick(this)">剔除点</span></li>' +
+//     '    <hr size="1px" noshade=true>' +
+//     '    <li><span onclick="mainRmenuClick(this)">选择(聚类2)</span></li>' +
+//     '</ul>');
+// //边右键
+// $("body").append('<ul class="Rmenu" id="mainLineRmenu" style="display: none;z-index: 1001">' +
+//     '    <li><span onclick="mainLineRmenuClick(this)">剔除边</span></li>' +
+//     '</ul>');

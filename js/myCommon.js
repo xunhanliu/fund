@@ -1,15 +1,14 @@
 // var color20 = d3.scale.category20();
 var cc=[  //36
     "#b6b6b4",
-    "#dbdddc",
     "#0ed4e8",
-    "#1ca4ff",
     "#318bae",
     "#ece1a9",
     "#eebf5a",
     "#b48976",
     "#e2a2a0",
     "#fcd4d4",
+    "#1ca4ff",
     "#698392",
     "#8e8586",
     "#6b914c",
@@ -36,6 +35,7 @@ var cc=[  //36
     "#72aa5e",
     "#64aa97",
     "#9eccc4",
+    "#dbdddc",
 
 ];
 var color20=function(d){

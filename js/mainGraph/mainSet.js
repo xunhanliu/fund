@@ -299,7 +299,7 @@ bzCanvas.addEventListener('touchstart', function bzTouchPress(event) {
 }, false);
 
 
-var bzFirstLoad = true;
+var bzFirstLoad = 2;
 
 //绘制bezier曲线，控制点
 function bzUpdateDrawing() {
@@ -351,10 +351,11 @@ function bzUpdateDrawing() {
         bezier = 'cubic-bezier' + points;
 
     //   easeName = $('#bzPresets option:selected').text();
-    if (!bzFirstLoad) {
+    if (bzFirstLoad<=0) {
+        bzFirstLoad=0;
         bezierDragDebounce();
     }
-    bzFirstLoad = false;
+    bzFirstLoad -= 1;
 
 
 }

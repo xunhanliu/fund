@@ -15,6 +15,7 @@ var lastGraphData = {};   //用于辅助前一个与后一个点的fixed
 var kickPointList = []; //子名字
 var kickEdgeList = [];
 var selectPoint = [];//用于多个点，共同聚类
+var lastSelPoint=[];
 var similarValue = 0.2;
 var nodeMap = {};
 var linkListBuf = [];
@@ -43,10 +44,10 @@ var mainRmenuClick = function (target) {
     if (!whichNodeClick) {
         return;
     }
-    if ($(target).text() == '聚类操作') {
+    if ($(target).text() == 'cluster') {
         nodeClick_cluster(whichNodeClick);
     }
-    else if ($(target).text() == '剔除点') {
+    else if ($(target).text() == 'kick point') {
         //post
         //检查重点
         for (var i = 0; i < kickPointList.length; i++) {
@@ -59,26 +60,31 @@ var mainRmenuClick = function (target) {
         }
         main_deepRedraw();
     }
-    else if ($(target).text() == '选择(聚类2)') {
-        var name = whichNodeClick['id'].split(',')[0];
-
-        var i = isInArray(selectPoint, name);
-        if (i == -1) {// 不在里面，需要添加，然后设置相关的属性
-            selectPoint.push(name);
-            svg.select(".main_" + whichNodeClick.name.replace(/[\W]/g, '_')).style('stroke-width', 2)
-                .style('stroke', "rgb(0,0,0)");
-        } else {//在里面，需要删除，然后恢复默认属性
-            selectPoint.splice(i, 1);
-            svg.select(".main_" + whichNodeClick.name.replace(/[\W]/g, '_')).style('stroke-width', 1)
-                .style('stroke', function (whichNodeClick) {
-                    if (whichNodeClick.isCutPoint == true) {
-                        return "rgb(0,0,0)";
-                    }
-                    else {
-                        return myColorScheme[myColorScheme.scheme].color(whichNodeClick.group);
-                    }
+    else if ($(target).text() == 'cluster(sel)') {
+        showToast('info', "union clustering...");
+        $.ajax({url:mylocalURL+"clustering",type: "POST",data:{
+            'galleryIndex':0,
+            clusterData:JSON.stringify({
+                type:"union",
+                nameList:selectPoint,
+            })
+        },success:function(result){
+            layui.use('form', function () {
+                var layer = layui.layer;
+                layer.msg('union cluster success, getting graph...', {
+                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
                 })
-        }
+            });
+            for (var i in selectPoint)
+            {
+                if(isInArray(selectName, selectPoint[i])==-1)
+                {
+                    selectName.push(selectPoint[i]);
+                }
+            }
+            main_deepRedraw();
+        }});
+
     }
 }
 
@@ -86,7 +92,7 @@ var mainRmenuClick = function (target) {
 //line的右键************************************************************
 var whichLineClick;
 var mainLineRmenuClick = function (target) {
-    if ($(target).text() == '剔除边') {
+    if ($(target).text() == 'kick edge') {
         //post
         var i = 0;
         for (; i < kickEdgeList.length; i++) {
@@ -155,7 +161,8 @@ app_main.config = {
     kickPointByNum: 0.01,
     ResetKick: resetKick,
     UnDoKick: undoKick,
-    submitMulCluster: submitMulCluster,
+    lastSel:lastSel,
+    // submitMulCluster: submitMulCluster,
     getSimilarPoint: getSimilarPoint,
     getAllConnect: getAllConnect,
     canselFixed: canselFixed,
@@ -279,7 +286,7 @@ function graph_preprocessor(graph) {
         };
     }
     nodeMap = {};
-    graph.nodes.forEach(function (node, index) {  //node.data=[1,2,3] 是每类的数据数目
+    graph.nodes.forEach(function (node, index) {  //node.catListNum=[1,2,3] 是每类的数据数目
         node.value = node.symbolSize;
         node.symbolSize = node.symbolSize;//可以控制symbol大小
         node.group = node.category;// 分类从0开始取
@@ -288,19 +295,26 @@ function graph_preprocessor(graph) {
         node.type = 'node';
         node.color = node.color;//这个值割点才能取到
         nodeMap[node.name] = index;
-        node.data=[1,2,3,4];
-        node.deg=[];
-        var sum=d3.sum(node.data);
-        if( node.data.length!=1)
+        if(node.name.split(',')[2]==0)
         {
-            node.deg.push(0);
-            for (var i in node.data) {
-                node.deg.push(node.data[i]/sum*2*Math.PI);
-            }
-            for (var i=1;i<node.deg.length;i++) {
-                node.deg[i]=node.deg[i]+node.deg[i-1];
+            node.catListNum= graph.catListNumMap[node.name.split(',')[0]];
+            node.deg=[];  //存储角度，以弧度为单位
+            var sum=d3.sum(node.catListNum);
+            if( node.catListNum.length!=1)
+            {
+                node.deg.push(0);
+                for (var i in node.catListNum) {
+                    node.deg.push(node.catListNum[i]/sum*2*Math.PI);
+                }
+                for (var i=1;i<node.deg.length;i++) {
+                    node.deg[i]=node.deg[i]+node.deg[i-1];
+                }
             }
         }
+        else{
+            node.deg=[];
+        }
+
     });
     //需要查看nodes的序号
     graph.links.forEach(function (link) {
@@ -369,7 +383,7 @@ function transform2(d) {
 //第一次加载
 (function(){
 
-    $.get('./data/car.json', function (graph) {
+    $.getJSON('./data/car.json', function (graph) {
         graph_preprocessor(graph);
         main_redraw(myChart_main_data);
         getorderRelationMatrixSuccess(myChart_main_data);
@@ -434,20 +448,20 @@ function undoKick() {
 }
 
 function submitMulCluster() {
-    if (selectPoint.length < 2) {
-        showToast('warning', "请选中两个以上的点！");
-        return;
-    }
-    //向后端发送 聚类消息
-
-
-    if (app_main.config.clusterOption != "多点聚类") {
-        showToast('warning', "请在‘clusterOption’中选中‘多点聚类’！然后查看聚类结果！");
-        return;
-    }
-
-    //selectName = [];
-    main_deepRedraw(); //默认 按照selPoint进行分类
+    // if (selectPoint.length < 2) {
+    //     showToast('warning', "请选中两个以上的点！");
+    //     return;
+    // }
+    // //向后端发送 聚类消息
+    //
+    //
+    // if (app_main.config.clusterOption != "多点聚类") {
+    //     showToast('warning', "请在‘clusterOption’中选中‘多点聚类’！然后查看聚类结果！");
+    //     return;
+    // }
+    //
+    // //selectName = [];
+    // main_deepRedraw(); //默认 按照selPoint进行分类
 
 
 }

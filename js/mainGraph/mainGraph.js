@@ -164,6 +164,7 @@ function mixedCheck(ev) {
     if(ev.target.checked ){
         testMixedFunctionStr($("#inlineInputbox4")[0].value);}
     main_redraw(myChart_main_data);
+    getorderRelationMatrixSuccess(myChart_main_data);
 }
 
 function makeMixFunction(ev) {
@@ -171,6 +172,7 @@ function makeMixFunction(ev) {
     // simulation.restart();
     testMixedFunctionStr(ev.target.value);
     main_redraw(myChart_main_data);
+    getorderRelationMatrixSuccess(myChart_main_data);
 }
 
 function testMixedFunctionStr(functionstr)

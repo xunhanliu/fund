@@ -401,7 +401,7 @@ var bezierDragDebounce = _.debounce(function () {
     bzSample[$("#mapBtn .active").text() + "BzPoints"] = getBezierCPoint();
     bzSample[$("#mapBtn .active").text()] = bzCreateSample(100, getBezierCPoint());
     getMainPointPos();
-    getorderRelationMatrixSuccess(myChart_main_data);
+   getorderRelationMatrixSuccess(myChart_main_data);
     main_redraw(myChart_main_data);
 }, 200);
 //getMainPointPos();
@@ -475,32 +475,32 @@ $bzPresets.change(bzPresetChange);
 
 // arrow key support
 //option 选择，对左右箭头按键进行触发
-$(document).keydown(function (event) {
-
-    var currentlySelected,
-        currentIdx;
-
-    if (event.keyCode === 39) {//&& event.target !== time
-        //right key && not in time input
-        currentlySelected = $('#bzPresets option:selected');
-        currentIdx = $bzPresetOpts.index(currentlySelected);
-
-        if (currentIdx < $bzPresetOpts.length - 1) {
-            currentlySelected.attr('selected', '');
-            $bzPresetOpts.eq(currentIdx + 1).attr('selected', 'selected');
-            $bzPresets.trigger('change');
-        }
-    } else if (event.keyCode === 37) {
-        // left key && not in time input
-        currentlySelected = $('#bzPresets option:selected');
-        currentIdx = $bzPresetOpts.index(currentlySelected);
-
-        if (currentIdx > 0) {
-            currentlySelected.attr('selected', '');
-            $bzPresetOpts.eq(currentIdx - 1).attr('selected', 'selected');
-            $bzPresets.trigger('change');
-        }
-    }
-
-});
+// $(document).keydown(function (event) {
+//
+//     var currentlySelected,
+//         currentIdx;
+//
+//     if (event.keyCode === 39) {//&& event.target !== time
+//         //right key && not in time input
+//         currentlySelected = $('#bzPresets option:selected');
+//         currentIdx = $bzPresetOpts.index(currentlySelected);
+//
+//         if (currentIdx < $bzPresetOpts.length - 1) {
+//             currentlySelected.attr('selected', '');
+//             $bzPresetOpts.eq(currentIdx + 1).attr('selected', 'selected');
+//             $bzPresets.trigger('change');
+//         }
+//     } else if (event.keyCode === 37) {
+//         // left key && not in time input
+//         currentlySelected = $('#bzPresets option:selected');
+//         currentIdx = $bzPresetOpts.index(currentlySelected);
+//
+//         if (currentIdx > 0) {
+//             currentlySelected.attr('selected', '');
+//             $bzPresetOpts.eq(currentIdx - 1).attr('selected', 'selected');
+//             $bzPresets.trigger('change');
+//         }
+//     }
+//
+// });
 $bzPresets.trigger('change');

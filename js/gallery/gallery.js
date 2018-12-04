@@ -415,7 +415,7 @@ var gallery = {
                 return colorMapCooperateOpacity(d.value);
             })
             .attr("opacity", function (d) {
-                return opacityMap(d.value);
+                return opacityMap(d.value,d.overlap);
             })
             .on("click", function (link) {
                 getScatterData([link['source']['id'], link['target']['id']], index);
@@ -529,7 +529,7 @@ var gallery = {
                 d3.select("#graph_" + index).selectAll(".node text").style("opacity", 1);
 
                 d3.select("#graph_" + index).selectAll(".link line").style("opacity", function (d) {
-                    return opacityMap(d.value);
+                    return opacityMap(d.value,d.overlap);
                 });
             })
             .on("click", function (node) {

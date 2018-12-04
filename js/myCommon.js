@@ -151,8 +151,15 @@ var colorMap =function(d){
     }
 
 }
-var opacityMap =function(d){
-        return bzMap("opacity",Math.abs(d));
+var opacityMap =function(correlation,overlap){
+    var result0;
+    if(mainGraphPara['mixedFlag'])  //关系混合
+    {
+        eval("result0="+mainGraphPara.mixFunctionStr);
+        return bzMap("opacity", Math.abs(result0));
+    }else{
+        return bzMap("opacity", Math.abs(correlation));
+    }
 }
 var colorMapCooperateOpacity =function(d){
     if(d>=0){
@@ -167,5 +174,30 @@ var lineWidthMap=function(d){  //1-5
     var myMap=d3.scale.linear()
         .domain([0, 1])
         .range([1, 5]);
-    return myMap(bzMap("thickness",d));
+    if(mainGraphPara['mixedFlag'])  //关系混合
+    {
+        return 4;
+    }else{
+        return myMap(bzMap("thickness",d));
+    }
+
+}
+
+function FireEvent(elem, eventName)
+{
+    if(typeof(elem) == 'object')
+    {
+        eventName = eventName.replace(/^on/i,'');
+        if (document.all)
+        {//
+            eventName = "on"+eventName;
+            elem.fireEvent(eventName);
+        }
+        else
+        {
+            var evt = document.createEvent('HTMLEvents');
+            evt.initEvent(eventName,true,true);
+            elem.dispatchEvent(evt);
+        }
+    }
 }

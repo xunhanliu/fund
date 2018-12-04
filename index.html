@@ -3,7 +3,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>HDgraph</title>
-    <link rel="shortcut icon" href="./favicon.png"/>
+    <!--<link rel="shortcut icon" href="./favicon.png"/>-->
 
     <link href="./css/lib/bootstrap.css" type="text/css" rel="stylesheet"/>
 
@@ -67,8 +67,8 @@
     <div class="row clearfix top">
         <div class="col-md-12 column">
                 <span class="text-left tip" style="margin: 0px 20px 0px 10px; cursor:default" alt="这是一个高维数据分析系统">
-                    <span style="border-radius: 20%;">HDgraph</span>
-                    <img src="./favicon.png" style="width: 26px;height: 26px"/>
+                    <span style="border-radius: 20%;">D-sub</span>
+                    <!--<img src="./favicon.png" style="width: 26px;height: 26px"/>-->
                 </span>
             <button class="btn btn-default left_interval" onclick="mainSet(event)"><i class="fa fa-cog"></i>&nbspset
             </button>
@@ -96,6 +96,10 @@
                 <input type="checkbox" id="inlineCheckbox2" value="dragFixed" onchange="layoutCheckClick(event)">dragFixed:
             </label>
 
+            <label style=""  class="checkbox-inline left_interval">
+                <input type="checkbox" id="inlineCheckbox3" value="mixedFlag" onchange="mixedCheck(event)">mixed:
+                <input type="text" id="inlineInputbox4" value="0.8*Math.abs(correlation)+0.2*overlap" placeholder="0.8*Math.abs(correlation)+0.2*overlap" onchange="makeMixFunction(event)">
+            </label>
             <!--<label class="color-inline left_interval">-->
             <!--color:<input type='color' value="#ff0000" oninput="input(event)">-->
             <!--</label>-->
@@ -136,10 +140,10 @@
                 <li class="btn btn-default  active"><a href="#myMiddleTabCon1" data-toggle="tab">
                     detail message</a>
                 </li>
-                <li class="btn btn-default"><a href="#myMiddleTabCon2" data-toggle="tab">
+                <li class="btn btn-default"><a  href="#myMiddleTabCon2" data-toggle="tab">
                     correlation matrix</a>
                 </li>
-                <li class=" btn btn-default"><a href="#myMiddleTabCon3" data-toggle="tab">parallel axis</a></li>
+                <li class=" btn btn-default"><a id="parallelBtn" href="#myMiddleTabCon3" data-toggle="tab">parallel axis</a></li>
             </ul>
             <!--<div class="full_width m-rt">-->
             <!--<div id="orderRalation" class="blowUp">-->
@@ -284,6 +288,8 @@
 
 <script src="./js/mainGraph/mainRmenu.js"></script>
 <script src="./js/mainGraph/mainGraphRedraw.js"></script>
+
+<script src='./js/recommend.js'></script>
 <script src="./js/mainGraph/mainGraph.js"></script>
 <script src="./js/mainGraph/mainSet.js"></script>
 
@@ -291,6 +297,8 @@
 <script src="./js/gallery/galleryInterface.js"></script>
 <script src="./js/gallery/gallery0.js"></script>
 <script src="./js/gallery/galleryUse.js"></script>
+
+
 <script src="./js/plug/alt_tip.js"></script>
 <script src="./js/plug/myEcharts.js"></script>
 

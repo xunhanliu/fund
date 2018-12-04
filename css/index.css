@@ -16,7 +16,7 @@ html,body{
     padding: 3px 6px;
 }
 .top .btn{
-    background-color: #9189ff;
+    background-color: #fff;
 }
 .radio-inline, .checkbox-inline, .color-inline,.range-inline{
     position: relative;
@@ -48,7 +48,7 @@ html,body{
 
 
 .top{
-    background-color: #655de073;
+    background-color: #bdbcc573;
     border-radius: 10px 10px 0 0;
     border: solid 1px #e4e4e4;
     padding: 8px;

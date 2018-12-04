@@ -113,7 +113,7 @@ function getorderRelationMatrixSuccess(data){
     nodes.forEach(function(node, i) {
         node.index = i;
         node.count = 0;
-        matrix[i] = d3.range(n).map(function(j) { return {x: j, y: i, z: 0}; });
+        matrix[i] = d3.range(n).map(function(j) { return {x: j, y: i, z: 0,overlap:0}; });
     });
 
     // Convert links to matrix; count character occurrences.
@@ -128,6 +128,7 @@ function getorderRelationMatrixSuccess(data){
     for(var i=0;i<showMatrix.length;i++){
         for(var j=0;j<showMatrix.length;j++){
             matrix[i][j].z += showMatrix[i][j];
+            matrix[i][j].overlap += orderRelationMatrixData['overlap'][i][j];
             nodes[i].count += showMatrix[i][j];
         }
     }
@@ -229,7 +230,7 @@ function getorderRelationMatrixSuccess(data){
             //.style("fill", function(d) { return nodes[d.x].group == nodes[d.y].group ? c_orderRelation(nodes[d.x].group) : null; })
             .style("fill", function(d) { return colorMapCooperateOpacity(d.z); })
                 .attr("opacity",function(d){
-                    return opacityMap(d.z);
+                    return opacityMap(d.z,d.overlap);
                 })
             .on("mouseover", mouseover)
             .on("mouseout", mouseout)

@@ -59,24 +59,7 @@ function legend_redraw(nodes){
     // }
     $("#main_legend").html(str);
 }
-function FireEvent(elem, eventName)
-{
-    if(typeof(elem) == 'object')
-    {
-        eventName = eventName.replace(/^on/i,'');
-        if (document.all)
-        {//
-            eventName = "on"+eventName;
-            elem.fireEvent(eventName);
-        }
-        else
-        {
-            var evt = document.createEvent('HTMLEvents');
-            evt.initEvent(eventName,true,true);
-            elem.dispatchEvent(evt);
-        }
-    }
-}
+
 function legendOver(id){
     //$("#"+id).trigger("mouseover");
     FireEvent(document.getElementById(id), 'mouseover')
@@ -252,7 +235,7 @@ function main_redraw(graph) {
         return colorMapCooperateOpacity(d.value);
     })
         .attr("opacity", function (d) {
-            return opacityMap(d.value);
+            return opacityMap(d.value,d.overlap);
         })
         .on("click", function (link) {
 
@@ -723,7 +706,7 @@ function main_redraw(graph) {
             d3.select("#mainGraph").selectAll(".node text").style("opacity", 1);
 
             d3.select("#mainGraph").selectAll(".link line").style("opacity", function (d) {
-                return opacityMap(d.value);
+                return opacityMap(d.value,d.overlap);
             })
 
 

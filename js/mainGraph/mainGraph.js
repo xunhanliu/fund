@@ -15,27 +15,26 @@ var lastGraphData = {};   //用于辅助前一个与后一个点的fixed
 var kickPointList = []; //子名字
 var kickEdgeList = [];
 var selectPoint = [];//用于多个点，共同聚类
-var lastSelPoint=[];
-var similarValue = 0.2;
+var lastSelPoint = [];
 var nodeMap = {};
 var linkListBuf = [];
-var transform="";
+var transform = "";
 //app_main.config
 
 
-var mainGraphPara={
-    similarToClose:true,
-    dragFixed:false,
-    similarPointDistance:3*30,  //2倍半径
-    maxPointSize:30,
-    maxGraphArea:2,//即长宽是原图的二倍。
-    graphArea:{x:[0,0],y:[0,0]},  //根据maxGraphArea来计算
-    springback:0.1,//碰到边界，让其瞬间回弹。
-    classMapNum:{},
+var mainGraphPara = {
+    similarToClose: true,
+    dragFixed: false,
+    mixedFlag: false,
+    mixFunctionStr: "",
+    similarPointDistance: 3 * 30,  //2倍半径
+    maxPointSize: 30,
+    maxGraphArea: 2,//即长宽是原图的二倍。
+    graphArea: {x: [0, 0], y: [0, 0]},  //根据maxGraphArea来计算
+    springback: 0.1,//碰到边界，让其瞬间回弹。
+    classMapNum: {},
 
 }
-
-
 
 
 //circle的右键************************************************************
@@ -62,28 +61,28 @@ var mainRmenuClick = function (target) {
     }
     else if ($(target).text() == 'cluster(sel)') {
         showToast('info', "union clustering...");
-        $.ajax({url:mylocalURL+"clustering",type: "POST",data:{
-            'galleryIndex':0,
-            clusterData:JSON.stringify({
-                type:"union",
-                nameList:selectPoint,
-            })
-        },success:function(result){
-            layui.use('form', function () {
-                var layer = layui.layer;
-                layer.msg('union cluster success, getting graph...', {
-                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+        $.ajax({
+            url: mylocalURL + "clustering", type: "POST", data: {
+                'galleryIndex': 0,
+                clusterData: JSON.stringify({
+                    type: "union",
+                    nameList: selectPoint,
                 })
-            });
-            for (var i in selectPoint)
-            {
-                if(isInArray(selectName, selectPoint[i])==-1)
-                {
-                    selectName.push(selectPoint[i]);
+            }, success: function (result) {
+                layui.use('form', function () {
+                    var layer = layui.layer;
+                    layer.msg('union cluster success, getting graph...', {
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    })
+                });
+                for (var i in selectPoint) {
+                    if (isInArray(selectName, selectPoint[i]) == -1) {
+                        selectName.push(selectPoint[i]);
+                    }
                 }
+                main_deepRedraw();
             }
-            main_deepRedraw();
-        }});
+        });
 
     }
 }
@@ -150,9 +149,61 @@ app_main.configParameters = {
 };
 
 
-function layoutCheckClick(ev){
-    mainGraphPara[ev.target.value]=ev.target.checked;
+function layoutCheckClick(ev) {
+    mainGraphPara[ev.target.value] = ev.target.checked;
     simulation.restart();
+}
+
+function mixedCheck(ev) {
+    mainGraphPara[ev.target.value] = ev.target.checked;
+   // ev.target.checked ? $("#inlineInputbox4").attr("disabled", false) : $("#inlineInputbox4").attr("disabled", true);
+    if(ev.target.checked ){
+        testMixedFunctionStr($("#inlineInputbox4")[0].value);}
+    main_redraw(myChart_main_data);
+}
+
+function makeMixFunction(ev) {
+    //mainGraphPara['mixFunction']=ev.target.value;
+    // simulation.restart();
+    testMixedFunctionStr(ev.target.value);
+    main_redraw(myChart_main_data);
+}
+
+function testMixedFunctionStr(functionstr)
+{
+    mainGraphPara['mixFunctionStr'] = "";
+    try {
+        //代码可以正常执行,当里面有错,不会抛出错误
+        var testResult=[0,0.5,1];
+        var test=[0,0.5,1];
+        var correlation,overlap,testResult0;
+        for (var i in test){
+            correlation= test[i];
+            overlap=test[i];
+            eval("testResult0="+functionstr);
+            if(testResult0 !=testResult[i])
+            {
+                showToast('error',"输入关系的归一化不正确，请重新输入！");
+                $("#inlineCheckbox3")[0].checked=false;
+                $("#inlineInputbox4").css("background-color",'#f00');
+                d3v4.select('#inlineCheckbox3').dispatch('change');//mixedCheck
+                return ;
+
+            }
+        }
+    } catch (e) {
+        //当try里面的代码不出错,catch里面的代码是不会执行的;
+        //如果try里面的代码出错,catch会把try里面错误的信息捕捉到,错误有一堆错误信息,(//error error.message error.name )
+        //把这些错误信息给打包到e里面，一般情况下，我们都会打印e
+        console.log(e.name + ':  ' + e.message);
+        showToast('error', e.name + ':  ' + e.message);
+        $("#inlineCheckbox3")[0].checked=false;
+        $("#inlineInputbox4").css("background-color",'#f00');
+        d3v4.select('#inlineCheckbox3').dispatch('change');//mixedCheck
+        // 不会自动把错误信息打印在控制台，所以不会影响后续代码的执行
+    }
+    $("#inlineInputbox4").css("background-color",'#fff');
+    mainGraphPara['mixFunctionStr']=functionstr;
 }
 
 var lastClusterOption = '单点聚类';
@@ -161,7 +212,7 @@ app_main.config = {
     kickPointByNum: 0.01,
     ResetKick: resetKick,
     UnDoKick: undoKick,
-    lastSel:lastSel,
+    lastSel: lastSel,
     // submitMulCluster: submitMulCluster,
     getSimilarPoint: getSimilarPoint,
     getAllConnect: getAllConnect,
@@ -175,7 +226,7 @@ app_main.config = {
         if (typeof(change) == "undefined") { //按钮触发
             return;
         }
-        else if(typeof(change)=="boolean") //similarToClose  改变
+        else if (typeof(change) == "boolean") //similarToClose  改变
         {
 
         }
@@ -295,24 +346,22 @@ function graph_preprocessor(graph) {
         node.type = 'node';
         node.color = node.color;//这个值割点才能取到
         nodeMap[node.name] = index;
-        if(node.name.split(',')[2]==0)
-        {
-            node.catListNum= graph.catListNumMap[node.name.split(',')[0]];
-            node.deg=[];  //存储角度，以弧度为单位
-            var sum=d3.sum(node.catListNum);
-            if( node.catListNum.length!=1)
-            {
+        if (node.name.split(',')[2] == 0) {
+            node.catListNum = graph.catListNumMap[node.name.split(',')[0]];
+            node.deg = [];  //存储角度，以弧度为单位
+            var sum = d3.sum(node.catListNum);
+            if (node.catListNum.length != 1) {
                 node.deg.push(0);
                 for (var i in node.catListNum) {
-                    node.deg.push(node.catListNum[i]/sum*2*Math.PI);
+                    node.deg.push(node.catListNum[i] / sum * 2 * Math.PI);
                 }
-                for (var i=1;i<node.deg.length;i++) {
-                    node.deg[i]=node.deg[i]+node.deg[i-1];
+                for (var i = 1; i < node.deg.length; i++) {
+                    node.deg[i] = node.deg[i] + node.deg[i - 1];
                 }
             }
         }
-        else{
-            node.deg=[];
+        else {
+            node.deg = [];
         }
 
     });
@@ -338,11 +387,9 @@ function graph_preprocessor(graph) {
 }
 
 
-
 // var linear = d3.scale.linear()
 //     .domain([100,1300])  //需要做相应的修改
 //     .range([10,20]);
-
 
 
 // width = +svg.attr("width"),
@@ -363,7 +410,6 @@ var circleSizeScale_M = d3.scale.linear()
     .range([5, mainGraphPara.maxPointSize]);  //值域
 
 
-
 function getMainPointPos() {
     d3.select("#mainGraph .gnode").selectAll(".node").each(function (data) {
         $.extend(true, lastGraphData[data.id] = {}, data);
@@ -381,7 +427,7 @@ function transform2(d) {
 }
 
 //第一次加载
-(function(){
+(function () {
 
     $.getJSON('./data/car.json', function (graph) {
         graph_preprocessor(graph);
@@ -427,8 +473,8 @@ function nodeClick_cluster(node) {
 function canselFixed() {  //主图全部取消固定
     d3.select("#mainGraph .gnode").selectAll(".node").each(function (data) {
         data.fixed = false;
-        data.fx=null;
-        data.fy=null;
+        data.fx = null;
+        data.fy = null;
     });
     simulation.restart();
 }
@@ -467,225 +513,6 @@ function submitMulCluster() {
 }
 
 
-function getSimilarPoint() {
-    var data = myChart_main_data['relation'];
-    //不管正负，只考虑值
-    //正负，与值都考虑
-    var dataArr = [];
-    var dataBuf = [];
-    var dataArrS = [];
-    var dataBufS = [];
-    for (var i = 0; i < data.length; i++) {
-        dataBuf = []
-        dataBuf.push(i);
-        dataBufS = []
-        dataBufS.push(i);
-        for (var j = i + 1; j < data.length; j++) {
-            //比较第i行，和第j行
-            if (compare(shallowRemove(data[i], i), shallowRemove(data[j], j), 0)) {
-                dataBuf.push(j);
-            }
-            if (compare(shallowRemove(data[i], i), shallowRemove(data[j], j), 1)) {
-                dataBufS.push(j);
-            }
-        }
-        if (dataBuf.length != 1) {
-            dataArr.push(dataBuf);
-        }
-        if (dataBufS.length != 1) {
-            dataArrS.push(dataBufS);
-        }
-    }
-    //解析名字
-    var nameList = [];
-    var nameBuf = [];
-    var divBuf = "";
-    divBuf += '<p>不考虑符号</p>';
-    for (i in dataArr) {
-        nameBuf = [];
-        divBuf += '<p style="word-break: break-all; word-wrap:break-word;">';
-        for (j in dataArr[i]) {
-            //data.nodes
-            var name = myChart_main_data["head"][dataArr[i][j]][0];
-            nameBuf.push(name);
-            divBuf = divBuf + '<span onmouseover="subspaceSpanOver(\'' + name.replace(/[\W]/g, '_') + '\')" onmouseout="subspaceSpanOut(\'' + name.replace(/[\W]/g, '_') + '\')" class="subspaceSpan" style="background-color: ' + getColorFromName(name) + '">' + myChart_main_data["head"][dataArr[i][j]][0] + '</span>'
-        }
-        divBuf += '</p>';
-        if (nameBuf.length) {
-            allConnectNameList.push(nameBuf);
-        }
-    }
-    divBuf += '<p>考虑符号</p>';
-    for (i in dataArrS) {
-        divBuf += '<p style="word-break: break-all; word-wrap:break-word;">';
-        for (j in dataArrS[i]) {
-            var name = myChart_main_data["head"][dataArr[i][j]][0];
-            divBuf = divBuf + '<span onmouseover="subspaceSpanOver(\'' + name.replace(/[\W]/g, '_') + '\')" onmouseout="subspaceSpanOut(\'' + name.replace(/[\W]/g, '_') + '\')" class="subspaceSpan" style="background-color: ' + getColorFromName(name) + '">' + name + '</span>'
-        }
-        divBuf += '</p>';
-    }
-
-    $("#subspace").css("width", "100%");
-    $("#subspace").css("display", "block");
-    $("#subspaceContent").html("");
-    $("#subspaceContent").append(divBuf);
-}
-
-function subspaceSpanOver(name) {//name中不带逗号
-    $(".main_" + name).addClass("myActiveCircle");
-    $(".matrixText_" + name).addClass("active");
-}
-
-function subspaceSpanOut(name) {//name中不带逗号
-    $(".main_" + name).removeClass("myActiveCircle");
-    $(".matrixText_" + name).removeClass("active");
-}
-
-function getColorFromName(name) {
-    // for(var i in myChart_main_data["node"])
-    // {
-    //    if( myChart_main_data["node"][i]["name"]==name)
-    //    {
-    //        return color20(myChart_main_data["node"][i]["group"]);
-    //    }
-    // }
-    // return "#888"
-
-    // myChart_main_data.category
-    for (var i in myChart_main_data.category) {
-        if (myChart_main_data["category"][i] == name.split(",")[0]) {
-            return color20(i);
-        }
-    }
-}
-
-function compare(arr1, arr2, sign) {
-    if (sign)//考虑符号
-    {
-        for (var i = 0; i < arr1.length; i++) {
-            if (Math.abs(arr1[i] - arr2[i]) > similarValue) //符号相反也不行
-            {
-                return false;
-            }
-            else if (arr1[i] >= 0 ^ arr2[i] >= 0) {  //判断符号相反，进入
-                return false;
-            }
-        }
-    }
-    else {//Math.abs() 不考虑符号
-        for (var i = 0; i < arr1.length; i++) {
-            if (Math.abs(Math.abs(arr1[i]) - Math.abs(arr2[i])) > similarValue) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-function shallowRemove(arr, index) {
-    var result = [];
-    for (var i = 0; i < arr.length; i++) {
-        if (i != index) {
-            result.push(arr[i]);
-        }
-    }
-    return result;
-}
-
-function getAllConnect() {//贪婪，新加入的，要与原来的逐个比较
-    var data = myChart_main_data['relation'];
-    //不管正负，只考虑值
-    //正负，与值都考虑
-    var dataArr = [];
-    var dataBuf = [];
-    for (var i = 0; i < data.length; i++) {
-        //需要判断，原数据中是否已经记录
-        if (inRecord(dataArr, i)) {
-            continue;
-        }
-        dataBuf = [];
-        dataBuf.push(i);
-        for (var j = i + 1; j < data.length; j++) {
-            //比较第i行，和第j行
-            if (data[i][j] != 0) {
-                if (addOrNot(data, dataBuf, j))  //加入
-                {
-                    dataBuf.push(j);
-                }
-            }
-        }
-        if (dataBuf.length != 1) {
-            dataArr.push(dataBuf);
-        }
-
-    }
-
-    //解析名字
-    allConnectNameList = [];
-    var nameBuf = [];
-    var divBuf = "";
-    for (i in dataArr) {
-        nameBuf = [];
-        divBuf += "<p>" + "第" + i + "个全连接" + "</p>"
-        divBuf += '<p style="word-break: break-all; word-wrap:break-word;" onmouseover="allConnectOver(\'' + dataArr[i] + '\')" onmouseout="allConnectOut(\'' + dataArr[i] + '\')" >';
-        for (j in dataArr[i]) {
-            //data.nodes
-            var name = myChart_main_data["head"][dataArr[i][j]][0];
-            nameBuf.push(name);
-            divBuf = divBuf + '<span class="allConnectSpan" style="background-color: ' + getColorFromName(name) + '">' + myChart_main_data["head"][dataArr[i][j]][0] + '</span>'
-        }
-        divBuf += '</p>';
-        if (nameBuf.length) {
-            allConnectNameList.push(nameBuf);
-        }
-    }
-
-    $("#allConnect").css("width", "100%");
-    $("#allConnect").css("display", "block");
-    $("#allConnectContent").html("");
-    $("#allConnectContent").append(divBuf);
-}
-
-
-function allConnectOver(Arr) {
-    Arr = Arr.split(",");
-    for (var i in Arr) {
-        var name = myChart_main_data["head"][Arr[i]][0];
-        $(".main_" + name.replace(/[\W]/g, '_')).addClass("myActiveCircle");
-        $(".matrixText_" + name.replace(/[\W]/g, '_')).addClass("active");
-    }
-    //$(".main_"+name).addClass("myActiveCircle");
-    //$(".matrixText_"+name).addClass("active");
-}
-
-function allConnectOut(Arr) {
-    Arr = Arr.split(",");
-    for (var i in Arr) {
-        var name = myChart_main_data["head"][Arr[i]][0];
-        $(".main_" + name.replace(/[\W]/g, '_')).removeClass("myActiveCircle");
-        $(".matrixText_" + name.replace(/[\W]/g, '_')).removeClass("active");
-    }
-}
-
-function addOrNot(arr, dataBuf, j) {
-    for (var i in dataBuf) {
-        if (arr[i][j] == 0) {
-            return false;
-        }
-    }
-    return true;
-}
-
-function inRecord(dataArr, k) {//dataArr是两层数据
-    for (var i in dataArr) {
-        for (var j in dataArr[i]) {
-            if (dataArr[i][j] == k) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
 
 
 

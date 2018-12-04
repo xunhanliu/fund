@@ -21,13 +21,14 @@ function main_deepRedraw() {
     $.ajax({
         url: mylocalURL + "refreshGraph", type: "POST",
         data: {
-            mainGraphPara:JSON.stringify({'overlapThreshold': overlapThreshold,
-            'nameList': (selectName),
-            'selList': (selectPoint),
-            'relationThreshold': relationThreshold,
-            'kickEdge': (kickEdgeList),
-            'kickPoint': (kickPointList),
-            'kickPointByNum': app_main.config.kickPointByNum,
+            mainGraphPara: JSON.stringify({
+                'overlapThreshold': overlapThreshold,
+                'nameList': (selectName),
+                'selList': (selectPoint),
+                'relationThreshold': relationThreshold,
+                'kickEdge': (kickEdgeList),
+                'kickPoint': (kickPointList),
+                'kickPointByNum': app_main.config.kickPointByNum,
             }),
             "galleryIndex": 0
         }, success: function (graph) {
@@ -44,14 +45,15 @@ function main_deepRedraw() {
 //使用d3  V4版本   ，内部d3变量使用d3v4替换
 //"main_" + d.name.replace(/[\W]/g, '_');
 var simulation;
-function legend_redraw(nodes){
+
+function legend_redraw(nodes) {
     $("#main_legend").html("");
-    str="";
-    nodes.forEach(function (d,i) {
-        var id="main_" + d.name.replace(/[\W]/g, '_');
-        str+='<li  class="graph-legend" onmouseover="legendOver(\''+ id+'\')"  onmouseout="legendOut(\''+id+'\')" '+
-            '><span  style="background-color:'+ myColorScheme[myColorScheme.scheme].color(d.group)+'"></span>'+
-            d.name+'</li>'
+    str = "";
+    nodes.forEach(function (d, i) {
+        var id = "main_" + d.name.replace(/[\W]/g, '_');
+        str += '<li  class="graph-legend" onmouseover="legendOver(\'' + id + '\')"  onmouseout="legendOut(\'' + id + '\')" ' +
+            '><span  style="background-color:' + myColorScheme[myColorScheme.scheme].color(d.group) + '"></span>' +
+            d.name + '</li>'
     });
     // for(var i=0;i<50;i++)
     // {
@@ -60,37 +62,38 @@ function legend_redraw(nodes){
     $("#main_legend").html(str);
 }
 
-function legendOver(id){
+function legendOver(id) {
     //$("#"+id).trigger("mouseover");
     FireEvent(document.getElementById(id), 'mouseover')
     //d3.selectAll("#"+id).dispatch('mouseover');
 }
-function legendOut(id){
+
+function legendOut(id) {
     //$("#"+id).trigger("mouseout");
     FireEvent(document.getElementById(id), 'mouseout')
     //d3.selectAll("#"+id).dispatch('mouseout');
 }
-var lastSel=function(){
-        //重现上一次的选择
-        d3v4.select("#mainGraph .gnode").selectAll(".node").each(function(d) {
-            if( isInArray(lastSelPoint,d.name.split(',')[0])!=-1)
-            {
-                if(d.name.split(',')[2]==0)
-                {
-                    d.selected = true;
-                    d.previouslySelected = true;
-                    d3v4.select(this).classed("selected", true);
-                }
+
+var lastSel = function () {
+    //重现上一次的选择
+    d3v4.select("#mainGraph .gnode").selectAll(".node").each(function (d) {
+        if (isInArray(lastSelPoint, d.name.split(',')[0]) != -1) {
+            if (d.name.split(',')[2] == 0) {
+                d.selected = true;
+                d.previouslySelected = true;
+                d3v4.select(this).classed("selected", true);
             }
-        });
-        //把上一次的选择，与现有的选择叠加
-    for(var i in lastSelPoint){
-        if( isInArray(selectPoint,lastSelPoint[i])==-1)  //selectPoint中没有
+        }
+    });
+    //把上一次的选择，与现有的选择叠加
+    for (var i in lastSelPoint) {
+        if (isInArray(selectPoint, lastSelPoint[i]) == -1)  //selectPoint中没有
         {
             selectPoint.push(lastSelPoint[i])
         }
     }
 };
+
 function main_redraw(graph) {
     // if both d3v3 and d3v4 are loaded, we'll assume
     // that d3v4 is called d3v4, otherwise we'll assume
@@ -102,43 +105,44 @@ function main_redraw(graph) {
     getMainPointPos();  //保存上一幅图的布局
     circleSizeScale_M.domain([1, Number(graph['dataNum'])]);
     //下面两个for循环是为similarToClose的tick做准备
-    mainGraphPara.classMapNum={}
-    for(var i in graph.head ){
-        var name=graph.head[i][0].split(",")[0];
-        var index=graph.head[i][0].split(",")[2];
-        if(name in mainGraphPara.classMapNum)
-        {
-            mainGraphPara.classMapNum[name]["num"]+=1;
-            mainGraphPara.classMapNum[name][index]=0;
+    mainGraphPara.classMapNum = {}
+    for (var i in graph.head) {
+        var name = graph.head[i][0].split(",")[0];
+        var index = graph.head[i][0].split(",")[2];
+        if (name in mainGraphPara.classMapNum) {
+            mainGraphPara.classMapNum[name]["num"] += 1;
+            mainGraphPara.classMapNum[name][index] = 0;
         }
-        else{
-            mainGraphPara.classMapNum[name]={"num":1,"mainPoint":graph.head[i][0],"middleNum":graph.head[i][0].split(",")[1]};// 主点不记录index
+        else {
+            mainGraphPara.classMapNum[name] = {
+                "num": 1,
+                "mainPoint": graph.head[i][0],
+                "middleNum": graph.head[i][0].split(",")[1]
+            };// 主点不记录index
         }
     }
-    var angle=0;
-    for ( var n in mainGraphPara.classMapNum){
-        var value=mainGraphPara.classMapNum[n];
-        var num=value["num"]-1;  //子点个数
-        angle=0;
-        for(var m in value)
-        {
-            if(m=="num" || m=="mainPoint" ||m=="middleNum")
-            {
+    var angle = 0;
+    for (var n in mainGraphPara.classMapNum) {
+        var value = mainGraphPara.classMapNum[n];
+        var num = value["num"] - 1;  //子点个数
+        angle = 0;
+        for (var m in value) {
+            if (m == "num" || m == "mainPoint" || m == "middleNum") {
                 continue;
             }
-            else{
-                value[m]=angle;
-                angle+=2*Math.PI/num;
+            else {
+                value[m] = angle;
+                angle += 2 * Math.PI / num;
             }
         }
     }
 
 //node中心点的布局范围
-    mainGraphPara.graphArea.x[0]=(svg_width-svg_width*mainGraphPara.maxGraphArea)/2;
-    mainGraphPara.graphArea.x[1]=(svg_width-svg_width*mainGraphPara.maxGraphArea)/2+mainGraphPara.maxGraphArea*svg_width;
-    mainGraphPara.graphArea.y[0]=(svg_height-svg_height*mainGraphPara.maxGraphArea)/2;
-    mainGraphPara.graphArea.y[1]=(svg_height-svg_height*mainGraphPara.maxGraphArea)/2+mainGraphPara.maxGraphArea*svg_height;
-   // 把上一幅图的点的位置更新到本图上
+    mainGraphPara.graphArea.x[0] = (svg_width - svg_width * mainGraphPara.maxGraphArea) / 2;
+    mainGraphPara.graphArea.x[1] = (svg_width - svg_width * mainGraphPara.maxGraphArea) / 2 + mainGraphPara.maxGraphArea * svg_width;
+    mainGraphPara.graphArea.y[0] = (svg_height - svg_height * mainGraphPara.maxGraphArea) / 2;
+    mainGraphPara.graphArea.y[1] = (svg_height - svg_height * mainGraphPara.maxGraphArea) / 2 + mainGraphPara.maxGraphArea * svg_height;
+    // 把上一幅图的点的位置更新到本图上
     for (var i = 0; i < graph.nodes.length - 1; i++) {
         if (typeof(lastGraphData[graph.nodes[i].id]) != 'undefined') {
             graph.nodes[i].x = lastGraphData[graph.nodes[i].id].x;
@@ -152,13 +156,13 @@ function main_redraw(graph) {
     var dataLinkLength = d3.scale.linear()
         .domain([0, 1])
         .range([500, 100]);
-    var parentWidth=svg_width;
-    var parentHeight=svg_height;
+    var parentWidth = svg_width;
+    var parentHeight = svg_height;
 
     // remove any previous graphs
     var svg = d3v4.select('#mainGraph')
-    .attr('width', parentWidth)
-    .attr('height', parentHeight)
+        .attr('width', parentWidth)
+        .attr('height', parentHeight)
     svg.selectAll('g').remove();
     svg.selectAll('text').remove();
     var gMain = svg.append('g')
@@ -168,52 +172,54 @@ function main_redraw(graph) {
         .attr('width', parentWidth)
         .attr('height', parentHeight)
         .style('fill', '#fff')
-       // .attr('class', 'back') //背景
+    // .attr('class', 'back') //背景
 
     var gDraw = gMain.append('g')
         .classed('g-zoom', true)
-        .attr("transform","translate(81.02335954868718,52.56343257833703) scale(0.5743491774985174)")
+        .attr("transform", "translate(81.02335954868718,52.56343257833703) scale(0.5743491774985174)")
     ;
 //zoom
-     var zoom = d3v4.zoom().scaleExtent([0.3, 3])
-        .on('zoom', zoomed).on("end",zoomEnd);
+    var zoom = d3v4.zoom().scaleExtent([0.3, 3])
+        .on('zoom', zoomed).on("end", zoomEnd);
     gMain.call(zoom).on('dblclick.zoom', null)
         .on('click.zoom', null)
-        ;
-     function zoomEnd(d){
-         transform=d3v4.select("#mainGraph .g-zoom").attr("transform");
-     }
+    ;
+
+    function zoomEnd(d) {
+        transform = d3v4.select("#mainGraph .g-zoom").attr("transform");
+    }
+
     function zoomed() {
         gDraw.attr('transform', d3v4.event.transform);
     }
+
 //*zoom
 //     var color = d3v4.scaleOrdinal(d3v4.schemeCategory20);
 
     // the brush needs to go before the nodes so that it doesn't
     // get called when the mouse is over a node
-    var drawBorder=gDraw.append('rect')
-        //rect比中心点的布局范围稍微大一些
-        .attr('width', svg_width*mainGraphPara.maxGraphArea+mainGraphPara.maxPointSize)
-        .attr('height', svg_height*mainGraphPara.maxGraphArea+mainGraphPara.maxPointSize)
-        .attr("x",mainGraphPara.graphArea.x[0]-mainGraphPara.maxPointSize/2)
-        .attr("y",mainGraphPara.graphArea.y[0]-mainGraphPara.maxPointSize/2)
+    var drawBorder = gDraw.append('rect')
+    //rect比中心点的布局范围稍微大一些
+        .attr('width', svg_width * mainGraphPara.maxGraphArea + mainGraphPara.maxPointSize)
+        .attr('height', svg_height * mainGraphPara.maxGraphArea + mainGraphPara.maxPointSize)
+        .attr("x", mainGraphPara.graphArea.x[0] - mainGraphPara.maxPointSize / 2)
+        .attr("y", mainGraphPara.graphArea.y[0] - mainGraphPara.maxPointSize / 2)
         .style('stroke', 'black')
         .style('stroke-width', 1)
         .style('fill', 'white')
         .attr('class', 'back')
         .on('click', () => {
             reSelectPoint();  //重新记录上一次的选择
-            node.each(function(d) {
+            node.each(function (d) {
                 d.selected = false;
                 d.previouslySelected = false;
             });
             node.classed("selected", false);
-            if(selectPoint.length>=2)
-            {
-                lastSelPoint=selectPoint;
+            if (selectPoint.length >= 2) {
+                lastSelPoint = selectPoint;
             }
-            selectPoint=[];
-           // reSelectPoint();
+            selectPoint = [];
+            // reSelectPoint();
         })
 
     var gBrushHolder = gDraw.append('g');
@@ -225,22 +231,25 @@ function main_redraw(graph) {
         .selectAll("line")
         .data(graph.links)
         .enter().append("line")
-        .attr("stroke-width", function(d) { return lineWidthMap(d.overlap);; })
+        .attr("stroke-width", function (d) {
+            return lineWidthMap(d.overlap);
+            ;
+        })
         .attr("stroke-dasharray", function (d) {
             if (d.isCutEdge == 0)
                 return "5,0";
             else return "5,5";
         })
         .style("stroke", function (d) {
-        return colorMapCooperateOpacity(d.value);
-    })
+            return colorMapCooperateOpacity(d.value);
+        })
         .attr("opacity", function (d) {
-            return opacityMap(d.value,d.overlap);
+            return opacityMap(d.value, d.overlap);
         })
         .on("click", function (link) {
 
             //getScatterData([link['source']['id'], link['target']['id']], 0);
-            otherGraph_g.new("edgeScatter",{nameList:[link['source']['id'], link['target']['id']], galleryIndex:0});
+            otherGraph_g.new("edgeScatter", {nameList: [link['source']['id'], link['target']['id']], galleryIndex: 0});
         })
         .on("contextmenu", function (link) {
             whichLineClick = link;
@@ -257,11 +266,11 @@ function main_redraw(graph) {
         .selectAll(".node")
         .data(graph.nodes)
         .enter().append("g")
-        .attr("class", function(d){
+        .attr("class", function (d) {
 
-            return "node "+"main_" + d.name.split(",")[0].replace(/[\W]/g, '_');
+            return "node " + "main_" + d.name.split(",")[0].replace(/[\W]/g, '_');
         })
-        .attr("id", function(d){
+        .attr("id", function (d) {
             return "main_" + d.name.replace(/[\W]/g, '_');
         })
         .call(d3v4.drag()
@@ -277,10 +286,10 @@ function main_redraw(graph) {
             return circleSizeScale_M(Number(node['symbolSize']));
         })//设置圆圈半径
         .style('stroke', function (node) {
-            if (node.isCutPoint == true ) {  // || isInArray(selectPoint, node['id'].split(',')[0]) != -1
+            if (node.isCutPoint == true) {  // || isInArray(selectPoint, node['id'].split(',')[0]) != -1
                 return "#000";
             }
-            else{
+            else {
                 return "#fff";
             }
         });
@@ -289,19 +298,19 @@ function main_redraw(graph) {
             return d.deg;
         })
         .enter().append("line")
-        .attr("class",'splitLine')
-        .attr("x1",0)
-        .attr("y1",0)
-        .attr("x2",function (d) {
-            var node=d3.select(this)[0][0].parentNode.__data__;
-            var r=circleSizeScale_M(Number(node['symbolSize']));
-            return r*Math.sin(d);
+        .attr("class", 'splitLine')
+        .attr("x1", 0)
+        .attr("y1", 0)
+        .attr("x2", function (d) {
+            var node = d3.select(this)[0][0].parentNode.__data__;
+            var r = circleSizeScale_M(Number(node['symbolSize']));
+            return r * Math.sin(d);
 
         })
-        .attr("y2",function (d) {
-            var node=d3.select(this)[0][0].parentNode.__data__;
-            var r=circleSizeScale_M(Number(node['symbolSize']));
-            return -r*Math.cos(d);
+        .attr("y2", function (d) {
+            var node = d3.select(this)[0][0].parentNode.__data__;
+            var r = circleSizeScale_M(Number(node['symbolSize']));
+            return -r * Math.cos(d);
         })
 
 
@@ -317,42 +326,44 @@ function main_redraw(graph) {
         .style('fill', function (node) {
             return '#555';
         })
-        .attr("y",-7)
+        .attr("y", -7)
         .text(function (d) {
             return d.name;
         });
     ;
     simulation = d3v4.forceSimulation()
         .force("link", d3v4.forceLink()
-            .id(function(d) { return d.id; })
-            .distance(function(d) {
-                return dataLinkLength(bzMap("distance",Math.abs(d.value)));
+                .id(function (d) {
+                    return d.id;
+                })
+                .distance(function (d) {
+                    return dataLinkLength(bzMap("distance", Math.abs(d.value)));
 
-            })
-           // .iterations(function(d){ return Math.ceil(Math.abs(d.value)*10+1)})
+                })
+            // .iterations(function(d){ return Math.ceil(Math.abs(d.value)*10+1)})
         )
         .velocityDecay(0.5)  //默认0.4
-         .force("center", d3v4.forceCenter(parentWidth / 2, parentHeight / 2))  //写center力会出bug
+        .force("center", d3v4.forceCenter(parentWidth / 2, parentHeight / 2))  //写center力会出bug
         .force("x", null)
         .force("y", null)
     ;
 
-    setTimeout(function(){
-        simulation.force("center",null).force("x", null)
+    setTimeout(function () {
+        simulation.force("center", null).force("x", null)
             .force("y", null)
             .restart();
-    },2000);
+    }, 2000);
     simulation
         .nodes(graph.nodes)
         .on("tick", ticked);
 
     simulation.force("link")
         .links(graph.links);
-    simulation.force('collision',d3v4.forceCollide(mainGraphPara.maxPointSize+5) )  //使能碰撞力，使点之间无重叠
-        .force("charge",d3v4.forceManyBody()
+    simulation.force('collision', d3v4.forceCollide(mainGraphPara.maxPointSize + 5))  //使能碰撞力，使点之间无重叠
+        .force("charge", d3v4.forceManyBody()
             .strength(-100) //静电斥力
-            .distanceMax(parentHeight/8)
-			.distanceMin(mainGraphPara.maxPointSize+5)
+            .distanceMax(parentHeight / 8)
+            .distanceMin(mainGraphPara.maxPointSize + 5)
         )
 
     // var mainGraphPara={
@@ -367,39 +378,36 @@ function main_redraw(graph) {
         // the force simulation
         node.attr("transform", function (d) {  //忽略第一波的tick
 //限定布局范围
-            if (d.x<=mainGraphPara.graphArea.x[0] )
-            {
-                d.x+= mainGraphPara.springback*svg_width;
-                d.vx/=4;
+            if (d.x <= mainGraphPara.graphArea.x[0]) {
+                d.x += mainGraphPara.springback * svg_width;
+                d.vx /= 4;
             }
-            else if(d.x>=mainGraphPara.graphArea.x[1]){
-                d.x-= mainGraphPara.springback*svg_width;
-                d.vx/=4;
+            else if (d.x >= mainGraphPara.graphArea.x[1]) {
+                d.x -= mainGraphPara.springback * svg_width;
+                d.vx /= 4;
             }
-            if (d.y<=mainGraphPara.graphArea.y[0] )
-            {
-                d.y+= mainGraphPara.springback*svg_height;
-                d.vy/=4;
+            if (d.y <= mainGraphPara.graphArea.y[0]) {
+                d.y += mainGraphPara.springback * svg_height;
+                d.vy /= 4;
             }
-            else if(d.y>=mainGraphPara.graphArea.y[1]){
-                d.y-= mainGraphPara.springback*svg_height;
-                d.vy/=4;
+            else if (d.y >= mainGraphPara.graphArea.y[1]) {
+                d.y -= mainGraphPara.springback * svg_height;
+                d.vy /= 4;
             }
             // 检查相似点是否需要放一起
-            if(mainGraphPara.similarToClose){
-               // if(d.name.split(",")[2]!="0"){ //是主点就跳过
-                if(!mainGraphPara.classMapNum[d.name.split(",")[0]])
-                {
+            if (mainGraphPara.similarToClose) {
+                // if(d.name.split(",")[2]!="0"){ //是主点就跳过
+                if (!mainGraphPara.classMapNum[d.name.split(",")[0]]) {
                     return "translate(" + d.x + "," + d.y + ")";
                 }
-                if(mainGraphPara.classMapNum[d.name.split(",")[0]].num==1 ||mainGraphPara.classMapNum[d.name.split(",")[0]].middleNum!=d.name.split(",")[1] ){
+                if (mainGraphPara.classMapNum[d.name.split(",")[0]].num == 1 || mainGraphPara.classMapNum[d.name.split(",")[0]].middleNum != d.name.split(",")[1]) {
                     return "translate(" + d.x + "," + d.y + ")";
                 }
-                var mainPoint=mainGraphPara.classMapNum[d.name.split(",")[0]].mainPoint;
-                if(mainPoint!=d.name){ //是主点就跳过
-                    var pos=[];//找到主点位置
-                    var vpos=[];
-                    var childNum=0;
+                var mainPoint = mainGraphPara.classMapNum[d.name.split(",")[0]].mainPoint;
+                if (mainPoint != d.name) { //是主点就跳过
+                    var pos = [];//找到主点位置
+                    var vpos = [];
+                    var childNum = 0;
                     // d3.selectAll(".main_" + d.name.split(",")[0].replace(/[\W]/g, '_')).each(function(data){
                     //     if(data.name==mainPoint)
                     //     {
@@ -409,9 +417,9 @@ function main_redraw(graph) {
                     //         //childNum=Number(data.name.split(",")[1])-1;
                     //     }
                     // }) ;
-                    var data=d3.select("#main_" + mainPoint.replace(/[\W]/g, '_')).data()[0];
-                    pos=[data.x,data.y];
-                    vpos=[data.vx,data.vy];
+                    var data = d3.select("#main_" + mainPoint.replace(/[\W]/g, '_')).data()[0];
+                    pos = [data.x, data.y];
+                    vpos = [data.vx, data.vy];
                     //下面这种算法易造成振荡，原因：多个子点在同一个方向上，易造成向边界上移动
                     // var poschild=[d.x,d.y];
                     // if(pos.length)
@@ -424,30 +432,37 @@ function main_redraw(graph) {
                     //     d.vy=vpos[1];
                     // }
                     //取子点个数，根据索引分布在主点的圆周上。
-                   // var deg=2*Math.PI/childNum*(d.name.split(",")[2]-1);
-                    if(!pos.length){
+                    // var deg=2*Math.PI/childNum*(d.name.split(",")[2]-1);
+                    if (!pos.length) {
                         console.error("未找到pos数据点！！！");
                     }
-                    var deg= mainGraphPara.classMapNum[d.name.split(",")[0]][Number(d.name.split(",")[2])];
-                    d.x=pos[0]+mainGraphPara.similarPointDistance*Math.cos(deg);
-                    d.y=pos[1]+mainGraphPara.similarPointDistance*Math.sin(deg);
-                    d.vx=vpos[0];
-                    d.vy=vpos[1];
+                    var deg = mainGraphPara.classMapNum[d.name.split(",")[0]][Number(d.name.split(",")[2])];
+                    d.x = pos[0] + mainGraphPara.similarPointDistance * Math.cos(deg);
+                    d.y = pos[1] + mainGraphPara.similarPointDistance * Math.sin(deg);
+                    d.vx = vpos[0];
+                    d.vy = vpos[1];
                 }
             }
 
-            if(!isNaN(d.x)&& !isNaN(d.x)){
+            if (!isNaN(d.x) && !isNaN(d.x)) {
                 return "translate(" + d.x + "," + d.y + ")";
             }
-            console.log(mainGraphPara.classMapNum[d.name.split(",")[0]]+"\npoint:"+d.name);
+            console.log(mainGraphPara.classMapNum[d.name.split(",")[0]] + "\npoint:" + d.name);
         })
 
 
-
-        link.attr("x1", function(d) { return d.source.x; })
-            .attr("y1", function(d) { return d.source.y; })
-            .attr("x2", function(d) { return d.target.x; })
-            .attr("y2", function(d) { return d.target.y; });
+        link.attr("x1", function (d) {
+            return d.source.x;
+        })
+            .attr("y1", function (d) {
+                return d.source.y;
+            })
+            .attr("x2", function (d) {
+                return d.target.x;
+            })
+            .attr("y2", function (d) {
+                return d.target.y;
+            });
 
         // node.attr("cx", function(d) { return d.x; })
         //     .attr("cy", function(d) { return d.y; });
@@ -467,11 +482,10 @@ function main_redraw(graph) {
         // don't remove the brush on keyup in the middle of a selection
         brushing = true;
 
-        node.each(function(d) {
+        node.each(function (d) {
             d.previouslySelected = shiftKey && d.selected;
         });
     }
-
 
 
     function brushed() {
@@ -480,7 +494,7 @@ function main_redraw(graph) {
 
         var extent = d3v4.event.selection;
 
-        node.classed("selected", function(d) {
+        node.classed("selected", function (d) {
             return d.selected = d.previouslySelected ^
                 (extent[0][0] <= d.x && d.x < extent[1][0]
                     && extent[0][1] <= d.y && d.y < extent[1][1]);
@@ -506,20 +520,19 @@ function main_redraw(graph) {
         reSelectPoint();
 
     }
-    function reSelectPoint(){
-        if($(".gnode .selected").length)
-        {
-            selectPoint=[];
-            d3v4.selectAll(".gnode .selected").each(function(d) {
-                var name= d.name.split(',')[0];
-                if(isInArray(selectPoint,name)==-1)
-                {
+
+    function reSelectPoint() {
+        if ($(".gnode .selected").length) {
+            selectPoint = [];
+            d3v4.selectAll(".gnode .selected").each(function (d) {
+                var name = d.name.split(',')[0];
+                if (isInArray(selectPoint, name) == -1) {
                     selectPoint.push(name);
                 }
             })
         }
-        else{
-            selectPoint=[];
+        else {
+            selectPoint = [];
         }
     }
 
@@ -563,19 +576,28 @@ function main_redraw(graph) {
     }
 
     function dragstarted(d) {
-        myColorScheme.active.lastActiveName=d.group;
+        myColorScheme.active.lastActiveName = d.group;
         if (!d3v4.event.active) simulation.alphaTarget(0.9).restart();
 
         if (!d.selected && !shiftKey) {
             // if this node isn't selected, then we have to unselect every other node
-            node.classed("selected", function(p) { return p.selected =  p.previouslySelected = false; });
+            node.classed("selected", function (p) {
+                return p.selected = p.previouslySelected = false;
+            });
         }
 
-        d3v4.select(this).classed("selected", function(p) { d.previouslySelected = d.selected; return d.selected = true; });
+        d3v4.select(this).classed("selected", function (p) {
+            d.previouslySelected = d.selected;
+            return d.selected = true;
+        });
 
-        node.filter(function(d) { return d.selected; })
-            .attr("transform",function(d){return "translate(" + d.x + "," + d.y + ")";})
-            .each(function(d) { //d.fixed |= 2;
+        node.filter(function (d) {
+            return d.selected;
+        })
+            .attr("transform", function (d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            })
+            .each(function (d) { //d.fixed |= 2;
                 d.fx = d.x;
                 d.fy = d.y;
             })
@@ -585,8 +607,10 @@ function main_redraw(graph) {
     function dragged(d) {
         //d.fx = d3v4.event.x;
         //d.fy = d3v4.event.y;
-        node.filter(function(d) { return d.selected; })
-            .each(function(d) {
+        node.filter(function (d) {
+            return d.selected;
+        })
+            .each(function (d) {
                 d.fx += d3v4.event.dx;
                 d.fy += d3v4.event.dy;
             })
@@ -596,19 +620,20 @@ function main_redraw(graph) {
         if (!d3v4.event.active) simulation.alphaTarget(0);
         // d.fx = null;
         // d.fy = null;
-        node.filter(function(d) { return d.selected; })
-            .each(function(d) { //d.fixed &= ~6;
+        node.filter(function (d) {
+            return d.selected;
+        })
+            .each(function (d) { //d.fixed &= ~6;
                 d.fx = null;
                 d.fy = null;
             });
-        if(mainGraphPara.dragFixed)
-        {
-            d.fx =d.x;
+        if (mainGraphPara.dragFixed) {
+            d.fx = d.x;
             d.fy = d.y;
         }
-        else{
-             d.fx = null;
-             d.fy = null;
+        else {
+            d.fx = null;
+            d.fy = null;
         }
     }
 
@@ -628,21 +653,20 @@ function main_redraw(graph) {
 
     node.on("contextmenu", function (node) {
         whichNodeClick = node;
-        var $pointRmenu=$("#mainRmenu");
+        var $pointRmenu = $("#mainRmenu");
         $pointRmenu.children().remove();
-        if(selectPoint.length>=2)
-        {
+        if (selectPoint.length >= 2) {
             $pointRmenu.append(
-                    '    <li><span onclick="mainRmenuClick(this)">cluster</span></li>' +
-                    '    <hr size="1px" noshade=true>' +
-                    '    <li><span onclick="mainRmenuClick(this)">kick point</span></li>' +
-                    '    <hr size="1px" noshade=true>' +
-                    '    <li><span onclick="mainRmenuClick(this)">cluster(sel)</span></li>'+
-                    '    <hr size="1px" noshade=true>' +
-                    '    <li><span onclick="getTSNE()">t-sne(sel)</span></li>'+
-                    '    <hr size="1px" noshade=true>' +
-                    '    <li><span onclick="externalRefreshParallel()">parallel(sel)</span></li>'
-                );
+                '    <li><span onclick="mainRmenuClick(this)">cluster</span></li>' +
+                '    <hr size="1px" noshade=true>' +
+                '    <li><span onclick="mainRmenuClick(this)">kick point</span></li>' +
+                '    <hr size="1px" noshade=true>' +
+                '    <li><span onclick="mainRmenuClick(this)">cluster(sel)</span></li>' +
+                '    <hr size="1px" noshade=true>' +
+                '    <li><span onclick="getTSNE()">t-sne(sel)</span></li>' +
+                '    <hr size="1px" noshade=true>' +
+                '    <li><span onclick="externalRefreshParallel()">parallel(sel)</span></li>'
+            );
         }
         else {
             $pointRmenu.append(
@@ -656,14 +680,14 @@ function main_redraw(graph) {
         return contextmenu("mainRmenu");
     })
         .on("click", function (node) {
-            myColorScheme.active.lastActiveName=node.group;
+            myColorScheme.active.lastActiveName = node.group;
 
             reSelectPoint();
         })
         .on("dblclick", function (node) {
-            myColorScheme.active.lastActiveName=node.group;
+            myColorScheme.active.lastActiveName = node.group;
             nodeMessName = node['id'];
-            var $ele=otherGraph_g.new('nodeDetail',{name:node['id'],galleryIndex:0});
+            var $ele = otherGraph_g.new('nodeDetail', {name: node['id'], galleryIndex: 0});
             $ele.append('<button type="button" style="position: absolute;' +
                 '    right: 20px;' +
                 '    padding: 0;' +
@@ -675,19 +699,15 @@ function main_redraw(graph) {
 
     node.on("mouseover", function (d) {
 
-            d3.selectAll(".matrixText_" + d.name.replace(/[\W]/g, '_')).classed("active",true);
-            d3.select("#mainGraph").selectAll(".node circle").each(function (data, index) {
-                if (myChart_main_data.relation[nodeMap[d.name]][nodeMap[data.name]] == 0 && d.name != data.name&& d.name.split(",")[0]!=data.name.split(",")[0] ) //加gray属性
+            d3.selectAll(".matrixText_" + d.name.replace(/[\W]/g, '_')).classed("active", true);
+            d3.select("#mainGraph").selectAll(".node").each(function (data, index) {
+                if (myChart_main_data.relation[nodeMap[d.name]][nodeMap[data.name]] == 0 && d.name != data.name && d.name.split(",")[0] != data.name.split(",")[0]) //加gray属性
                 {
-                    d3.select(this).style("opacity", 0.1);
+                    d3.select(this).select('circle').style("opacity", 0.1);
+                    d3.select(this).select('text').style("opacity", 0.1);
                 }
             });
-            d3.select("#mainGraph").selectAll(".node text").each(function (data, index) {
-                if (myChart_main_data.relation[nodeMap[d.name]][nodeMap[data.name]] == 0 && d.name != data.name && d.name.split(",")[0]!=data.name.split(",")[0]) //加gray属性
-                {
-                    d3.select(this).style("opacity", 0.1);
-                }
-            });
+
             d3.select("#mainGraph").selectAll(".link line").each(function (data, index) {
                 if (!(data.source.name == d.name || data.target.name == d.name)) {
                     d3.select(this).style("opacity", 0);
@@ -698,24 +718,49 @@ function main_redraw(graph) {
             //d3.selectAll(".matrixText_"+d.name.replace(/[\W]/g,'_')).classed("active", true);
         }
     )
-        .on("mouseout", function (d) {
-            d3.selectAll(".matrixText_" + d.name.replace(/[\W]/g, '_')).classed("active",false);
+        .on("nodesover", function (d) {
+
+                var event = d3v4.event;
+                var nodesList=event.detail.nodesList;
+                d3.select("#mainGraph").selectAll(".node").each(function (data, index) {  //检查这些nodes与 event.nodesList相同的点。  isInArray(arr, value)   -1
+                    if ( isInArray(nodesList, data.name)==-1 ) //加gray属性  不在list中
+                    {
+                        d3.select(this).select('circle').style("opacity", 0.1);
+                        d3.select(this).select('text').style("opacity", 0.1);
+                    }
+                });
+
+                d3.select("#mainGraph").selectAll(".link line").each(function (data, index) {
+                    if (!( -1!= isInArray(nodesList, data.source.name)&& -1!= isInArray(nodesList,data.target.name) )) {
+                        d3.select(this).style("opacity", 0);
+                    }
+                });
+            }
+        )
+        .on("nodesout", function (d) {
 
             d3.select("#mainGraph").selectAll(".node circle")
                 .style("opacity", 1);
             d3.select("#mainGraph").selectAll(".node text").style("opacity", 1);
 
             d3.select("#mainGraph").selectAll(".link line").style("opacity", function (d) {
-                return opacityMap(d.value,d.overlap);
+                return opacityMap(d.value, d.overlap);
             })
+            }
+        )
+        .on("mouseout", function (d) {
+            d3.selectAll(".matrixText_" + d.name.replace(/[\W]/g, '_')).classed("active", false);
 
+            d3.select("#mainGraph").selectAll(".node circle")
+                .style("opacity", 1);
+            d3.select("#mainGraph").selectAll(".node text").style("opacity", 1);
+
+            d3.select("#mainGraph").selectAll(".link line").style("opacity", function (d) {
+                return opacityMap(d.value, d.overlap);
+            })
 
             //d3.selectAll(".matrixText_"+d.name.replace(/[\W]/g,'_')).classed("active", false);
         });
-
-
-
-
 
 
     return graph;

@@ -137,7 +137,11 @@ app_main.configParameters = {
         max: 1,
         step: 0.01,
     },
-
+    similarValue:{
+        min:0,
+        max:0.3,
+        step:0.01,
+    }
     // verticalAlign: {
     //     options: {
     //         top: 'top',
@@ -210,6 +214,7 @@ var lastClusterOption = '单点聚类';
 app_main.config = {
     clusterOption: '单点聚类',
     kickPointByNum: 0.01,
+    similarValue:0.21,
     ResetKick: resetKick,
     UnDoKick: undoKick,
     lastSel: lastSel,
@@ -231,6 +236,14 @@ app_main.config = {
 
         }
         else if (typeof(change) == "number") {
+
+            if(similarValue!=app_main.config.similarValue)
+            {
+                similarValue=app_main.config.similarValue;
+                d3v4.select('#recommend_btn').dispatch("click");
+            }else{
+                main_deepRedraw();
+            }
         }
 
     },
@@ -434,6 +447,7 @@ function transform2(d) {
         main_redraw(myChart_main_data);
         getorderRelationMatrixSuccess(myChart_main_data);
         refrshParaChart(myChart_main_data);
+        d3v4.select('#recommend_btn').dispatch("click");
 
     });
 })();

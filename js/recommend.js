@@ -1,5 +1,24 @@
 var similarValue = 0.2;
 
+function getRecommend(){
+    //绘制容器
+    var $activeTab=$("#myMiddleTabCon").find(".active");
+    $("#myMiddleTabCon1").html("");
+    $("#myMiddleTabCon1").width($activeTab.width()).height($activeTab.height())
+    .append('<div class="clearfix recommend" style="overflow-y: auto">\n' +
+        '                            <div class="col-md-6 col-xs-6 column full_height" id="subspaceContent">\n' +
+        '<p class="messtitle">Symmetry dimension:</p>'+
+        '                            </div>\n' +
+        '                            <div class="col-md-6 col-xs-6 column full_height" id="allConnectContent">\n' +
+        '<p class="messtitle">AllConnect dimension:</p>'+
+        '                            </div>\n' +
+        '                        </div>');
+    while($("#allConnectContent").length ==0){}  //等待创建完成
+    getSimilarPoint();
+    getAllConnect();
+}
+
+
 function getSimilarPoint() {
     var data = myChart_main_data['relation'];
     //不管正负，只考虑值
@@ -33,35 +52,52 @@ function getSimilarPoint() {
     var nameList = [];
     var nameBuf = [];
     var divBuf = "";
-    divBuf += '<p>不考虑符号</p>';
+    divBuf += '<p>no consider the sign</p>';
     for (i in dataArr) {
         nameBuf = [];
-        divBuf += '<p style="word-break: break-all; word-wrap:break-word;">';
+        divBuf += '<p class="MessItem" style="word-break: break-all; word-wrap:break-word;" data-nodesList="'+ fromPosGetName(dataArr[i])+'" onmouseover="messLineOver(event)"  onmouseout="messLineOut(event)" >';
         for (j in dataArr[i]) {
             //data.nodes
             var name = myChart_main_data["head"][dataArr[i][j]][0];
             nameBuf.push(name);
-            divBuf = divBuf + '<span onmouseover="subspaceSpanOver(\'' + name.replace(/[\W]/g, '_') + '\')" onmouseout="subspaceSpanOut(\'' + name.replace(/[\W]/g, '_') + '\')" class="subspaceSpan" style="background-color: ' + getColorFromName(name) + '">' + myChart_main_data["head"][dataArr[i][j]][0] + '</span>'
+            // divBuf = divBuf + '<span onmouseover="subspaceSpanOver(\'' + name.replace(/[\W]/g, '_') + '\')" onmouseout="subspaceSpanOut(\'' + name.replace(/[\W]/g, '_') + '\')" class="subspaceSpan" style="background-color: ' + getColorFromName(name) + '">' + myChart_main_data["head"][dataArr[i][j]][0] + '</span>'
+            divBuf = divBuf + '<span  style="background-color: ' + getColorFromName(name) + '">' + myChart_main_data["head"][dataArr[i][j]][0] + '</span>'
         }
         divBuf += '</p>';
         if (nameBuf.length) {
             allConnectNameList.push(nameBuf);
         }
     }
-    divBuf += '<p>考虑符号</p>';
+    divBuf += '<p>consider the sign</p>';
     for (i in dataArrS) {
-        divBuf += '<p style="word-break: break-all; word-wrap:break-word;">';
+        divBuf += '<p class="MessItem" style="word-break: break-all; word-wrap:break-word;" data-nodesList="'+ fromPosGetName(dataArr[i])+'" onmouseover="messLineOver(event)"  onmouseout="messLineOut(event)" >';
         for (j in dataArrS[i]) {
             var name = myChart_main_data["head"][dataArr[i][j]][0];
-            divBuf = divBuf + '<span onmouseover="subspaceSpanOver(\'' + name.replace(/[\W]/g, '_') + '\')" onmouseout="subspaceSpanOut(\'' + name.replace(/[\W]/g, '_') + '\')" class="subspaceSpan" style="background-color: ' + getColorFromName(name) + '">' + name + '</span>'
+            // divBuf = divBuf + '<span onmouseover="subspaceSpanOver(\'' + name.replace(/[\W]/g, '_') + '\')" onmouseout="subspaceSpanOut(\'' + name.replace(/[\W]/g, '_') + '\')" class="subspaceSpan" style="background-color: ' + getColorFromName(name) + '">' + name + '</span>'
+            divBuf = divBuf + '<span  style="background-color: ' + getColorFromName(name) + '">' + myChart_main_data["head"][dataArr[i][j]][0] + '</span>'
         }
         divBuf += '</p>';
     }
 
-    $("#subspace").css("width", "100%");
-    $("#subspace").css("display", "block");
-    $("#subspaceContent").html("");
     $("#subspaceContent").append(divBuf);
+}
+function fromPosGetName(posList){
+    var nameList=[]
+    for (var i in posList){
+        nameList.push(myChart_main_data["head"][posList[i]][0]);
+    }
+    return JSON.stringify( nameList).replace(/"/g,"'");
+}
+function messLineOver(event){
+    var domnode=event.target;
+    while(domnode.tagName!="P"){
+        domnode=domnode.parentNode;
+    }
+    var nodeList=JSON.parse(domnode.dataset['nodeslist'].replace(/'/g,'"'));//注意名字一定是全部小写
+    d3v4.select("#mainGraph .node").dispatch("nodesover",{detail:{nodesList:nodeList}});
+}
+function messLineOut(event){
+    d3v4.select("#mainGraph .node").dispatch("nodesout");
 }
 
 function subspaceSpanOver(name) {//name中不带逗号
@@ -159,8 +195,9 @@ function getAllConnect() {//贪婪，新加入的，要与原来的逐个比较
     var divBuf = "";
     for (i in dataArr) {
         nameBuf = [];
-        divBuf += "<p>" + "第" + i + "个全连接" + "</p>"
-        divBuf += '<p style="word-break: break-all; word-wrap:break-word;" onmouseover="allConnectOver(\'' + dataArr[i] + '\')" onmouseout="allConnectOut(\'' + dataArr[i] + '\')" >';
+        divBuf += "<p>"  + (+i+1) + "th allconnect" + "</p>"
+        divBuf += '<p class="MessItem" style="word-break: break-all; word-wrap:break-word;" data-nodesList="'+ fromPosGetName(dataArr[i])+'" onmouseover="messLineOver(event)"  onmouseout="messLineOut(event)" >';
+        // divBuf += '<p style="word-break: break-all; word-wrap:break-word;" onmouseover="allConnectOver(\'' + dataArr[i] + '\')" onmouseout="allConnectOut(\'' + dataArr[i] + '\')" >';
         for (j in dataArr[i]) {
             //data.nodes
             var name = myChart_main_data["head"][dataArr[i][j]][0];
@@ -172,10 +209,6 @@ function getAllConnect() {//贪婪，新加入的，要与原来的逐个比较
             allConnectNameList.push(nameBuf);
         }
     }
-
-    $("#allConnect").css("width", "100%");
-    $("#allConnect").css("display", "block");
-    $("#allConnectContent").html("");
     $("#allConnectContent").append(divBuf);
 }
 

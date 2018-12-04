@@ -124,17 +124,25 @@ html,body{
 /*#subspace .color1{*/
     /**/
 /*}*/
-#subspace .subspaceSpan{
-    margin: 0px 5px;
-    border: solid 1px;
-    border-radius: 5px;
+.recommend p{
+    margin: 4px 0;
+    cursor: default;
 }
-#allConnect .allConnectSpan{
-     margin: 0px 5px;
-     border: solid 1px;
-     border-radius: 5px;
- }
-
+.recommend .MessItem{
+    border-bottom: solid 1px #a0a0a0;
+}
+.recommend span{
+    border: solid 1px #fff;
+    border-radius: 5px;
+    line-height: 16px;
+    display: inline-block;
+}
+.recommend .messtitle
+{
+    font-size: 17px;
+    background-color: #ddd;
+    font-weight: 600;
+}
 
 
 #orderRelationMatrix .cell:hover{

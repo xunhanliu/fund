@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>D-div</title>
+    <!--<link rel="shortcut icon" href="./favicon.png"/>-->
+
+    <link href="./css/lib/bootstrap.css" type="text/css" rel="stylesheet"/>
+
+    <link href="./css/index.css" type="text/css" rel="stylesheet"/>
+    <link href="./css/lib/input-range.css" type="text/css" rel="stylesheet"/>
+    <link href="./css/lib/font-awesome.css" type="text/css" rel="stylesheet"/>
+    <link href="./css/oderRelationMatrix.css" type="text/css" rel="stylesheet"/>
+    <link href="./css/d3.parcoords.css" rel="stylesheet" type="text/css">
+
+    <link href="./css/lib/toastr.css" rel="stylesheet" type="text/css"/>
+    <link href="./css/lib/myToast.css" rel="stylesheet" type="text/css"/>
+    <link href="./lib/layui/dist/css/layui.css" rel="stylesheet" type="text/css">
+    <link href="./css/layui_myskin.css" rel="stylesheet" type="text/css">
+    <link href="./css/gallery.css" rel="stylesheet" type="text/css">
+    <link href="./css/gallery0.css" rel="stylesheet" type="text/css">
+    <link href="./css/mainRmenu.css" rel="stylesheet" type="text/css">
+    <link href="./css/mainSet.css" rel="stylesheet" type="text/css">
+    <link href="./css/mainGraph.css" rel="stylesheet" type="text/css">
+    <link href="./css/nodeDetail.css" rel="stylesheet" type="text/css">
+
+
+    <script src="./lib/jquery.js"></script>
+    <script src="./lib/rangeSlider.js"></script>
+    <script src="./lib/bootstrap.js"></script>
+
+    <script src="./lib/layui/dist/layui.js"></script>
+    <script src="./lib/toastr.min.js"></script>
+    <script src="./lib/myToastr.js"></script>
+    <script src="./lib/raydreams.js"></script>
+    <script src="./lib/bootstrap.js"></script>
+    <script src="./lib/echarts/echarts.min.js"></script>
+    <script src="./lib/echarts-gl/echarts-gl.min.js"></script>
+    <script src="./lib/echarts-stat/ecStat.min.js"></script>
+    <script src="./lib/echarts/extension/dataTool.min.js"></script>
+    <script src="./lib/echarts/extension/bmap.min.js"></script>
+    <script src="./lib/simplex.js"></script>
+    <script src="./lib/echarts-wordcloud.min.js"></script>
+    <script src="./lib/lodash.js"></script>
+    <script src="./lib/dat.gui.min.js"></script>
+    <script src="./lib/d3.v5.js"></script>
+    <script src="./js/mainGraph/d3v4-brush-lite.js"></script>
+    <script>
+        var d3v4 = d3;
+    </script>
+    <script src="./lib/d3.js"></script>
+    <script src="./lib/d3.svg.multibrush.js"></script>
+    <script src="./lib/d3.parcoords.js"></script>
+    <script src="./lib/json2.js"></script>
+    <script src="./lib/divgrid.js"></script>
+    <script src="./lib/mySubject.js"></script>
+
+    <script src="./lib/sylvester.js"></script>
+    <script src="./lib/underscore.js"></script>
+    <script src="./lib/underscore.math.js"></script>
+
+
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row clearfix top">
+        <div class="col-md-12 column">
+                <span class="text-left tip" style="margin: 0px 20px 0px 10px; cursor:default" alt="这是一个高维数据分析系统">
+                    <span style="border-radius: 20%; font-family: Comic Sans MS;
+    font-size: 21px;">D-div</span>
+                    <!--<img src="./favicon.png" style="width: 26px;height: 26px"/>-->
+                </span>
+            <button class="btn btn-default left_interval" onclick="mainSet(event)"><i class="fa fa-cog"></i>&nbspset
+            </button>
+            <div class="btn-group left_interval">
+                <button type="button" onclick="mainGraph_g.screenShot()" class="btn btn-default tip main-shot"
+                        alt="screenShot"><i class="fa fa-camera"></i></button>
+                <button type="button" onclick="getAllTSNE()" class="btn btn-default tip" alt="t-sne"><i
+                        class="fa fa-magic"></i>&nbsp;t-sne
+                </button>
+                <button type="button" onclick="externalRefreshParallel('all')" class="btn btn-default tip" alt="parallel"><i
+                        class="fa fa-pause"></i>&nbsp;parallel
+                </button>
+                <button id="recommend_btn" type="button" onclick="getRecommend()" class="btn btn-default tip" alt="recommend">recommend
+                </button>
+            </div>
+            <label class="range-inline range-sm left_interval" id="ralationTh">
+                ralationTh: <input type='range' name="" value=0><span class="range-value"></span>
+            </label>
+            <label class="range-inline range-sm left_interval" id="overlapTh">
+                overlapTh: <input type='range' name="" value=0><span class="range-value"></span>
+            </label>
+            <label class="checkbox-inline left_interval">
+                <input type="checkbox" id="inlineCheckbox1" value="similarToClose" checked=true
+                       onchange="layoutCheckClick(event)">similarToClose:
+            </label>
+            <label class="checkbox-inline left_interval">
+                <input type="checkbox" id="inlineCheckbox2" value="dragFixed" onchange="layoutCheckClick(event)">dragFixed:
+            </label>
+
+            <label style=""  class="checkbox-inline left_interval">
+                <input type="checkbox" id="inlineCheckbox3" value="mixedFlag" onchange="mixedCheck(event)">mixed:
+                <input type="text" id="inlineInputbox4" value="0.8*Math.abs(correlation)+0.2*overlap" placeholder="0.8*Math.abs(correlation)+0.2*overlap" onchange="makeMixFunction(event)">
+            </label>
+            <!--<label class="color-inline left_interval">-->
+            <!--color:<input type='color' value="#ff0000" oninput="input(event)">-->
+            <!--</label>-->
+        </div>
+    </div>
+
+    <div class="row clearfix middle">
+        <div class="col-md-1  col-xs-1 column full_height m-left">
+            <ul id="main_legend">
+            </ul>
+        </div>
+        <div class="col-md-6  col-xs-6 column full_height m-center">
+            <!-- mainGraph -->
+            <div id="mainGraph_controls" class="blowUp">
+                <!--width="730" height="700"-->
+                <svg id="mainGraph"></svg>
+            </div>
+        </div>
+        <div class="col-md-5 col-xs-5 column full_height m-right">
+            <div class="blowUp" style="padding-left: 25px">
+                <div id="myMiddleTabCon" class="tab-content blowUp">
+                    <div class="tab-pane fade in active blowUp" id="myMiddleTabCon1">
+                    </div>
+                    <div class="tab-pane fade in  blowUp" id="myMiddleTabCon2">
+                        <div id="orderRalation" class="blowUp">
+                            <svg id="orderRelationMatrix"></svg>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade blowUp" id="myMiddleTabCon3">
+                        <div class="blowUp" id="parallelId">
+                            <div id="parallel" class="parcoords blowUp" class="blowUp"></div>
+                            <!--<div id="parallel_table"></div>  注意一下高度-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul id="myMiddleTab" class="btn-group">
+                <li class="btn btn-default  active"><a href="#myMiddleTabCon1" data-toggle="tab">
+                    detail message</a>
+                </li>
+                <li class="btn btn-default"><a  href="#myMiddleTabCon2" data-toggle="tab">
+                    correlation matrix</a>
+                </li>
+                <li class=" btn btn-default"><a id="parallelBtn" href="#myMiddleTabCon3" data-toggle="tab">parallel axis</a></li>
+            </ul>
+            <!--<div class="full_width m-rt">-->
+            <!--<div id="orderRalation" class="blowUp">-->
+            <!--<svg id="orderRelationMatrix"></svg>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="full_width m-rb">-->
+            <!--<div class="blowUp" id="parallelId">-->
+            <!--<div id="parallel" class="parcoords blowUp" class="blowUp"></div>-->
+            <!--&lt;!&ndash;<div id="parallel_table"></div>  注意一下高度&ndash;&gt;-->
+            <!--</div>-->
+            <!--</div>-->
+
+        </div>
+    </div>
+</div>
+<div id="galleryOuter" class="gallery bottom-gallery">
+    <button type="button" id="gallery-left" onclick="g_scrollLeft(event)" class="btn btn-default "><i
+            class="fa fa-caret-left"></i></button>
+    <button type="button" id="gallery-right" onclick="g_scrollRight(event)" class="btn btn-default "><i
+            class="fa fa-caret-right"></i></button>
+    <div class="gallery" style="overflow-x: scroll;overflow-y: hidden;">
+        <div id="galleryInner" style="height:100px; ">
+            <!--注意，不同的group的data-group一定不能一样，否则，相同group内部的item能拖动到对方肚子里-->
+            <!--<div id="g-mainGraph" class="gallery_group" data-group="mainGraph">-->
+            <!--<div class="gallery_group_title">标题</div>-->
+            <!--<div class="gallery_item">5</div>-->
+            <!--</div>-->
+            <!--<div class="gallery_item gallery_item_empty"></div>-->
+        </div>
+        <!--<div id="galleryIn" style="height:100px;width:10000px;background-color: #0b76ac"></div>-->
+        <span id="zoomCtl" class=" fa fa-chevron-up"></span>
+
+    </div>
+</div>
+
+
+<ul class="Rmenu" id="mainRmenu" style="display: none;z-index: 1001">
+</ul>
+<ul class="Rmenu" id="mainLineRmenu" style="display: none;z-index: 1001">
+    <li><span onclick="mainLineRmenuClick(this)">kick edge</span></li>
+</ul>
+
+
+</body>
+<script>
+    function input(target) {
+        //console.log(target.target.value);
+    }
+
+    var change = function (target) {
+        /*内容可自行定义*/
+        // console.log($(target).attr("value"));
+    }
+
+    var ralationThChg = _.debounce(function (target) {
+        // console.log($(target).attr("value"));
+        relationThreshold = target.value;
+        main_deepRedraw();
+    }, 200);
+    var overlapThChg = _.debounce(function (target) {
+        // console.log($(target).attr("value"));
+        overlapThreshold = target.value;
+        main_deepRedraw();
+    }, 200);
+    $('#ralationTh input[type=range]').RangeSlider({min: 0, max: 1, step: 0.01, callback: ralationThChg});
+    $('#overlapTh input[type=range]').RangeSlider({min: 0, max: 1, step: 0.01, callback: overlapThChg});
+</script>
+
+
+<script>
+    var mylocalURL = "http://localhost:5500/";
+    var layoutPara = {
+        middle: 0.7,
+        bottom: 0.3,
+        top: 46,
+        middle_rt: 0.7,
+        middle_rb: 0.3,
+
+        layoutF: function () {
+//            console.log($("body").outerHeight());
+            $(".middle").outerHeight(($("body").height() - layoutPara.top) * layoutPara.middle);
+            $(".bottom").outerHeight(($("body").height() - layoutPara.top) * layoutPara.bottom);
+            $(".m-rt").outerHeight($(".m-right").height() * layoutPara.middle_rt);
+            $(".m-rb").outerHeight($(".m-right").height() * layoutPara.middle_rb);
+        },
+    }
+
+    layoutPara.layoutF();
+    window.onresize = function () {  //只能这么写，否则不起作用
+        layoutPara.layoutF();
+//        parallel_size_update();
+//        mainGraph_size_update();
+//        orderRelatMatrix_size_update();
+//        scatter_size_update();
+//        ParaChart_size_update();
+//        tsne_size_update();
+    }
+
+
+    var scrobarSize = 8; //宽和高
+    var gallery = {
+        height: ($("body").height() - layoutPara.top) * layoutPara.bottom - scrobarSize,
+        maxHeight: 600,
+        minHeight: ($("body").height() - layoutPara.top) * layoutPara.bottom - scrobarSize,
+        itemNum: 0,
+        groupNum: 0,  //这两个是通过插入，或删除新的item来更新的
+        item: {
+            height: 100,    //通过gallery 算出来的
+            margin: {top: 3, right: 3, bottom: 3, left: 3},
+            padding: 0,
+            borderWidth: 1,
+        },
+        group: {  //宽高有子元素撑开
+            margin: {left: 2, right: 2,}, //为了美观，上下都应该为0
+            padding_left: 50,
+        },
+
+
+    };
+    $("#galleryOuter").css("top", ($("body").height() - layoutPara.top) * layoutPara.middle + layoutPara.top + "px");
+
+    var gallery_resize = _.debounce(function () {  //缩放的时候，会进行回调
+        mainGraph_g.resize();
+        otherGraph_g.resize();
+        nodeDetail_g_resize(); //主要是nodeDetail的svg的缩放
+    }, 200);
+
+
+</script>
+<script src="./js/layoutCtl.js"></script>
+<script src="./js/instructions.js"></script>
+<script src="./js/myCommon.js"></script>
+
+<script src="./js/otherSingleGraph/edgeScatter.js"></script>
+<script src="./js/otherSingleGraph/nodeDetail.js"></script>
+<script src="./js/otherSingleGraph/orderRelationMatrix.js"></script>
+<script src="./js/otherSingleGraph/paraBoxplot.js"></script>
+<script src="./js/otherSingleGraph/parallel.js"></script>
+<script src="./js/otherSingleGraph/t-sne.js"></script>
+<script src="./js/otherSingleGraph/detailMess.js"></script>
+
+<script src="./js/mainGraph/mainRmenu.js"></script>
+<script src="./js/mainGraph/mainGraphRedraw.js"></script>
+
+<script src='./js/recommend.js'></script>
+<script src="./js/mainGraph/mainGraph.js"></script>
+<script src="./js/mainGraph/mainSet.js"></script>
+
+
+<script src="./js/gallery/galleryInterface.js"></script>
+<script src="./js/gallery/gallery0.js"></script>
+<script src="./js/gallery/galleryUse.js"></script>
+
+
+<script src="./js/plug/alt_tip.js"></script>
+<script src="./js/plug/myEcharts.js"></script>
+
+</html>

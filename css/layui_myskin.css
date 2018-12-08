@@ -1,0 +1,25 @@
+body .layui-layer-info .layui-layer-title {
+    background: #333;
+    color: #fff;
+    border: none;
+}
+
+body .layui-layer-info .layui-layer-btn {
+    border-top: 1px solid #E9E7E7
+}
+
+body .layui-layer-info .layui-layer-btn a {
+    background: #333;
+    border-color: #333;
+}
+
+body .layui-layer-info .layui-layer-btn .layui-layer-btn1 {
+    background: #333;
+}
+.layui-layer pre{
+    word-break: keep-all;
+}
+
+.layui-layer-tips .layui-layer-content {
+    padding: 5px 10px !important;
+}

@@ -41,10 +41,17 @@ var cc=[  //36
 var color20=function(d){
     return cc[d%36];
 }
-
+var staticColor={};
 var myColorScheme={
     diff:{
-        color:color20,
+        color:function(group,name){
+            if(staticColor[name]){
+
+            }else{
+                staticColor[name]=color20(group);
+            }
+            return staticColor[name];
+        },
     },
     active:{
         color:function(d){  //暂时使用node.group

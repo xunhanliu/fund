@@ -280,7 +280,7 @@ function main_redraw(graph) {
 
     node.append("circle")
         .style("fill", function (node) {
-            return myColorScheme[myColorScheme.scheme].color(node.group);
+            return myColorScheme[myColorScheme.scheme].color(node.group,node.name.split(",")[0]);
         })
         .attr("r", function (node) {
             return circleSizeScale_M(Number(node['symbolSize']));

@@ -178,7 +178,10 @@ function getorderRelationMatrixSuccess(data){
         .attr("class",function(d,i) {
             return "matrixText_"+nodes[i].name.replace(/[\W]/g,'_');
         })
-        .style("fill", function(d,i) { return color20( nodes[i].group ); })
+        .style("fill", function(d,i) {
+            //return color20( nodes[i].group );
+            return myColorScheme[myColorScheme.scheme].color(nodes[i].group,nodes[i].name.split(",")[0]);
+        })
         .attr("transform", "rotate(" + rowTitleRotation + ")")
         .on("wheel", rotateRowLabels);
     ;
@@ -201,7 +204,10 @@ function getorderRelationMatrixSuccess(data){
         .attr("class",function(d,i) {
             return "matrixText_"+nodes[i].name.replace(/[\W]/g,'_');
         })
-        .style("fill", function(d,i) { return color20( nodes[i].group ); })
+        .style("fill", function(d,i) {
+            //return color20( nodes[i].group );
+            return myColorScheme[myColorScheme.scheme].color(nodes[i].group,nodes[i].name.split(",")[0]);
+        })
         .attr("transform", "rotate(" + colTitleRotation + ")")
         .on("wheel", rotateColLabels);
     ;

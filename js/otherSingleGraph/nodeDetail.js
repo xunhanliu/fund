@@ -321,7 +321,7 @@ function redraw_nodeDetail(para){
         }
         var extend=d3.extent(data);//_.max(data); _.min(data);
         var xValueNum=nodeDetailData[nodeDetailKey]["xValueNum"]
-        var xIncrease=((extend[1]-extend[0])/xValueNum).toFixed(1);
+        var xIncrease=((extend[1]-extend[0])/xValueNum);
         var myMean= d3.mean(data);//中值
         var myVariance= variance(data);//方差
         nodeDetailData[nodeDetailKey]["max"]=extend[1].toFixed(1);

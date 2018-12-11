@@ -52,7 +52,7 @@ function legend_redraw(nodes) {
     nodes.forEach(function (d, i) {
         var id = "main_" + d.name.replace(/[\W]/g, '_');
         str += '<li  class="graph-legend" onmouseover="legendOver(\'' + id + '\')"  onmouseout="legendOut(\'' + id + '\')" ' +
-            '><span  style="background-color:' + myColorScheme[myColorScheme.scheme].color(d.group) + '"></span>' +
+            '><span  style="background-color:' + myColorScheme[myColorScheme.scheme].color(d.group,d.name.split(',')[0]) + '"></span>' +
             d.name + '</li>'
     });
     // for(var i=0;i<50;i++)

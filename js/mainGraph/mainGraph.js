@@ -112,14 +112,14 @@ var nodeMessName = "";
 var hover_last = {stroke_width: 2, stroke: "#000"};
 //右上角controlTab************************************************************
 var app_main = {};
-var clusterList_mian = ['单点聚类', '多点聚类', '全部聚类', '全部取消聚类'];
+var clusterList_mian = ['mono-clustering', 'multi-clustering', 'all-clustering', 'none-clustering'];
 // var setOverlapThreshold;
 // var setRalationThreshold;
 app_main.configParameters = {
     clusterOption: {
         options: echarts.util.reduce(clusterList_mian, function (map, pos) {
             map[pos] = pos;
-            return map;
+            return map
         }, {})
     },
     overlapThreshold: {
@@ -212,9 +212,9 @@ function testMixedFunctionStr(functionstr)
     mainGraphPara['mixFunctionStr']=functionstr;
 }
 
-var lastClusterOption = '单点聚类';
+var lastClusterOption = 'mono-clustering';
 app_main.config = {
-    clusterOption: '单点聚类',
+    clusterOption: 'mono-clustering',
     kickPointByNum: 0.01,
     similarValue:0.21,
     ResetKick: resetKick,
@@ -258,7 +258,7 @@ app_main.config = {
         if (typeof(change) == "string") {
             if (app_main.config.clusterOption != lastClusterOption) {
                 lastClusterOption = app_main.config.clusterOption;
-                if (app_main.config.clusterOption == "单点聚类") {
+                if (app_main.config.clusterOption == "mono-clustering") {
                     clusterSelect = 0;
                     if (selectName.length > 1) {
                         //需要重新请求
@@ -268,10 +268,10 @@ app_main.config = {
                         main_deepRedraw();
                     }
                 }
-                else if (app_main.config.clusterOption == "多点聚类") {
+                else if (app_main.config.clusterOption == "multi-clustering") {
                     clusterSelect = 1;
                 }
-                else if (app_main.config.clusterOption == "全部聚类") {
+                else if (app_main.config.clusterOption == "all-clustering") {
                     selectName = categoriesMain;
                     clusterSelect = 2;
                     main_deepRedraw();
@@ -517,8 +517,8 @@ function submitMulCluster() {
     // //向后端发送 聚类消息
     //
     //
-    // if (app_main.config.clusterOption != "多点聚类") {
-    //     showToast('warning', "请在‘clusterOption’中选中‘多点聚类’！然后查看聚类结果！");
+    // if (app_main.config.clusterOption != "multi-clustering") {
+    //     showToast('warning', "请在‘clusterOption’中选中‘multi-clustering’！然后查看聚类结果！");
     //     return;
     // }
     //

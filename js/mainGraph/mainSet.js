@@ -8,12 +8,12 @@ $("body").append('<div id="mainSet">\n' +
     <hr>\
     ' +
     '    <div id="funcOption">\n' +
-    '        <label for="bzPresets"><span class="text">映射类型:</span>\n' +
+    '        <label for="bzPresets"><span class="text">Mapping Type:</span>\n' +
     '            <select name="bzPresets" id="bzPresets" class="form-control input-sm">\n' +
-    '                <optgroup label="自定义">\n' +
-    '                    <option id="defaultMap" value="0.505, 0, 0.525, 0.425">自定义映射 (拖拽下图句柄)</option>\n' +
+    '                <optgroup label="custom">\n' +
+    '                    <option id="defaultMap" value="0.505, 0, 0.525, 0.425">Drag the handles below</option>\n' +
     '                </optgroup>\n' +
-    '                <optgroup label="常用">\n' +
+    '                <optgroup label="common">\n' +
     '                    <option value="0.250, 0.250, 0.750, 0.750">linear</option>\n' +
     '                    <option value="0.250, 0.100, 0.250, 1.000">ease (default)</option>\n' +
     '                    <option value="0.420, 0.000, 0.580, 1.000">ease-in-out</option>\n' +
@@ -44,7 +44,7 @@ $("body").append('<div id="mainSet">\n' +
     '        </figure>\n' +
     '    </div> <hr style="height: 2px;background-color: #333 ">\n' +
     ' <div style="margin-top: 3px">' +
-    '       <p>颜色方案选择:</p>' +
+    '       <p>Color scheme selection:</p>' +
     '       <div class="imgItem"><img  name="diff" onclick="colorSchemeClk(event)" src="./pic/diff80_sel.png" alt="每个属性分配一个颜色" /></div>' +
     '       <div class="imgItem"><img name="active" onclick="colorSchemeClk(event)" src="./pic/active80.png" alt="操作属性高亮" /></div>' +
     '       <div class="imgItem"><img name="cluster" onclick="colorSchemeClk(event)" src="./pic/cluster80.png" alt="每个cluster分配一个颜色" /></div>' +

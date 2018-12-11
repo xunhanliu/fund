@@ -10,7 +10,7 @@ function getRecommend(){
         '<p class="messtitle">Symmetry dimension:</p>'+
         '                            </div>\n' +
         '                            <div class="col-md-6 col-xs-6 column full_height" id="allConnectContent">\n' +
-        '<p class="messtitle">AllConnect dimension:</p>'+
+        '<p class="messtitle">Connected subgraph:</p>'+
         '                            </div>\n' +
         '                        </div>');
     while($("#allConnectContent").length ==0){}  //等待创建完成

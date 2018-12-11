@@ -61,7 +61,7 @@ label {
 }
 label .text {
     display: inline-block;
-    width: 70px;
+    margin: 4px;
 }
 #funcOption{
     margin-right: 10px;

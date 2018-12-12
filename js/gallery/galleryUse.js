@@ -62,12 +62,12 @@ var mainGraph_g = {
     data: {},
     lastHeight:gallery.item.height,
     allDelete: function () {
-        showToast('info', "请不要继续操作");
+        showToast('info', "Please do not operation!");
         $.ajax({
             url: mylocalURL + "delAllGalleryItem", type: "POST",
             data: {}, success: function (data) {
                 mainGraph_g.data = [];
-                showToast('success', "galleryItem删除成功");
+                showToast('success', "galleryItem del success");
                 gallery.delete($("#mainGraphGroup")[0]);
             }
         });
@@ -99,12 +99,12 @@ var mainGraph_g = {
 
     screenShot: function () { //保存
         //new 指令到后台，并得到一个index
-        showToast('info', "请不要继续操作");
+        showToast('info', "Please do not operation!");
         getMainPointPos();  //mainGraph 里面的函数，保存点的位置
         $.ajax({
             url: mylocalURL + "newGalleryItem", type: "POST",
             data: {}, success: function (data) {
-                showToast('success', "galleryItem加入成功！编号为：" + data.newIndex);
+                showToast('success', "screenShot success! serial number:" + data.newIndex);
                 galleryInterface.showToGallery(data.newIndex);
                 //相关数据保存在mainData["newIndex"]里
                 //根据data绘制graph
@@ -117,10 +117,10 @@ var mainGraph_g = {
 
     },
     recover: function () {
-        showToast('info', "请不要继续操作");
+        showToast('info', "Please do not operation!");
         var index = $("input[name='gallerySel']:checked").val();
         if (!index) {
-            showToast('warning', "请在gallery中选择一个Item!");
+            showToast('warning', "Please sel an item in gallery!");
             return;
         }
         $.ajax({
@@ -132,7 +132,7 @@ var mainGraph_g = {
                 if (!galleryInterface.galleryToShow(index)) {
                     return;
                 }
-                showToast('success', "galleryItem恢复成功！编号为：" + data.newIndex);
+                showToast('success', "galleryItem recover success, serial number:" + data.newIndex);
                 //根据data绘制graph
                 //更新主图
                 var maxHW=svg_height>svg_width?svg_height :svg_width;
@@ -163,7 +163,7 @@ var mainGraph_g = {
         var index = $("input[name='gallerySel']:checked").val();
         var graphDatapos={}
         if (!index) {
-            showToast('warning', "您未在gallery中选择，位置将统一布局为主图布局!");
+            showToast('warning', "you do not sel an item in gallery,the position will be unified according to the main graph layout!");
         }
         else {
             //mainGraph_g.updateItemPointPos(index);
@@ -213,14 +213,14 @@ var mainGraph_g = {
 
     },
     delete: function (ev) {
-        showToast('info', "请不要继续操作");
+        showToast('info', "Please do not operation!");
         $.ajax({
             url: mylocalURL + "delGalleryItem", type: "POST",
             data: {
                 "galleryIndex":  ev.target.parentNode.dataset["index"],
             }, success: function (data) {
                 delete mainGraph_g.data[ ev.target.parentNode.dataset["index"]];
-                showToast('success', "galleryItem删除成功");
+                showToast('success', "galleryItem del success");
                 gallery.delete(ev.target);
             }
         });

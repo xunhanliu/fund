@@ -20,9 +20,9 @@ var parcoords = d3.parcoords()("#parallel")
     .margin({ top: 40, left: 10, bottom: 40, right: 5 })
 ;
 function externalRefreshParallel(flag){
-    showToast('info',"数据获取中。。。");
+    showToast('info',"calculating...");
     $.ajax({url:mylocalURL+"parallelData",type: "POST",data:{ "galleryIndex":0,parallelPara:JSON.stringify({"perplexity": 50,nameList:(flag=="all"?[]:selectPoint)})},success:function(data){
-        showToast('success',"获取成功");
+        showToast('success',"calculating success");
         FireEvent(document.getElementById('parallelBtn'), 'click');
         parcoords
             .data(data)

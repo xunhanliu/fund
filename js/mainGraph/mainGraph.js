@@ -189,7 +189,7 @@ function testMixedFunctionStr(functionstr)
             eval("testResult0="+functionstr);
             if(testResult0 !=testResult[i])
             {
-                showToast('error',"输入关系的归一化不正确，请重新输入！");
+                showToast('error',"The normalization result of the expression is not correct, please re-enter it!");
                 $("#inlineCheckbox3")[0].checked=false;
                 $("#inlineInputbox4").css("background-color",'#f00');
                 d3v4.select('#inlineCheckbox3').dispatch('change');//mixedCheck

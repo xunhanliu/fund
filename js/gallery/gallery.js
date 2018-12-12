@@ -68,12 +68,12 @@ var galleryDrag = {
 var gallery = {
     galleryData: {},
     allDelete: function () {
-        showToast('info', "请不要继续操作");
+        showToast('info', "Please do not operation!");
         $.ajax({
             url: mylocalURL + "delAllGalleryItem", type: "POST",
             data: {}, success: function (data) {
                 gallery.galleryData = [];
-                showToast('success', "galleryItem删除成功");
+                showToast('success', "galleryItem del success");
             }
         });
         if (document.getElementsByClassName("c_mybox")) {
@@ -85,7 +85,7 @@ var gallery = {
     },
     screenShot: function () { //保存
         //new 指令到后台，并得到一个index
-        showToast('info', "请不要继续操作");
+        showToast('info', "Please do not operation!");
         getMainPointPos();
         // d3.select("#mainGraph").selectAll("circle").each(function(data){
         //     lastGraphData[data.id]=data;
@@ -93,7 +93,7 @@ var gallery = {
         $.ajax({
             url: mylocalURL + "newGalleryItem", type: "POST",
             data: {}, success: function (data) {
-                showToast('success', "galleryItem加入成功！编号为：" + data.newIndex);
+                showToast('success', "screenShot success! serial number:" + data.newIndex);
                 gallery.galleryItemNum += 1;
                 gallery.changeGalleryLength();
                 galleryInterface.showToGallery(data.newIndex);
@@ -108,10 +108,10 @@ var gallery = {
 
     },
     recover: function () {
-        showToast('info', "请不要继续操作");
+        showToast('info', "Please do not operation!");
         var index = $("input[name='gallerySel']:checked").val();
         if (!index) {
-            showToast('warning', "请在gallery中选择一个Item!");
+            showToast('warning', "Please select an Item in gallery");
             return;
         }
         $.ajax({
@@ -122,7 +122,7 @@ var gallery = {
                 if (!galleryInterface.galleryToShow(index)) {
                     return;
                 }
-                showToast('success', "galleryItem恢复成功！编号为：" + data.newIndex);
+                showToast('success', "galleryItem recover success! serial number:" + data.newIndex);
                 //根据data绘制graph
                 //更新主图
                 var maxHW=svg_height>svg_width?svg_height :svg_width;
@@ -163,7 +163,7 @@ var gallery = {
     unify: function () {
         var index = $("input[name='gallerySel']:checked").val();
         if (!index) {
-            showToast('warning', "您未在gallery中选择，位置将统一布局为主图布局!");
+            showToast('warning', "you do not sel an item in gallery,the position will be unified according to the main graph layout!");
         }
         else {
             gallery.updateItemPointPos(index);
@@ -186,14 +186,14 @@ var gallery = {
 
     },
     delete: function (ev) {
-        showToast('info', "请不要继续操作");
+        showToast('info', "Please do not operation!");
         $.ajax({
             url: mylocalURL + "delGalleryItem", type: "POST",
             data: {
                 "galleryIndex": $("#" + $(ev.target.parentNode).attr("id")).data("index"),
             }, success: function (data) {
                 delete gallery.galleryData[$("#" + $(ev.target.parentNode).attr("id")).data("index")];
-                showToast('success', "galleryItem删除成功");
+                showToast('success', "galleryItem del success");
             }
         });
         $("#" + $(ev.target.parentNode).attr("id")).css("visibility", "hidden");

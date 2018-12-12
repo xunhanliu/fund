@@ -1,10 +1,10 @@
 //t-sne 筛选，需要更新所有视图
 
 function getTSNE(){
-    showToast('info',"tsne 获取中。。");
+    showToast('info',"tsne calculating...");
     $.ajax({url:mylocalURL+"getTSNE",type: "POST",data:{"galleryIndex":0,tsnePara: JSON.stringify({"perplexity": 50,nameList:selectPoint})},success:function(result){
         //result
-        showToast('success',"tsne获取成功");
+        showToast('success',"tsne success");
         tsneData=result;
         //tsenRefreshData(result);
         otherGraph_g.new('t-sne',tsneData)
@@ -12,10 +12,10 @@ function getTSNE(){
 }
 
 function getAllTSNE(){
-    showToast('info',"tsne 获取中。。");
+    showToast('info',"tsne calculating...");
     $.ajax({url:mylocalURL+"getTSNE",type: "POST",data:{"galleryIndex":0,tsnePara: JSON.stringify({"perplexity": 50,nameList:[]})},success:function(result){
         //result
-        showToast('success',"tsne获取成功");
+        showToast('success',"tsne success");
         tsneData=result;
         //tsenRefreshData(result);
         otherGraph_g.new('t-sne',tsneData)
@@ -60,10 +60,10 @@ function redraw_tsne(para){
                     //icon: 'image://http://echarts.baidu.com/images/favicon.png',
                     icon: 'path://M512 960c-278.748 0-505.458-222.762-511.848-499.974 5.92 241.864 189.832 435.974 415.848 435.974 229.75 0 416-200.576 416-448 0-53.020 42.98-96 96-96s96 42.98 96 96c0 282.77-229.23 512-512 512zM512-64c278.748 0 505.458 222.762 511.848 499.974-5.92-241.864-189.832-435.974-415.848-435.974-229.75 0-416 200.576-416 448 0 53.020-42.98 96-96 96s-96-42.98-96-96c0-282.77 229.23-512 512-512z',
                     onclick: function (){
-                        showToast('info',"tsne图计算中。。。");
+                        showToast('info',"tsne calculating...");
                         $.ajax({url:mylocalURL+"getTSNE",type: "POST",data:{"galleryIndex":0,"perplexity": 50},success:function(result){
                             //result
-                            showToast('success',"tsne获取成功");
+                            showToast('success',"tsne success");
                             tsneData=result;
                             //tsenRefreshData(result);
                             redraw_tsne({ $selector:para.$selector,data:result});
@@ -161,9 +161,9 @@ function redraw_tsne(para){
         }
         if (dataIdList.length==0) return;
         //alert("相关数据计算中。。。");
-        showToast('warning',"相关数据计算中。。。");
+        showToast('warning',"calculating...");
         $.ajax({url:mylocalURL+"getIdList",type: "POST",data:{ 'idList':JSON.stringify(dataIdList), "galleryIndex":0},success:function(result){
-            showToast('success',"计算完毕");
+            showToast('success',"calculating ok");
             main_deepRedraw();
         }});
 

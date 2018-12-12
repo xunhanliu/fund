@@ -1,14 +1,14 @@
 function redraw_edgeScatter(para){
     //para={  $selector, data=[]}
     var data=para.data;
-    showToast('info',"边数据获取中。。。");
+    showToast('info',"edgeScatter calculating...");
     var myScatter = echarts.getInstanceByDom(para.$selector[0]);
     if(!myScatter)  //不存在
     {
         myScatter=echarts.init(para.$selector[0],'mySubject',{width:para.$selector.width(),height:para.$selector.height()});
     }
     $.ajax({url:mylocalURL+"showScatter",type: "POST",data:{ 'nameList':JSON.stringify(data.nameList),"galleryIndex":data.galleryIndex},success:function(result){
-        showToast('success',"边数据获取成功");
+        showToast('success',"edgeScatter success");
         getScattersuccess(para,result);
     }});
 

@@ -17,7 +17,7 @@ function mainGraph_size_update() {
 
 function main_deepRedraw() {
 
-    showToast('info', "数据计算中，请不要进行graph的点击操作！");
+    showToast('info', "calculating... please do not operate");
     $.ajax({
         url: mylocalURL + "refreshGraph", type: "POST",
         data: {
@@ -32,7 +32,7 @@ function main_deepRedraw() {
             }),
             "galleryIndex": 0
         }, success: function (graph) {
-            showToast('success', "数据计算成功！");
+            showToast('success', "calculating success");
             graph_preprocessor(graph);
             getorderRelationMatrixSuccess(myChart_main_data);
             main_redraw(myChart_main_data);

@@ -52,7 +52,7 @@ function getSimilarPoint() {
     var nameList = [];
     var nameBuf = [];
     var divBuf = "";
-    divBuf += '<p>no consider the sign</p>';
+    divBuf += '<p>not consider the sign</p>';
     for (i in dataArr) {
         nameBuf = [];
         divBuf += '<p class="MessItem" style="word-break: break-all; word-wrap:break-word;" data-nodesList="'+ fromPosGetName(dataArr[i])+'" onmouseover="messLineOver(event)"  onmouseout="messLineOut(event)" >';

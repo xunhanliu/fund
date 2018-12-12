@@ -693,7 +693,7 @@ function main_redraw(graph) {
                 '    padding: 0;' +
                 '    background-color: #dedecc;' +
                 '    font-size: 12px;' +
-                '    top: 5px;" onclick="nodeDetailCluster(event)" class="btn btn-default ">custom cluster</button>');
+                '    top: 5px;" onclick="nodeDetailCluster(event)" class="btn btn-default ">apply</button>');
         })
     ;
 

@@ -1,9 +1,9 @@
 $("body").append('<div id="mainSet">\n' +
     '<span style="position: absolute;top:5px;right:5px; font-size: large;color: #f00; cursor:pointer " onclick="closeMainSet()">×</span>' +
     '<div class="btn-group mainSetItem" id="mapBtn">\
-        <button type="button" class="btn btn-default active" onclick="mapBtnClick(event)">line-opacity</button>\
-        <button type="button" class="btn btn-default" onclick="mapBtnClick(event)">line-width</button>\
-        <button type="button" class="btn btn-default " onclick="mapBtnClick(event)">line-length</button>\
+        <button type="button" class="btn btn-default active" onclick="mapBtnClick(event)" name="opacity">line-opacity</button>\
+        <button type="button" class="btn btn-default" onclick="mapBtnClick(event)" name="thickness">line-width</button>\
+        <button type="button" class="btn btn-default " onclick="mapBtnClick(event)" name="distance">line-length</button>\
     </div>\
     <hr>\
     ' +
@@ -39,7 +39,7 @@ $("body").append('<div id="mainSet">\n' +
     '    <div id="bzGraph">\n' +
     '        <figure>\n' +
     '            <canvas id="bzCurve" width="200" height="230"></canvas>\n' +
-    '            <figcaption id="axisTime">opacity</figcaption>\n' +
+    '            <figcaption id="axisTime">line-opacity</figcaption>\n' +
     '            <figcaption id="axisAnimation">new Map</figcaption>\n' +
     '        </figure>\n' +
     '    </div> <hr style="height: 2px;background-color: #333 ">\n' +
@@ -364,7 +364,7 @@ function bzDrawFromCtl() {
     // var coordinates = this.value.split(','),
     var cp1 = bzHandles[0],
         cp2 = bzHandles[1];
-    var coordinates = bzSample[$("#mapBtn .active").text() + "BzPoints"]
+    var coordinates = bzSample[$("#mapBtn .active").attr('name') + "BzPoints"]
     cp1.x = coordinates[0].x * bzGraph.width;
     cp1.y = bzGraph.y + bzGraph.height - (coordinates[0].y * bzGraph.height);
     cp2.x = coordinates[1].x * bzGraph.width;
@@ -398,8 +398,8 @@ function getBezierCPoint() {
 var bezierDragDebounce = _.debounce(function () {
 
     //只需填充一下bzSample即可
-    bzSample[$("#mapBtn .active").text() + "BzPoints"] = getBezierCPoint();
-    bzSample[$("#mapBtn .active").text()] = bzCreateSample(100, getBezierCPoint());
+    bzSample[$("#mapBtn .active").attr('name') + "BzPoints"] = getBezierCPoint();
+    bzSample[$("#mapBtn .active").attr('name')] = bzCreateSample(100, getBezierCPoint());
     getMainPointPos();
    getorderRelationMatrixSuccess(myChart_main_data);
     main_redraw(myChart_main_data);

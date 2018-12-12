@@ -195,7 +195,7 @@ function getAllConnect() {//贪婪，新加入的，要与原来的逐个比较
     var divBuf = "";
     for (i in dataArr) {
         nameBuf = [];
-        divBuf += "<p>"  + (+i+1) + "-th subgraph" + "</p>"
+        divBuf += "<p>"  + "subgraph" + "</p>"
         divBuf += '<p class="MessItem" style="word-break: break-all; word-wrap:break-word;" data-nodesList="'+ fromPosGetName(dataArr[i])+'" onmouseover="messLineOver(event)"  onmouseout="messLineOut(event)" >';
         // divBuf += '<p style="word-break: break-all; word-wrap:break-word;" onmouseover="allConnectOver(\'' + dataArr[i] + '\')" onmouseout="allConnectOut(\'' + dataArr[i] + '\')" >';
         for (j in dataArr[i]) {

@@ -208,6 +208,7 @@ var mainGraph_g = {
             }
             //mainGraph_g.drawGraph(i, mainGraph_g.data[i]);
 
+            d3v4.select("#graph_" + i).dispatch('refresh');
 
         }
 
@@ -275,7 +276,9 @@ var mainGraph_g = {
             svgHeight = $(parent).height() - 18;
         var svg = d3v4.select("#graph_" + index)
             .attr("width", svgWidth)
-            .attr("height", svgHeight);
+            .attr("height", svgHeight)
+            .on("refresh",ticked)
+        ;
         // var color = d3.scale.category20();
         var maxPointSize=15;
         var circleSizeScale_M = d3.scale.linear()
@@ -439,7 +442,7 @@ var mainGraph_g = {
 
         node.on("mouseover", function (d) {
                 var graph = mainGraph_g.data[index].myChart_main_data;
-
+                var nodeMap=mainGraph_g.data[index]['nodeMap'];
                 d3.select("#graph_" + index).selectAll(".node circle").each(function (data, index) {
                     if (graph.relation[nodeMap[d.name]][nodeMap[data.name]] == 0 && d.name != data.name && d.name.split(",")[0] != data.name.split(",")[0]) //加gray属性
                     {

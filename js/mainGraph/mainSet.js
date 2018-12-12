@@ -1,9 +1,9 @@
 $("body").append('<div id="mainSet">\n' +
     '<span style="position: absolute;top:5px;right:5px; font-size: large;color: #f00; cursor:pointer " onclick="closeMainSet()">×</span>' +
     '<div class="btn-group mainSetItem" id="mapBtn">\
-        <button type="button" class="btn btn-default active" onclick="mapBtnClick(event)">opacity</button>\
-        <button type="button" class="btn btn-default" onclick="mapBtnClick(event)">thickness</button>\
-        <button type="button" class="btn btn-default " onclick="mapBtnClick(event)">distance</button>\
+        <button type="button" class="btn btn-default active" onclick="mapBtnClick(event)">line-opacity</button>\
+        <button type="button" class="btn btn-default" onclick="mapBtnClick(event)">line-width</button>\
+        <button type="button" class="btn btn-default " onclick="mapBtnClick(event)">line-length</button>\
     </div>\
     <hr>\
     ' +

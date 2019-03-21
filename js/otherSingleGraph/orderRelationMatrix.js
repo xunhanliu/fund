@@ -13,7 +13,7 @@ var x_orderRelation = d3.scale.ordinal().rangeBands([0, width_orderRelation]),
 var svg_orderRelation = d3.select("#orderRelationMatrix")
     .attr("width", width_orderRelation + margin_orderRelation.left + margin_orderRelation.right)
     .attr("height", height_orderRelation + margin_orderRelation.top + margin_orderRelation.bottom)
-    .style("margin_orderRelation-left", -margin_orderRelation.left + "px")
+    .style("margin-left", margin_orderRelation.left + "px")
     .append("g")
     .attr("transform", "translate(" + margin_orderRelation.left + "," + margin_orderRelation.top + ")");
 var xOrder;

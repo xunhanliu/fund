@@ -1,6 +1,7 @@
 *{
     margin: 0;
     font-family:"monospace", "Arial";
+    font-weight: normal;
 }
 html,body{
     width: 100%;

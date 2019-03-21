@@ -211,5 +211,4 @@ function redraw_edgeScatter(para){
         };;
         myScatter.setOption(option, true);
     }
-
 }

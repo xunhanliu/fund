@@ -9,8 +9,8 @@ function g_scrollRight(ev){
 
 var otherGraph_g={
     index:0,
-    groupID:['edgeScatter','nodeDetail','paraBoxplot','t-sne'],
-    title:{'edgeScatter':'edge Scatter','nodeDetail':'node Detail','paraBoxplot':'para Boxplot','t-sne':'t-sne'},
+    groupID:['edgeScatter','nodeDetail','paraBoxplot','t-sne','mdsScatter'],
+    title:{'edgeScatter':'edge Scatter','nodeDetail':'node Detail','paraBoxplot':'para Boxplot','t-sne':'t-sne(data)',mdsScatter:'mds(dimension)'},
     new:function(type,data,groupCtl=""){
 
         var ctlButton='<div class="btn-group-vertical full_width ">' +
@@ -31,6 +31,8 @@ var otherGraph_g={
                 redraw_paraBoxplot(para);break;
             case "t-sne":
                 redraw_tsne(para);break;
+            case "mdsScatter":
+                redraw_mdsScatter(para);break;
         }
         $(ele).append(
             '<button type="button"   class="close" onclick="otherGraph_g.delete(event)" style="z-index: 100;position: absolute;\n' +

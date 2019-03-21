@@ -79,6 +79,8 @@
                 <button type="button" onclick="getAllTSNE()" class="btn btn-default tip" alt="t-sne"><i
                         class="fa fa-magic"></i>&nbsp;t-sne
                 </button>
+                <button type="button" onclick="otherGraph_g.new('mdsScatter',myChart_main_data.relation)" class="btn btn-default tip" alt="mds（dim）">MDS(dim)
+                </button>
                 <button type="button" onclick="externalRefreshParallel('all')" class="btn btn-default tip" alt="parallel"><i
                         class="fa fa-pause"></i>&nbsp;parallel
                 </button>
@@ -281,6 +283,7 @@
 <script src="./js/instructions.js"></script>
 <script src="./js/myCommon.js"></script>
 
+<script src="./js/otherSingleGraph/mdsScatter.js"></script>
 <script src="./js/otherSingleGraph/edgeScatter.js"></script>
 <script src="./js/otherSingleGraph/nodeDetail.js"></script>
 <script src="./js/otherSingleGraph/orderRelationMatrix.js"></script>

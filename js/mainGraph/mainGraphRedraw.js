@@ -244,7 +244,11 @@ function main_redraw(graph) {
             return colorMapCooperateOpacity(d.value);
         })
         .attr("opacity", function (d) {
-            return opacityMap(d.value, d.overlap);
+            if(mainGraphPara['isLineShow']) {
+                return opacityMap(d.value, d.overlap);
+            }else{
+                return 0;
+            }
         })
         .on("click", function (link) {
 
@@ -711,6 +715,8 @@ function main_redraw(graph) {
             d3.select("#mainGraph").selectAll(".link line").each(function (data, index) {
                 if (!(data.source.name == d.name || data.target.name == d.name)) {
                     d3.select(this).style("opacity", 0);
+                }else{
+                    d3.select(this).style("opacity", d=>opacityMap(d.value, d.overlap));
                 }
             });
 
@@ -733,6 +739,8 @@ function main_redraw(graph) {
                 d3.select("#mainGraph").selectAll(".link line").each(function (data, index) {
                     if (!( -1!= isInArray(nodesList, data.source.name)&& -1!= isInArray(nodesList,data.target.name) )) {
                         d3.select(this).style("opacity", 0);
+                    }else{
+                        d3.select(this).style("opacity", d=>opacityMap(d.value, d.overlap));
                     }
                 });
             }
@@ -744,7 +752,11 @@ function main_redraw(graph) {
             d3.select("#mainGraph").selectAll(".node text").style("opacity", 1);
 
             d3.select("#mainGraph").selectAll(".link line").style("opacity", function (d) {
-                return opacityMap(d.value, d.overlap);
+                if(mainGraphPara['isLineShow']) {
+                    return opacityMap(d.value, d.overlap);
+                }else{
+                    return 0;
+                }
             })
             }
         )
@@ -756,13 +768,15 @@ function main_redraw(graph) {
             d3.select("#mainGraph").selectAll(".node text").style("opacity", 1);
 
             d3.select("#mainGraph").selectAll(".link line").style("opacity", function (d) {
-                return opacityMap(d.value, d.overlap);
+                if(mainGraphPara['isLineShow']) {
+                    return opacityMap(d.value, d.overlap);
+                }else{
+                    return 0;
+                }
             })
 
             //d3.selectAll(".matrixText_"+d.name.replace(/[\W]/g,'_')).classed("active", false);
         });
-
-
     return graph;
 };
 

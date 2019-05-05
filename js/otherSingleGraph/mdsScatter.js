@@ -5,7 +5,7 @@ function redraw_mdsScatter(para){
     var myScatter = echarts.getInstanceByDom(para.$selector[0]);
     if(!myScatter)  //不存在
     {
-        myScatter=echarts.init(para.$selector[0],'mySubject',{width:para.$selector.width(),height:para.$selector.height()});
+        myScatter=echarts.init(para.$selector[0],'mySubject',{width:para.$selector.width(),height:para.$selector.height(),});
     }
     $.ajax({url:mylocalURL+"mdsScatter",type: "POST",data:{ 'data':JSON.stringify(data),"galleryIndex":0},success:function(result){
         showToast('success',"mdsScatter success");
@@ -89,16 +89,13 @@ function redraw_mdsScatter(para){
                 symbolSize:function (d) {
                     return d[4];
                 },
-                label: {
-                    emphasis: {
-                        show: true,
-                        position: 'left',
-                        textStyle: {
-                            color: 'blue',
-                            fontSize: 16
-                        }
-                    }
+                label:{
+                    show:true,
+                    position:'top',
+
+                    formatter: (d)=>(d.data[2])
                 },
+
                 tooltip: {
                     formatter: function (param) {
                         return 'dim: ' + param.data[2];

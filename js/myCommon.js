@@ -101,7 +101,7 @@ var bzSample={
     distance:[],
     opacityBzPoints:[{x:0.505,y:0},{x:0.525,y:0.425}],
     thicknessBzPoints:[{x:0.45,y:0.055},{x:0.590,y:0.405}],
-    distanceBzPoints:[{x:0.805, y:0.085},{x:0.485, y: 0.965}],
+    distanceBzPoints:[{x:1, y:0},{x:0.485, y: 0.965}],
 };
 
 

@@ -9,8 +9,9 @@ function g_scrollRight(ev){
 
 var otherGraph_g={
     index:0,
-    groupID:['edgeScatter','nodeDetail','paraBoxplot','t-sne','mdsScatter'],
     title:{'edgeScatter':'edge Scatter','nodeDetail':'node Detail','paraBoxplot':'para Boxplot','t-sne':'t-sne(data)',mdsScatter:'mds(dimension)'},
+    //自定义函数注册。
+    methodMap:{'edgeScatter':redraw_edgeScatter,'nodeDetail':redraw_nodeDetail,'paraBoxplot':redraw_paraBoxplot,'t-sne':redraw_tsne,'mdsScatter':redraw_mdsScatter},
     new:function(type,data,groupCtl=""){
 
         var ctlButton='<div class="btn-group-vertical full_width ">' +
@@ -19,21 +20,15 @@ var otherGraph_g={
         if(groupCtl){
             ctlButton=groupCtl;
         }
-        var ele=gallery.new(type,otherGraph_g.title[type],ctlButton,{"data-index":otherGraph_g.index});  //第二个参数是title
+        var title=otherGraph_g.title[type]
+        if (title==undefined)
+        {
+            title=type;
+        }
+        var ele=gallery.new(type,title,ctlButton,{"data-index":otherGraph_g.index});  //第二个参数是title
         otherGraph_g.index+=1;
         var para={$selector:$(ele), data:data};
-        switch (type){
-            case "edgeScatter":
-                redraw_edgeScatter(para);break;
-            case "nodeDetail":
-                redraw_nodeDetail(para);break;
-            case "paraBoxplot":
-                redraw_paraBoxplot(para);break;
-            case "t-sne":
-                redraw_tsne(para);break;
-            case "mdsScatter":
-                redraw_mdsScatter(para);break;
-        }
+        otherGraph_g.methodMap[type](para); //调用自定义函数
         $(ele).append(
             '<button type="button"   class="close" onclick="otherGraph_g.delete(event)" style="z-index: 100;position: absolute;\n' +
             '  right: 5px;\n' +
@@ -48,8 +43,8 @@ var otherGraph_g={
         gallery.delete(ev.target);
     },
     resize:function(){
-        for(var id in otherGraph_g.groupID){
-            var $group=$("#"+otherGraph_g.groupID[id])
+        for(var id in otherGraph_g.methodMap){
+            var $group=$("#"+id)
             if($group.length){
                 var $item=$group.find(".gallery_item");
                 for (var i=0 ;i<$item.length;i++){

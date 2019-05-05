@@ -267,12 +267,41 @@ function getorderRelationMatrixSuccess(data){
 
 
 
-
+function getPairs(li){
+    var buf=[]
+    for(var i in li){
+        var j=i+1;
+        while(j<li.length){
+            buf.push([li[i],li[j]])
+            j++;
+        }
+    }
+    return buf;
+}
 function order(value) {
     if(value=="spectral"){
         $.ajax({url:mylocalURL+"getSpectralResult",async:false ,type: "POST",data:{ 'matrix':JSON.stringify(orderRelationMatrixData[app_orderRelation.config.whichMatrix]),"galleryIndex":0},success:function(data){
-            var max=Math.max(data["label"]);
+            var max=d3.max(data["label"]);
+            var label=data["label"];
             myList=d3.range(orderRelationMatrixData[app_orderRelation.config.whichMatrix].length).sort(function(a, b) { return data["label"][b] - data["label"][a];  }),
+                //涉及到两层排序
+                //先建立一个字典
+                // var label_indexs_map={}
+                // for (var i in data["label"] ){
+                //     if (label_indexs_map[label[i]]){
+                //         label_indexs_map[label[i]].push(i);
+                //     }else{
+                //         label_indexs_map[label[i]]=[i];
+                //     }
+                // }
+                // //对每个label_indexs_map的value进行排序
+                // for(var key in label_indexs_map){
+                //     indexListBuf=label_indexs_map[key];
+                //     //记录每一对的最大关系
+                //     indexListPairs=getPairs(indexListBuf);
+                //
+                // }
+
             orders["spectral"]=myList;
         }});
     }

@@ -112,7 +112,7 @@ var nodeMessName = "";
 var hover_last = {stroke_width: 2, stroke: "#000"};
 //右上角controlTab************************************************************
 var app_main = {};
-var clusterList_mian = ['mono-clustering', 'multi-clustering', 'all-clustering', 'none-clustering'];
+var clusterList_mian = ['single-clustering', 'multi-clustering', 'all-clustering', 'none-clustering'];
 // var setOverlapThreshold;
 // var setRalationThreshold;
 app_main.configParameters = {
@@ -157,7 +157,10 @@ function layoutCheckClick(ev) {
     mainGraphPara[ev.target.value] = ev.target.checked;
     simulation.restart();
 }
-
+function lineShowClk(ev) {
+    mainGraphPara[ev.target.value] = ev.target.checked;
+    simulation.restart();
+}
 function mixedCheck(ev) {
     mainGraphPara[ev.target.value] = ev.target.checked;
    // ev.target.checked ? $("#inlineInputbox4").attr("disabled", false) : $("#inlineInputbox4").attr("disabled", true);
@@ -212,9 +215,9 @@ function testMixedFunctionStr(functionstr)
     mainGraphPara['mixFunctionStr']=functionstr;
 }
 
-var lastClusterOption = 'mono-clustering';
+var lastClusterOption = 'single-clustering';
 app_main.config = {
-    clusterOption: 'mono-clustering',
+    clusterOption: 'single-clustering',
     kickPointByNum: 0.01,
     similarValue:0.21,
     ResetKick: resetKick,
@@ -258,7 +261,7 @@ app_main.config = {
         if (typeof(change) == "string") {
             if (app_main.config.clusterOption != lastClusterOption) {
                 lastClusterOption = app_main.config.clusterOption;
-                if (app_main.config.clusterOption == "mono-clustering") {
+                if (app_main.config.clusterOption == "single-clustering") {
                     clusterSelect = 0;
                     if (selectName.length > 1) {
                         //需要重新请求

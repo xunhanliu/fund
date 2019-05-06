@@ -1,5 +1,5 @@
 var similarValue = 0.2;
-
+var needSplitName=[];
 function getRecommend(){
     //绘制容器
     var $activeTab=$("#myMiddleTabCon").find(".active");
@@ -9,13 +9,44 @@ function getRecommend(){
         '                            <div class="col-md-6 col-xs-6 column full_height" id="subspaceContent">\n' +
         '<p class="messtitle">Symmetry dimension:</p>'+
         '                            </div>\n' +
-        '                            <div class="col-md-6 col-xs-6 column full_height" id="allConnectContent">\n' +
-        '<p class="messtitle">Connected subgraph:</p>'+
+        '                            <div class="col-md-6 col-xs-6 column full_height">\n' +
+        '<div id="allConnectContent">'+
+        ' <p class="messtitle">Connected subgraph:</p>'+
+        '</div>'+
+        '<div id="needSplit">'+
+        ' <p class="messtitle">Need split:</p>'+
+        '</div>'+
         '                            </div>\n' +
         '                        </div>');
     while($("#allConnectContent").length ==0){}  //等待创建完成
     getSimilarPoint();
     getAllConnect();
+    getNeedSplit();
+}
+function drawNeedSplit() {
+    //根据needSplitName进行绘制
+    var divBuf="";
+    for (i in needSplitName){
+         divBuf += '<p class="MessItem" style="word-break: break-all; word-wrap:break-word;" data-suffixIgnore="true" data-nodesList="'+ eventParaStringify(needSplitName[i])+'" onmouseover="messLineOver(event)"  onmouseout="messLineOut(event)" >';
+        for (j in needSplitName[i]) {
+            var name = needSplitName[i][j];
+            // divBuf = divBuf + '<span onmouseover="subspaceSpanOver(\'' + name.replace(/[\W]/g, '_') + '\')" onmouseout="subspaceSpanOut(\'' + name.replace(/[\W]/g, '_') + '\')" class="subspaceSpan" style="background-color: ' + getColorFromName(name) + '">' + name + '</span>'
+            divBuf = divBuf + '<span  style="background-color: ' + getColorFromName(name) + '">' + name + '</span>'
+        }
+        divBuf += '</p>';
+    }
+    $("#needSplit").append(divBuf);
+}
+function getNeedSplit() {
+    if (needSplitName.length==0){
+        //ajax 请求一下
+        $.ajax({url:mylocalURL+"needSplitName",type: "POST",success:function(result){
+            needSplitName=result;
+            drawNeedSplit();
+        }});
+    }else{ //就更新视图
+        drawNeedSplit();
+    }
 }
 
 
@@ -88,13 +119,20 @@ function fromPosGetName(posList){
     }
     return JSON.stringify( nameList).replace(/"/g,"'");
 }
+function eventParaStringify(li){
+    return JSON.stringify( li).replace(/"/g,"'");
+}
+function eventParaParse() {
+    
+}
+
 function messLineOver(event){
     var domnode=event.target;
     while(domnode.tagName!="P"){
         domnode=domnode.parentNode;
     }
     var nodeList=JSON.parse(domnode.dataset['nodeslist'].replace(/'/g,'"'));//注意名字一定是全部小写
-    d3v4.select("#mainGraph .node").dispatch("nodesover",{detail:{nodesList:nodeList}});
+    d3v4.select("#mainGraph .node").dispatch("nodesover",{detail:{nodesList:nodeList,suffixIgnore:domnode.dataset['suffixignore']}}); //注意取出来的东西是小写的。
 }
 function messLineOut(event){
     d3v4.select("#mainGraph .node").dispatch("nodesout");

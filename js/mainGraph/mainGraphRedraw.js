@@ -728,21 +728,37 @@ function main_redraw(graph) {
 
                 var event = d3v4.event;
                 var nodesList=event.detail.nodesList;
-                d3.select("#mainGraph").selectAll(".node").each(function (data, index) {  //检查这些nodes与 event.nodesList相同的点。  isInArray(arr, value)   -1
-                    if ( isInArray(nodesList, data.name)==-1 ) //加gray属性  不在list中
-                    {
-                        d3.select(this).select('circle').style("opacity", 0.1);
-                        d3.select(this).select('text').style("opacity", 0.1);
-                    }
-                });
+                var suffixIgnore=event.detail.suffixIgnore;
+                if(suffixIgnore){ //忽视后缀的匹配
+                    d3.select("#mainGraph").selectAll(".node").each(function (data, index) {  //检查这些nodes与 event.nodesList相同的点。  isInArray(arr, value)   -1
+                        if (isInArray(nodesList, data.name.split(",")[0]) == -1) //加gray属性  不在list中
+                        {
+                            d3.select(this).select('circle').style("opacity", 0.1);
+                            d3.select(this).select('text').style("opacity", 0.1);
+                        }
+                    });
 
-                d3.select("#mainGraph").selectAll(".link line").each(function (data, index) {
-                    if (!( -1!= isInArray(nodesList, data.source.name)&& -1!= isInArray(nodesList,data.target.name) )) {
+                    d3.select("#mainGraph").selectAll(".link line").each(function (data, index) {
                         d3.select(this).style("opacity", 0);
-                    }else{
-                        d3.select(this).style("opacity", d=>opacityMap(d.value, d.overlap));
-                    }
-                });
+                    });
+                }
+                else {
+                    d3.select("#mainGraph").selectAll(".node").each(function (data, index) {  //检查这些nodes与 event.nodesList相同的点。  isInArray(arr, value)   -1
+                        if (isInArray(nodesList, data.name) == -1) //加gray属性  不在list中
+                        {
+                            d3.select(this).select('circle').style("opacity", 0.1);
+                            d3.select(this).select('text').style("opacity", 0.1);
+                        }
+                    });
+
+                    d3.select("#mainGraph").selectAll(".link line").each(function (data, index) {
+                        if (!( -1 != isInArray(nodesList, data.source.name) && -1 != isInArray(nodesList, data.target.name) )) {
+                            d3.select(this).style("opacity", 0);
+                        } else {
+                            d3.select(this).style("opacity", d => opacityMap(d.value, d.overlap));
+                        }
+                    });
+                }
             }
         )
         .on("nodesout", function (d) {

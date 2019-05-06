@@ -245,7 +245,7 @@ app_main.config = {
             {
                 similarValue=app_main.config.similarValue;
                 d3v4.select('#recommend_btn').dispatch("click");
-            }else{
+            }else{  //kickPointByNum
                 main_deepRedraw();
             }
         }
@@ -451,7 +451,7 @@ function transform2(d) {
         main_redraw(myChart_main_data);
         getorderRelationMatrixSuccess(myChart_main_data);
         refrshParaChart(myChart_main_data);
-        d3v4.select('#recommend_btn').dispatch("click");
+        //d3v4.select('#recommend_btn').dispatch("click");
 
     });
 })();

@@ -737,10 +737,19 @@ function main_redraw(graph) {
                             d3.select(this).select('text').style("opacity", 0.1);
                         }
                     });
-
-                    d3.select("#mainGraph").selectAll(".link line").each(function (data, index) {
-                        d3.select(this).style("opacity", 0);
-                    });
+                    if(suffixIgnore==1) {
+                        d3.select("#mainGraph").selectAll(".link line").each(function (data, index) {
+                            d3.select(this).style("opacity", 0);
+                        });
+                    }else if(suffixIgnore==2){
+                        d3.select("#mainGraph").selectAll(".link line").each(function (data, index) {
+                            if (!( -1 != isInArray(nodesList,data.source.name.split(",")[0]) && -1 != isInArray(nodesList, data.target.name.split(",")[0]) )) {
+                                d3.select(this).style("opacity", 0);
+                            } else {
+                                d3.select(this).style("opacity", d => opacityMap(d.value, d.overlap));
+                            }
+                        });
+                    }
                 }
                 else {
                     d3.select("#mainGraph").selectAll(".node").each(function (data, index) {  //检查这些nodes与 event.nodesList相同的点。  isInArray(arr, value)   -1

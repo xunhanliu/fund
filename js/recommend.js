@@ -7,34 +7,48 @@ function getRecommend(){
     $("#myMiddleTabCon1").html("");
     $("#myMiddleTabCon1").width($activeTab.width()).height($activeTab.height())
     .append('<div class="clearfix recommend" style="overflow-y: auto; height:'+($activeTab_Height-10)+'px">\n' +
-        '                            <div class="col-md-6 col-xs-6 column full_height" id="subspaceContent">\n' +
-        '<p class="messtitle">Symmetry dimension:</p>'+
-        '                            </div>\n' +
-        '                            <div class="col-md-6 col-xs-6 column full_height">\n' +
-        '<div id="allConnectContent">'+
-        ' <p class="messtitle">Connected subgraph:</p>'+
-        '</div>'+
-        '<div id="needSplit">'+
-        ' <p class="messtitle">Need split:</p>'+
-        '</div>'+
-        '                            </div>\n' +
-        '                        </div>');
+        ' <div class="col-md-6 col-xs-6 column full_height" >\n' +
+            '<div id="subspaceContent">'+
+            ' <p class="messtitle">Symmetry dimension:</p>'+
+            '</div>'+
+
+            '<div id="allConnectContent">'+
+            ' <p class="messtitle">Connected subgraph:</p>'+
+            '</div>'+
+        ' </div>\n' +
+
+        '  <div class="col-md-6 col-xs-6 column full_height">\n' +
+                '<div id="needSplit">'+
+                ' <p class="messtitle">Recommend pattern:</p>'+
+                '</div>'+
+        '   </div>\n' +
+        ' </div>');
     while($("#allConnectContent").length ==0){}  //等待创建完成
     getSimilarPoint();
     getAllConnect();
+    //切换相应的页面,下面这句话不行，但按钮可以，这里触发的是a标签
+    // d3v4.select('#rightTab1').dispatch("click");
+    // $('#myMiddleTab').find('.active').toggleClass('active');
+    // $('#rightTab1').addClass('active');
+    // $('#myMiddleTabCon').find('.active').toggleClass('active');
+    // $('#myMiddleTabCon2').addClass('active');
+    // $('#myMiddleTabCon').css('display','none');
+    // $('#myMiddleTabCon2').css('display','block');
+
     getNeedSplit();
 }
 
 function drawSplitMess() {
-    // var title=['single','<','!','oo'];
+    var title=['single','<','!','oo'];
     var showTitle='';
-    for(i in splitMess){
-        if(i =='single'){
+    for(title_j in title){
+        var key=title[title_j];
+        if(key =='single'){
             var needSplitName=splitMess['single'];
             //根据needSplitName进行绘制
             var divBuf="";
             for (i in needSplitName){
-                divBuf += '<p class="MessItem" style="word-break: break-all; word-wrap:break-word;" data-suffixIgnore="true" data-nodesList="'+ eventParaStringify(needSplitName[i])+'" onmouseover="messLineOver(event)"  onmouseout="messLineOut(event)" >';
+                divBuf += '<p class="MessItem" style="word-break: break-all; word-wrap:break-word;" data-suffixIgnore="1" data-nodesList="'+ eventParaStringify(needSplitName[i])+'" onmouseover="messLineOver(event)"  onmouseout="messLineOut(event)" >';
                 for (j in needSplitName[i]) {
                     var name = needSplitName[i][j];
                     // divBuf = divBuf + '<span onmouseover="subspaceSpanOver(\'' + name.replace(/[\W]/g, '_') + '\')" onmouseout="subspaceSpanOut(\'' + name.replace(/[\W]/g, '_') + '\')" class="subspaceSpan" style="background-color: ' + getColorFromName(name) + '">' + name + '</span>'
@@ -45,17 +59,17 @@ function drawSplitMess() {
             $("#needSplit").append(divBuf);
         }
         else{
-            if(typeof(splitMess[i])!='object') continue;
-            if(splitMess[i].length==0) continue;
-            if(i=='<')showTitle="line-line";
-            else if(i=='!') showTitle='line-blob';
-            else if(i=='oo') showTitle='blob-blob';
-            var dimNames=splitMess[i];
+            if(typeof(splitMess[key])!='object') continue;
+            if(splitMess[key].length==0) continue;
+            if(key=='<')showTitle="line-line";
+            else if(key=='!') showTitle='line-blob';
+            else if(key=='oo') showTitle='blob-blob';
+            var dimNames=splitMess[key];
 
             //根据dimNames进行绘制
             var divBuf='<p class="second_title">'+showTitle+'</p>';
             for (i in dimNames){
-                divBuf += '<p class="MessItem" style="word-break: break-all; word-wrap:break-word;" data-nodesList="'+ eventParaStringify(dimNames[i])+'" onmouseover="messLineOver(event)"  onmouseout="messLineOut(event)" >';
+                divBuf += '<p class="MessItem" style="word-break: break-all; word-wrap:break-word;" data-suffixIgnore="2" data-nodesList="'+ eventParaStringify(dimNames[i])+'" onmouseover="messLineOver(event)"  onmouseout="messLineOut(event)" >';
                 for (j in dimNames[i]) {
                     var name = dimNames[i][j];
                     // divBuf = divBuf + '<span onmouseover="subspaceSpanOver(\'' + name.replace(/[\W]/g, '_') + '\')" onmouseout="subspaceSpanOut(\'' + name.replace(/[\W]/g, '_') + '\')" class="subspaceSpan" style="background-color: ' + getColorFromName(name) + '">' + name + '</span>'
@@ -78,9 +92,11 @@ function drawSplitMess() {
 function getNeedSplit() {
     if (splitMess['single']==undefined){
         //ajax 请求一下
+        showToast('info', "Requesting background....");
         $.ajax({url:mylocalURL+"needSplitName",type: "POST",success:function(result){
             splitMess=result;
             drawSplitMess();
+            showToast('success', "Got it.");
         }});
     }else{ //就更新视图
         drawSplitMess();

@@ -62,8 +62,8 @@ function drawSplitMess() {
             if(typeof(splitMess[key])!='object') continue;
             if(splitMess[key].length==0) continue;
             if(key=='<')showTitle="line-line";
-            else if(key=='!') showTitle='line-blob';
-            else if(key=='oo') showTitle='blob-blob';
+            else if(key=='!') showTitle='line-cluster';
+            else if(key=='oo') showTitle='blob-cluster';
             var dimNames=splitMess[key];
 
             //根据dimNames进行绘制
